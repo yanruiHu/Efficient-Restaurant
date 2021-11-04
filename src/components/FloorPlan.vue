@@ -1,0 +1,69 @@
+<template>
+  <el-container>
+    <el-main>
+      <table ref="table" border="1"></table>
+    </el-main>
+    <el-footer v-if="this.currentData[0] === 'manager'">
+      <span>行数：</span>
+      <input type="text" v-model="row"/>
+      <span>列数：</span>
+      <input type="text" v-model="column"/>
+    </el-footer>
+  </el-container>
+</template>
+
+<script>
+export default {
+  data() {
+   return {
+     row: '',
+     column: ''
+   }
+  },
+  watch: {
+    row(){
+      this.commitRowAndColumn()
+    },
+    column(){
+      this.commitRowAndColumn()
+    },
+    currentData(){
+      this.row = this.currentData[1]
+      this.column = this.currentData[2]
+    }
+  },
+  props: {
+    currentData: Array
+  },
+  methods: {
+    commitRowAndColumn: function() {
+      console.log(this.currentData, row, column)
+      let row = this.row,
+          column = this.column,
+          table = this.$refs.table
+      if(!row||!column) return
+      if(row*column > 1000){
+        alert('数据过大，请调整！')
+        this.row = 0
+        this.column = 0
+        table.innerHTML = ''
+        return
+      }
+      let cArr = ''
+      for(let i=0;i<column;i++){
+        cArr += '<th>6</th>'
+      }
+      let rArr = ''
+      for(let i=0;i<row;i++){
+        rArr += '<tr>' + cArr + '</tr>'
+      }
+      table.innerHTML = rArr
+      this.$emit('changeRowAndColumn', [this.row, this.column])
+    },
+  }
+}
+</script>
+
+<style>
+
+</style>
