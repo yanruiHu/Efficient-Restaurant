@@ -1,8 +1,8 @@
 <template>
   <div>
+    <h2>欢迎来到餐厅管理系统</h2>
     <button @click="manageloginClick">管理员登录</button>
     <button @click="waiterloginClick">服务员登录</button>
-    <h2>欢迎来到餐厅管理系统</h2>
     <p></p>
     <router-view></router-view>
     <p></p>
@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     manageloginClick() {
-      this.$router.replace('/managelogin');
+      this.$router.push('/managelogin');
     },
     waiterloginClick() {
       this.$router.push('/waiterlogin');

@@ -6,10 +6,9 @@
       <p></p>
       <el-input v-model="password" placeholder="密码"></el-input>
       <p></p>
-      <button>登录</button>
+      <button @click="toFloor">登录</button>
       <button @click="toRegister">注册</button>
     </div>
-
   </div>
 </template>
 
@@ -25,6 +24,9 @@
     methods: {
       toRegister() {
         this.$router.push('/manageregister')
+      },
+      toFloor() {
+        this.$router.push('/floorplanbar')
       }
     },
   }

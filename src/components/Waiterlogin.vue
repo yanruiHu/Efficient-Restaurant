@@ -6,10 +6,8 @@
       <p></p>
       <el-input v-model="password" placeholder="密码"></el-input>
       <p></p>
-      <button>登录</button>
+      <button @click="toFloor">登录</button>
     </div>
-
-
   </div>
 </template>
 
@@ -22,6 +20,11 @@
         password: null,
       }
     },
+    methods: {
+      toFloor() {
+        this.$router.push('/floorplanbar')
+      }
+    }
   }
 </script>
 
