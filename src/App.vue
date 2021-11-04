@@ -1,16 +1,19 @@
 <template>
   <div id="app">
     <Welcome />
+    <FloorPlanBar />
   </div>
 </template>
 
 <script>
+import FloorPlanBar from './components/FloorPlanBar.vue'
 import Welcome from './components/Welcome.vue'
 
 export default {
   name: 'App',
   components: {
-    Welcome
+    Welcome,
+    FloorPlanBar
   },
   data() {
     return {
