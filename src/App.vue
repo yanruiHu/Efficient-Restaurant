@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id='app'>
     <Welcome />
   </div>
 </template>
@@ -11,12 +11,7 @@ export default {
   name: 'App',
   components: {
     Welcome
-  },
-  data() {
-    return {
-      ms: "hello"
-    }
-  },
+  }
 }
 </script>
 

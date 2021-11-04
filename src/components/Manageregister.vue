@@ -1,12 +1,14 @@
 <template>
   <div>
     <div class='input-box' >
-      <p>服务员登录</p>
+      <p>管理员注册</p>
       <el-input v-model="account" placeholder="账号"></el-input>
       <p></p>
       <el-input v-model="password" placeholder="密码"></el-input>
       <p></p>
-      <button>登录</button>
+      <el-input v-model="comfirm" placeholder="验证密码"></el-input>
+      <p></p>
+      <button>注册</button>
     </div>
 
 
@@ -15,11 +17,12 @@
 
 <script>
   export default {
-    name: 'WaiterLogin',
+    name: 'Manageregister',
     data() {
       return {
         account: null,
         password: null,
+        comfirm: null
       }
     },
   }
