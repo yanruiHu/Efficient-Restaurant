@@ -4,10 +4,9 @@
       <table ref="table" border="1"></table>
     </el-main>
     <el-footer v-if="this.currentData[0] === 'manager'">
-      <span>行数：</span>
-      <input type="text" v-model="row"/>
-      <span>列数：</span>
-      <input type="text" v-model="column"/>
+      <input type="number" v-model="row" placeholder="行数">
+      <input type="number" v-model="column" placeholder="列数">
+      <button type="primary" @click="setCurrentData">确认</button>
     </el-footer>
   </el-container>
 </template>
@@ -37,11 +36,11 @@ export default {
   },
   methods: {
     commitRowAndColumn: function() {
-      console.log(this.currentData, row, column)
       let row = this.row,
           column = this.column,
           table = this.$refs.table
-      if(!row||!column) return
+      if(!row) return
+      if(!column) return
       if(row*column > 1000){
         alert('数据过大，请调整！')
         this.row = 0
@@ -58,8 +57,10 @@ export default {
         rArr += '<tr>' + cArr + '</tr>'
       }
       table.innerHTML = rArr
-      this.$emit('changeRowAndColumn', [this.row, this.column])
     },
+    setCurrentData: function() {
+      this.$emit('changeRowAndColumn', [this.row, this.column])
+    }
   }
 }
 </script>
