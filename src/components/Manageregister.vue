@@ -10,8 +10,6 @@
       <p></p>
       <button>注册</button>
     </div>
-
-
   </div>
 </template>
 
