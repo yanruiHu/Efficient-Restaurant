@@ -5,6 +5,7 @@ import Vue from "vue";
 import ManageLogin from "../components/Managelogin.vue";
 import WaiterLogin from "../components/Waiterlogin.vue";
 import Manageregister from "../components/Manageregister.vue";
+import FloorPlanBar from "../components/FloorPlanBar.vue";
 
 
 Vue.use(VueRouter);
@@ -21,6 +22,10 @@ const routes = [
   {
     path: '/manageregister',
     component: Manageregister
+  },
+  {
+    path: '/floorplanbar',
+    component: FloorPlanBar
   }
 ]
 
