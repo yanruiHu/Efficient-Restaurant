@@ -2,25 +2,36 @@
 import VueRouter from "vue-router";
 import Vue from "vue";
 
-import Managelogin from "../components/Managelogin";
-import Waiterlogin from "../components/Waiterlogin";
+import ManageLogin from "../components/Managelogin.vue";
+import WaiterLogin from "../components/Waiterlogin.vue";
+import Manageregister from "../components/Manageregister.vue";
+import FloorPlanBar from "../components/FloorPlanBar.vue";
 
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-const routes=[
+const routes = [
   {
     path: '/managelogin',
-    views: Managelogin
+    component: ManageLogin
   },
   {
     path: '/waiterlogin',
-    views: Waiterlogin
+    component: WaiterLogin
+  },
+  {
+    path: '/manageregister',
+    component: Manageregister
+  },
+  {
+    path: '/floorplanbar',
+    component: FloorPlanBar
   }
 ]
 
-const router=new VueRouter({
-  routes
+const router = new VueRouter({
+  routes,
+  mode: 'history'
 })
 
 export default router
