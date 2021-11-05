@@ -48,9 +48,9 @@
 
 <script>
 import FloorPlan from './FloorPlan.vue'
-// var db = this.connectDatabase.database()
 
 export default {
+  name: 'FloorPlanBar',
   components: {
     FloorPlan
   },
@@ -62,13 +62,10 @@ export default {
   },
   methods: {
     setData(tab){
-      var db_data = []
       this.db.collection("floorplan")
         .get()
         .then((res)=>{
-          db_data[0] = res.data[0].row
-          db_data[1] = res.data[0].column
-          this.data.splice(0, 3, tab.name, db_data[0], db_data[1])
+          this.data.splice(0, 3, tab.name, res.data[0].row, res.data[0].column)
         })
     }
   },

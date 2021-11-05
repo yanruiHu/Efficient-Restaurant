@@ -26,7 +26,7 @@
         this.$router.push('/manageregister')
       },
       toFloor() {
-        this.$router.push('/floorplanbar')
+        this.$router.push('/mainpage')
       }
     },
   }

@@ -1,12 +1,18 @@
 <template>
-  <el-container>
+  <el-container direction="vertical">
     <el-main>
       <table ref="table" border="1"></table>
     </el-main>
     <el-footer v-if="this.currentData[0] === 'manager'">
-      <input type="number" v-model="row" placeholder="行数">
-      <input type="number" v-model="column" placeholder="列数">
-      <button type="primary" @click="saveCurrentData">确认</button>
+      <el-input type="number" size="small"
+      v-model="row" placeholder="行数">
+      </el-input>
+      <el-input type="number" size="small"
+      v-model="column" placeholder="列数">
+      </el-input>
+      <el-button type="primary" size="small" 
+      @click="saveCurrentData">确认
+      </el-button>
     </el-footer>
   </el-container>
 </template>
@@ -74,5 +80,7 @@ export default {
 </script>
 
 <style>
-
+  .el-input {
+    width: 100px !important;
+  }
 </style>
