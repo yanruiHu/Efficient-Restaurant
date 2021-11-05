@@ -6,7 +6,7 @@
       <p></p>
       <el-input v-model="password" placeholder="密码"></el-input>
       <p></p>
-      <button @click="toFloor">登录</button>
+      <button @click="Login">登录</button>
       <button @click="toRegister">注册</button>
     </div>
   </div>
@@ -19,15 +19,33 @@
       return {
         account: null,
         password: null,
+        db: null,
       }
     },
     methods: {
       toRegister() {
         this.$router.push('/manageregister')
       },
-      toFloor() {
-        this.$router.push('/mainpage')
+      Login() {
+        this.db.collection("manage")
+          .where({
+            account: this.account,
+            password: this.password
+          })
+          .get()
+          .then((res) => {
+            console.log(res)
+            if(res.data.length==1){
+              this.$router.push('./managehome')
+            }
+            else{
+              alert("账号或密码错误")
+            }
+          })
       }
+    },
+    mounted() {
+      this.db = this.$app.database();
     },
   }
 </script>

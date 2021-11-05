@@ -7,6 +7,7 @@ import WaiterLogin from "../components/Waiterlogin.vue";
 import Manageregister from "../components/Manageregister.vue";
 import FloorPlanBar from "../components/FloorPlanBar.vue";
 import MainPage from "../components/MainPage";
+import ManageHome from "../views/manage/ManageHome.vue";
 
 
 Vue.use(VueRouter);
@@ -33,6 +34,10 @@ const routes = [
         component: FloorPlanBar,
       }
     ]
+  },
+  {
+    path: '/managehome',
+    component: ManageHome
   }
 ]
 
