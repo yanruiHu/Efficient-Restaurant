@@ -6,7 +6,7 @@
     <el-footer v-if="this.currentData[0] === 'manager'">
       <input type="number" v-model="row" placeholder="行数">
       <input type="number" v-model="column" placeholder="列数">
-      <button type="primary" @click="setCurrentData">确认</button>
+      <button type="primary" @click="saveCurrentData">确认</button>
     </el-footer>
   </el-container>
 </template>
@@ -15,6 +15,7 @@
 export default {
   data() {
    return {
+     db: '',
      row: '',
      column: ''
    }
@@ -58,9 +59,16 @@ export default {
       }
       table.innerHTML = rArr
     },
-    setCurrentData: function() {
-      this.$emit('changeRowAndColumn', [this.row, this.column])
+    saveCurrentData() {
+      this.db.collection("floorplan")
+        .update({
+          row: this.row,
+          column: this.column
+        })
     }
+  },
+  mounted() {
+    this.db = this.$app.database()
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <el-tabs @tab-click="setRole">
+  <el-tabs @tab-click="setData">
     <el-tab-pane label="前台" name="host">
       <el-container>
         <el-main>
@@ -34,7 +34,7 @@
     <el-tab-pane label="经理" name="manager">
       <el-container>
         <el-main>
-          <FloorPlan :currentData="['manager', row, column]" @changeRowAndColumn="changeData"></FloorPlan>
+          <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
         <el-aside>
           <div>绿：空闲</div>
@@ -48,6 +48,7 @@
 
 <script>
 import FloorPlan from './FloorPlan.vue'
+// var db = this.connectDatabase.database()
 
 export default {
   components: {
@@ -55,19 +56,25 @@ export default {
   },
   data() {
     return {
-      role: '',
-      row: '',
-      column: '',
-      data: ['','','']
+      db: '',
+      data: ['', '', '']
     }
   },
   methods: {
-    setRole(tab){
-      this.data.slice(0, 1, tab.name)
-    },
-    changeData(data) {
-      this.data.splice(1, 2, data[0], data[1])
+    setData(tab){
+      var db_data = []
+      this.db.collection("floorplan")
+        .get()
+        .then((res)=>{
+          db_data[0] = res.data[0].row
+          db_data[1] = res.data[0].column
+          this.data.splice(0, 3, tab.name, db_data[0], db_data[1])
+        })
     }
+  },
+  mounted() {
+    this.db = this.$app.database()
   }
 }
+
 </script>
