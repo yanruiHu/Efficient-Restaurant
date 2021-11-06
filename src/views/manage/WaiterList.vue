@@ -5,5 +5,7 @@
 </template>
 
 <script>
-  
+  export default {
+    name: 'WaiterList'
+  }
 </script>

@@ -6,7 +6,9 @@ import ManageLogin from "../components/Managelogin.vue";
 import WaiterLogin from "../components/Waiterlogin.vue";
 import Manageregister from "../components/Manageregister.vue";
 import FloorPlanBar from "../components/FloorPlanBar.vue";
+import MainPage from "../components/MainPage.vue";
 import ManageHome from "../views/manage/ManageHome.vue";
+import WaiterList from "../views/manage/WaiterList.vue";
 
 
 Vue.use(VueRouter);
@@ -25,6 +27,16 @@ const routes = [
     component: Manageregister
   },
   {
+    path: '/mainpage',
+    component: MainPage,
+    children: [
+      {
+        path: '/mainpage/floorplanbar',
+        component: FloorPlanBar,
+      }
+    ]
+  },
+  {
     path: '/managehome',
     component: ManageHome,
     children: [
@@ -33,6 +45,10 @@ const routes = [
         name: 'floorplanbar',
         component: FloorPlanBar
       },
+      {
+        path: '/waiterlist',
+        component: WaiterList
+      }
     ]
   }
 ]

@@ -12,11 +12,6 @@ export default {
   components: {
     Welcome,
   },
-  data() {
-    return {
-      ms: "hello"
-    }
-  },
 }
 </script>
 

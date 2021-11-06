@@ -32,16 +32,16 @@
     },
     methods: {
       employeeManagement() {
-        
+        this.$router.push('/waiterlist')
       },
       interfaceSettings() {
         this.$router.push('/floorplanbar')
       },
       setupMenu() {
-
+        this.$router.push('/waiterlist')
       },
       personalInformation() {
- 
+        this.$router.push('/waiterlist')
       },
       tabEvent(tab){
         if(tab.label==="员工管理"){

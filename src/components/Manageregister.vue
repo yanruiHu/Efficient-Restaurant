@@ -37,7 +37,7 @@
         if(this.password!==this.comfirm){
           alert("两次输入密码不相同")
         }
-        this.db.collection("manage")
+        this.db.collection("manage")//查看数据库中申请账号是否已存在。
           .where({
             account: this.account
           })
