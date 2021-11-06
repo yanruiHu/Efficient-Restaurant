@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style>
-  .el-input {
+  /* .el-input {
     width: 100px !important;
-  }
+  } */
 </style>
