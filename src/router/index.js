@@ -25,12 +25,15 @@ const routes = [
     component: Manageregister
   },
   {
-    path: '/floorplanbar',
-    component: FloorPlanBar
-  },
-  {
     path: '/managehome',
-    component: ManageHome
+    component: ManageHome,
+    children: [
+      {
+        path: '/floorplanbar',
+        name: 'floorplanbar',
+        component: FloorPlanBar
+      },
+    ]
   }
 ]
 

@@ -6,8 +6,11 @@
       <p></p>
       <el-input v-model="password" placeholder="密码"></el-input>
       <p></p>
-      <button @click="Login">登录</button>
+      <button @click="Login" type=password>登录</button>
       <button @click="toRegister">注册</button>
+    </div>
+    <div>
+      <button @click="VIP">vip通道</button>
     </div>
   </div>
 </template>
@@ -42,6 +45,9 @@
               alert("账号或密码错误")
             }
           })
+      },
+      VIP() {
+        this.$router.push('./managehome')
       }
     },
     mounted() {
