@@ -19,6 +19,7 @@
 
 <script>
 export default {
+  name: 'FloorPlan',
   data() {
    return {
      db: '',
@@ -66,7 +67,7 @@ export default {
       table.innerHTML = rArr
     },
     saveCurrentData() {
-      this.db.collection("floorplan")
+      this.db.collection('floorplan')
         .update({
           row: this.row,
           column: this.column
@@ -80,7 +81,7 @@ export default {
 </script>
 
 <style>
-  /* .el-input {
+  .el-input {
     width: 100px !important;
-  } */
+  }
 </style>

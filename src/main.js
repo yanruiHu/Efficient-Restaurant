@@ -11,8 +11,8 @@ const app = cloudbase.init({
 const auth = app.auth()
 async function db_login(){
   await auth.anonymousAuthProvider().signIn()
-  const loginState = await auth.getLoginState()
-  console.log(loginState.isAnonymousAuth)
+  // const loginState = await auth.getLoginState()
+  // console.log(loginState.isAnonymousAuth)
 }
 db_login();
 
