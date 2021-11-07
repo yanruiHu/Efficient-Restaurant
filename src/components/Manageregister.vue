@@ -1,15 +1,27 @@
 <template>
   <div>
-    <div class='input-box' >
-      <p>管理员注册</p>
-      <el-input v-model="account" placeholder="账号"></el-input>
-      <p></p>
-      <el-input v-model="password" placeholder="密码" type=password></el-input>
-      <p></p>
-      <el-input v-model="comfirm" placeholder="验证密码" type=password></el-input>
-      <p></p>
-      <button @click='Register'>注册</button>
+    <div>
+      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" class="login-box">
+        <h3 class="login-title">管理员注册</h3>
+
+        <el-form-item label="账号" prop="name">
+          <el-input type="text" placeholder="请输入用户名" v-model="account"></el-input>
+        </el-form-item>
+
+        <el-form-item label="密码" prop="password">
+          <el-input type=password placeholder="请输入密码" v-model="password"></el-input>
+        </el-form-item>
+
+        <el-form-item label="验证密码" prop="confirm">
+          <el-input type=password placeholder="请再次输入密码" v-model="confirm"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="Register">注册</el-button>
+        </el-form-item>
+      </el-form>
     </div>
+
   </div>
 </template>
 
@@ -20,22 +32,22 @@
       return {
         account: null,
         password: null,
-        comfirm: null,
+        confirm: null,
         db: null
       }
     },
     methods: {
       Register() {
         if(this.account.length<8||this.account.length>16){
-          alert("用户账号必须大于八位小于十六位")
+          this.$message.error("用户账号必须大于八位小于十六位")
           return
         }
         if(this.password.length<8){
-          alert("用户密码必须大于八位")
+          this.$message.error("用户密码必须大于八位")
           return
         }
-        if(this.password!==this.comfirm){
-          alert("两次输入密码不相同")
+        if(this.password!==this.confirm){
+          this.$message.error("两次输入密码不相同")
         }
         this.db.collection("manage")//查看数据库中申请账号是否已存在。
           .where({
@@ -44,7 +56,8 @@
           .get()
           .then((res) => {
             if(res.data.length!==0){
-              alert("用户名已存在")
+              // alert("用户名已存在")
+              this.$message.error("用户名已存在！")
               return
             }
           })
@@ -54,7 +67,10 @@
             password: this.password
           })
           .then(()=>{
-            alert("创建用户成功！")
+            this.$message({
+              message: "创建用户成功！",
+              type: 'success'
+            });
             this.$router.push('/managelogin')
           })
       }
@@ -65,20 +81,16 @@
   }
 </script>
 
-<style>
-    body {
-    background-color: whitesmoke;
+<style scoped>
+  .login-box{
+    width: 250px;
+    margin: 100px auto;
+    border:1px solid #DCDFE6;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 30px #DCDFE6;
   }
-
-  .input-box {
-    width: 180px;
-    position: absolute;
-    left: 50%;
-    top:40%;
-    transform: translate(-50%,-50%);
-    border-color: black;
-    background-color: lightslategray;
-    padding: 25px;
+  .login-title{
+    text-align: center;
   }
-
 </style>

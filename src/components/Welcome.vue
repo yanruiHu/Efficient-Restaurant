@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h2>欢迎来到餐厅管理系统</h2>
-    <button @click="manageloginClick">管理员登录</button>
-    <button @click="waiterloginClick">服务员登录</button>
-    <p></p>
+    <header>
+      <h1>欢迎来到餐厅管理系统</h1>
+      <el-button @click="manageloginClick">管理员登录</el-button>
+      <el-button @click="waiterloginClick">服务员登录</el-button>
+    </header>
     <router-view></router-view>
-    <p></p>
   </div>
 </template>
 
