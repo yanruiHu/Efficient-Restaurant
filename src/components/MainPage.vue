@@ -8,7 +8,7 @@
             <span slot="title">个人信息</span>
           </template>
           <el-menu-item-group title="工号">
-            <el-menu-item index="1-1">123456</el-menu-item>
+            <el-menu-item index="1-1">{{id}}</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group title="状态">
             <el-menu-item index="1-3">工作中</el-menu-item>
@@ -25,7 +25,7 @@
         <el-menu-item index="4">
           <i class="el-icon-bell"></i>
           <!-- <span slot="title">任务！</span> -->
-          <el-badge value="新任务" v-if="toNewTask() === true" />
+          <el-badge :value="newTask" />
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -42,11 +42,12 @@
       return {
         id: '12345678',
         db: '',
+        timer: '',
         newTask: '',
       }
     },
     props: {
-      employeeId: String
+      staffId: String
     },
     methods: {
       handleOpen(key, keyPath) {
@@ -61,35 +62,34 @@
       toDishesList() {
         
       },
-      //没成功
       toNewTask() {
-        var ifNewTask = false
         this.db.collection('task')
           .where({
             waiter_id: this.db.command.eq(this.id)
           })
           .watch({
-            onChange: function(snapshot) {
+            onChange: (snapshot) => {
               this.newTask = snapshot.docs[0].task
-              ifNewTask = true
-              console.log(snapshot)
             },
-            onError: function(err) {
-              console.error(err)
+            onError: () => {
+              this.newTask = ''
             }
           })
-        return ifNewTask
       }
     },
     mounted() {
-      this.db = this.$app.database() 
+      this.db = this.$app.database()
+      this.timer = setInterval(this.toNewTask, 3000)
+    },
+    beforeDestroy() {
+      clearInterval(this.timer)
     }
   }
 </script>
 
 <style>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
+    width: 180px;
     min-height: 400px;
   }
   
