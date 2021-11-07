@@ -1,6 +1,9 @@
 <template>
   <div>
     <div>
+      <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以员工身份进入(仅供开发人员测试)</el-button>
+    </div>
+    <div>
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" class="login-box">
         <h3 class="login-title">服务员登录</h3>
         <el-form-item label="账号" prop="name">
@@ -52,6 +55,9 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
+      VIP() {
+        this.$router.push('./mainpage')
+      }
     }
   }
 </script>
