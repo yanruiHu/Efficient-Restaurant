@@ -1,16 +1,22 @@
 <template>
   <div>
-    <div class='input-box'>
-      <p>管理员登录</p>
-      <el-input v-model="account" placeholder="账号"></el-input>
-      <p></p>
-      <el-input v-model="password" placeholder="密码"></el-input>
-      <p></p>
-      <button @click="Login" type=password>登录</button>
-      <button @click="toRegister">注册</button>
+    <div>
+      <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以管理员身份进入(仅供开发人员测试)</el-button>
     </div>
     <div>
-      <button @click="VIP">vip通道</button>
+      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" class="login-box">
+        <h3 class="login-title">管理员登录</h3>
+        <el-form-item label="账号" prop="name">
+          <el-input type="text" placeholder="请输入用户名" v-model="account"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" placeholder="请输入密码" v-model="password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="Login">登录</el-button>
+          <el-button type="primary" @click="toRegister">注册</el-button>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -33,7 +39,17 @@
         this.db.collection("manage")
           .where({
             account: this.account,
-            password: this.password
+            password: this.password,
+            rules: {
+              name: [
+                { required: true, message: '请输入用户名', trigger: 'blur' },
+                // { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+              ],
+              password: [
+                { required: true, message: '请输入密码', trigger: 'blur' },
+                // { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
+              ],
+            }
           })
           .get()
           .then((res) => {
@@ -56,19 +72,16 @@
   }
 </script>
 
-<style>
-  body {
-    background-color: whitesmoke;
+<style scoped>
+  .login-box{
+    width: 250px;
+    margin: 100px auto;
+    border:1px solid #DCDFE6;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 30px #DCDFE6;
   }
-
-  .input-box {
-    width: 180px;
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    transform: translate(-50%, -50%);
-    border-color: black;
-    background-color: lightslategray;
-    padding: 25px;
+  .login-title{
+    text-align: center;
   }
 </style>
