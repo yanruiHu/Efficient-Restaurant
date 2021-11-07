@@ -4,7 +4,7 @@
       <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以管理员身份进入(仅供开发人员测试)</el-button>
     </div>
     <div>
-      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" class="login-box">
+      <el-form class="login-box">
         <h3 class="login-title">管理员登录</h3>
         <el-form-item label="账号" prop="name">
           <el-input type="text" placeholder="请输入用户名" v-model="account"></el-input>
