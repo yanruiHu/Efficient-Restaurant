@@ -49,6 +49,7 @@
         if(this.password!==this.confirm){
           this.$message.error("两次输入密码不相同")
         }
+        let isAccountExist=false
         this.db.collection("manage")//查看数据库中申请账号是否已存在。
           .where({
             account: this.account
@@ -57,10 +58,13 @@
           .then((res) => {
             if(res.data.length!==0){
               // alert("用户名已存在")
+              isAccountExist=true
               this.$message.error("用户名已存在！")
-              return
             }
           })
+        if(isAccountExist){
+          return
+        }
         this.db.collection("manage")
           .add({
             account: this.account,
