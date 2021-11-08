@@ -25,7 +25,7 @@
       }
     },
     methods: {
-      Register() {
+      async Register() {
         if(this.account.length<8||this.account.length>16){
           alert("用户账号必须大于八位小于十六位")
           return
@@ -37,7 +37,8 @@
         if(this.password!==this.comfirm){
           alert("两次输入密码不相同")
         }
-        this.db.collection("manage")//查看数据库中申请账号是否已存在。
+        let isAccountExist=false;
+        await this.db.collection("manage")//查看数据库中申请账号是否已存在。
           .where({
             account: this.account
           })
@@ -45,9 +46,12 @@
           .then((res) => {
             if(res.data.length!==0){
               alert("用户名已存在")
-              return
+              isAccountExist=true;
             }
           })
+        if(isAccountExist===true){
+          return
+        }
         this.db.collection("manage")
           .add({
             account: this.account,

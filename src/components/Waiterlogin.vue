@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class='input-box' >
+    <button @click="manageloginClick">管理员登录</button>
+    <div class='input-box'>
       <p>服务员登录</p>
       <el-input v-model="account" placeholder="账号"></el-input>
       <p></p>
@@ -23,13 +24,16 @@
     methods: {
       toFloor() {
         this.$router.push('/floorplanbar')
-      }
+      },
+      manageloginClick() {
+        this.$router.push('/managelogin');
+      },
     }
   }
 </script>
 
 <style>
-    body {
+  body {
     background-color: whitesmoke;
   }
 
@@ -37,11 +41,10 @@
     width: 180px;
     position: absolute;
     left: 50%;
-    top:40%;
-    transform: translate(-50%,-50%);
+    top: 40%;
+    transform: translate(-50%, -50%);
     border-color: black;
     background-color: lightslategray;
     padding: 25px;
   }
-
 </style>

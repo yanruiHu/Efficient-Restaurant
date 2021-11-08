@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button @click="waiterloginClick">服务员登录</button>
     <div class='input-box'>
       <p>管理员登录</p>
       <el-input v-model="account" placeholder="账号"></el-input>
@@ -25,6 +26,9 @@
         db: null,
       }
     },
+    props: {
+      restaurant: String,
+    },
     methods: {
       toRegister() {
         this.$router.push('/manageregister')
@@ -38,13 +42,18 @@
           .get()
           .then((res) => {
             console.log(res)
-            if(res.data.length==1){
+            if (res.data.length == 1) {
+              console.log(res.data[0].pany)
+              this.restaurant = res.data.pany
               this.$router.push('./managehome')
             }
-            else{
+            else {
               alert("账号或密码错误")
             }
           })
+      },
+      waiterloginClick() {
+        this.$router.push('/waiterlogin');
       },
       VIP() {
         this.$router.push('./managehome')

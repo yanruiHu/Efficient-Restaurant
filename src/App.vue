@@ -1,17 +1,14 @@
 <template>
   <div>
-    <Welcome />
+    <h2>欢迎来到餐厅管理系统</h2>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Welcome from './components/Welcome.vue'
 
 export default {
   name: 'App',
-  components: {
-    Welcome,
-  },
 }
 </script>
 
