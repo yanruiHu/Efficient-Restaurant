@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" class="login-box">
+      <el-form class="login-box">
         <h3 class="login-title">管理员注册</h3>
 
         <el-form-item label="账号" prop="name">
@@ -37,7 +37,7 @@
       }
     },
     methods: {
-      Register() {
+      async Register() {
         if(this.account.length<8||this.account.length>16){
           this.$message.error("用户账号必须大于八位小于十六位")
           return
@@ -50,7 +50,7 @@
           this.$message.error("两次输入密码不相同")
         }
         let isAccountExist=false
-        this.db.collection("manage")//查看数据库中申请账号是否已存在。
+        await this.db.collection("manage")//查看数据库中申请账号是否已存在。
           .where({
             account: this.account
           })
@@ -62,7 +62,7 @@
               this.$message.error("用户名已存在！")
             }
           })
-        if(isAccountExist){
+        if(isAccountExist===true){
           return
         }
         this.db.collection("manage")
