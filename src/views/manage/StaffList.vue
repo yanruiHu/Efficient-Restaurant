@@ -32,7 +32,7 @@
     },
     data() {
       return {
-        
+        radio: '1'
       }
     },
     mounted() {

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <button @click="manageloginClick">管理员登录</button>
-    <button @click="waiterloginClick">服务员登录</button>
-    <p></p>
-    <p></p>
+    <header>
+      <el-button @click="manageloginClick">管理员登录</el-button>
+      <el-button @click="waiterloginClick">服务员登录</el-button>
+    </header>
   </div>
 </template>
 
