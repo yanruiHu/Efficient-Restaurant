@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>
+      <el-button @click="waiterloginClick">服务员登录</el-button>
       <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以管理员身份进入(仅供开发人员测试)</el-button>
     </div>
     <div>
@@ -31,6 +32,9 @@
         db: null,
       }
     },
+    props: {
+      restaurant: String,
+    },
     methods: {
       toRegister() {
         this.$router.push('/manageregister')
@@ -40,27 +44,22 @@
           .where({
             account: this.account,
             password: this.password,
-            rules: {
-              name: [
-                { required: true, message: '请输入用户名', trigger: 'blur' },
-                // { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
-              ],
-              password: [
-                { required: true, message: '请输入密码', trigger: 'blur' },
-                // { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
-              ],
-            }
           })
           .get()
           .then((res) => {
             console.log(res)
-            if(res.data.length==1){
+            if (res.data.length == 1) {
+              console.log(res.data[0].pany)
+              this.restaurant = res.data.pany
               this.$router.push('./managehome')
             }
-            else{
+            else {
               alert("账号或密码错误")
             }
           })
+      },
+      waiterloginClick() {
+        this.$router.push('/waiterlogin');
       },
       VIP() {
         this.$router.push('./managehome')
@@ -78,6 +77,10 @@
     margin: 100px auto;
     border:1px solid #DCDFE6;
     padding: 20px;
+    position: absolute;
+    left: 50%;
+    top:40%;
+    transform: translate(-50%,-50%);
     border-radius: 8px;
     box-shadow: 0 0 30px #DCDFE6;
   }

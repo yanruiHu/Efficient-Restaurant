@@ -5,15 +5,16 @@
       <el-container>
         <el-aside width="200px">
           <el-tabs :tab-position="tabPosition" style="height: 200px;" @tab-click="tabEvent">
-            <el-tab-pane label="员工管理">员工管理</el-tab-pane>
+            <el-tab-pane label="员工管理"></el-tab-pane>
             <el-tab-pane label="餐厅界面设置" @click="interfaceSettings">
             </el-tab-pane>
-            <el-tab-pane label="菜品设置" @click='setupMenu'>菜品设置</el-tab-pane>
-            <el-tab-pane label="个人信息" @click='personalInformation'>个人信息</el-tab-pane>
+            <el-tab-pane label="菜品设置" @click='setupMenu'></el-tab-pane>
+            <el-tab-pane label="个人信息" @click='personalInformation'></el-tab-pane>
           </el-tabs>
         </el-aside>
         <el-main>
-          <router-view></router-view>
+          <StaffList v-if="choice==='stafflist'" :staffData=staffData></StaffList>
+          <FloorPlanBar v-else></FloorPlanBar>
         </el-main>
       </el-container>
     </el-container>
@@ -23,25 +24,56 @@
 </template>
 
 <script>
+import StaffList from "./StaffList.vue"
+import FloorPlanBar from "../../components/FloorPlanBar.vue";
+
   export default {
     name: 'ManageHome',
     data() {
       return {
-        tabPosition: 'left'
+        tabPosition: 'left',
+        db: null,
+        choice: 'stafflist',
+        staffData: [
+          {
+            position: null,
+            name:null,
+            right:false
+          }
+        ]
       }
+    },
+    components: {
+      StaffList,
+      FloorPlanBar
+    },
+    props: {
+      restaurant: String,
+    },
+    async mounted() {
+      this.db = this.$app.database()
+      await this.db.collection("staff")
+        .where({
+          restaurant: '1'
+        })
+        .get()
+        .then((res) =>{
+          console.log(res)
+          this.staffData = res.data
+        })
     },
     methods: {
       employeeManagement() {
-        this.$router.push('/waiterlist')
+        this.choice='stafflist'
       },
       interfaceSettings() {
-        this.$router.push('/floorplanbar')
+        this.choice='floorplanbar'
       },
       setupMenu() {
-        this.$router.push('/waiterlist')
+        this.choice='stafflist'
       },
       personalInformation() {
-        this.$router.push('/waiterlist')
+        this.choice='stafflist'
       },
       tabEvent(tab){
         if(tab.label==="员工管理"){

@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>
+      <el-button @click="manageloginClick">管理员登录</el-button>
       <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以员工身份进入(仅供开发人员测试)</el-button>
     </div>
     <div>
@@ -55,6 +56,9 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
+      manageloginClick() {
+        this.$router.push('/managelogin');
+      },
       VIP() {
         this.$router.push('./mainpage')
       }
@@ -63,15 +67,20 @@
 </script>
 
 <style scoped>
-  .login-box{
+  .login-box {
     width: 250px;
     margin: 100px auto;
-    border:1px solid #DCDFE6;
+    border: 1px solid #DCDFE6;
     padding: 20px;
+    position: absolute;
+    left: 50%;
+    top:40%;
+    transform: translate(-50%,-50%);
     border-radius: 8px;
     box-shadow: 0 0 30px #DCDFE6;
   }
-  .login-title{
+
+  .login-title {
     text-align: center;
   }
 </style>
