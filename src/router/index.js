@@ -10,6 +10,7 @@ import FloorPlanBar from "../components/FloorPlanBar.vue";
 import MainPage from "../components/MainPage.vue";
 import ManageHome from "../views/manage/ManageHome.vue";
 import StaffList from "../views/manage/StaffList.vue";
+import WaiterHome from "../views/waiter/WaiterHome.vue";
 
 
 Vue.use(VueRouter);
@@ -56,6 +57,10 @@ const routes = [
         component: StaffList
       }
     ]
+  },
+  {
+    path: '/waiterhome',
+    component: WaiterHome
   }
 ]
 

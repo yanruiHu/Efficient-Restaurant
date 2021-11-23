@@ -32,9 +32,6 @@
         db: null,
       }
     },
-    props: {
-      restaurant: String,
-    },
     methods: {
       toRegister() {
         this.$router.push('/manageregister')
@@ -47,10 +44,8 @@
           })
           .get()
           .then((res) => {
-            console.log(res)
             if (res.data.length == 1) {
-              console.log(res.data[0].pany)
-              this.restaurant = res.data.pany
+              localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant));
               this.$router.push('./managehome')
             }
             else {
@@ -72,19 +67,20 @@
 </script>
 
 <style scoped>
-  .login-box{
+  .login-box {
     width: 250px;
     margin: 100px auto;
-    border:1px solid #DCDFE6;
+    border: 1px solid #DCDFE6;
     padding: 20px;
     position: absolute;
     left: 50%;
-    top:40%;
-    transform: translate(-50%,-50%);
+    top: 40%;
+    transform: translate(-50%, -50%);
     border-radius: 8px;
     box-shadow: 0 0 30px #DCDFE6;
   }
-  .login-title{
+
+  .login-title {
     text-align: center;
   }
 </style>

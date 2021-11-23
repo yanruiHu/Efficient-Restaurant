@@ -40,25 +40,23 @@ import FloorPlanBar from "../../components/FloorPlanBar.vue";
             name:null,
             right:false
           }
-        ]
+        ],
+        restaurant: null
       }
     },
     components: {
       StaffList,
       FloorPlanBar
     },
-    props: {
-      restaurant: String,
-    },
     async mounted() {
+      this.restaurant = JSON.parse(localStorage.getItem("restaurant"))
       this.db = this.$app.database()
       await this.db.collection("staff")
         .where({
-          restaurant: '1'
+          restaurant: this.restaurant
         })
         .get()
         .then((res) =>{
-          console.log(res)
           this.staffData = res.data
         })
     },
