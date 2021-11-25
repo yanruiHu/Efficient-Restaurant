@@ -45,7 +45,9 @@
           .get()
           .then((res) => {
             if (res.data.length == 1) {
-              localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant));
+              localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant))
+              localStorage.setItem('account', JSON.stringify(res.data[0].account))
+              localStorage.setItem('address', JSON.stringify(res.data[0].address))
               this.$router.push('./managehome')
             }
             else {
@@ -62,6 +64,7 @@
     },
     mounted() {
       this.db = this.$app.database();
+      localStorage.clear()
     },
   }
 </script>
