@@ -104,7 +104,7 @@
         }
         this.db.collection("staff")
           .add({
-            restaurant: "1",
+            restaurant: this.restaurant,
             account: this.newAccount,
             password: this.newPassword,
             phone: this.newPhone,
@@ -115,7 +115,7 @@
             this.$message("创建员工成功！")
             this.viewAddBox = false
           })
-          location.reload()
+        location.reload()
       },
       handleClose(done) {
         this.$confirm('确认关闭？')

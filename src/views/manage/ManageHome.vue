@@ -3,8 +3,8 @@
     <el-container>
       <!-- <el-header>Header</el-header> -->
       <el-container>
-        <el-aside width="200px">
-          <el-tabs :tab-position="tabPosition" style="height: 200px;" @tab-click="tabEvent">
+        <el-aside width="150px">
+          <el-tabs :tab-position="tabPosition" style="height: 750px;" @tab-click="tabEvent">
             <el-tab-pane label="员工管理"></el-tab-pane>
             <el-tab-pane label="餐厅界面设置" @click="interfaceSettings">
             </el-tab-pane>
@@ -13,7 +13,9 @@
           </el-tabs>
         </el-aside>
         <el-main>
-          <StaffList v-if="choice==='stafflist'" :staffData=staffData></StaffList>
+          <StaffList v-if="choice==='stafflist'" :staffData=staffData :restaurant=restaurant></StaffList>
+          <MenuList v-else-if="choice==='menulist'" :restaurant=restaurant></MenuList>
+          <ManageInfo v-else-if="choice==='manageinfo'" :restaurant=restaurant></ManageInfo>
           <FloorPlanBar v-else></FloorPlanBar>
         </el-main>
       </el-container>
@@ -24,8 +26,10 @@
 </template>
 
 <script>
-import StaffList from "./StaffList.vue"
+import StaffList from "./StaffList.vue";
 import FloorPlanBar from "../../components/FloorPlanBar.vue";
+import MenuList from "./MenuList.vue";
+import ManageInfo from "./ManageInfo.vue";
 
   export default {
     name: 'ManageHome',
@@ -46,7 +50,9 @@ import FloorPlanBar from "../../components/FloorPlanBar.vue";
     },
     components: {
       StaffList,
-      FloorPlanBar
+      FloorPlanBar,
+      MenuList,
+      ManageInfo
     },
     async mounted() {
       this.restaurant = JSON.parse(localStorage.getItem("restaurant"))
@@ -68,10 +74,10 @@ import FloorPlanBar from "../../components/FloorPlanBar.vue";
         this.choice='floorplanbar'
       },
       setupMenu() {
-        this.choice='stafflist'
+        this.choice='menulist'
       },
       personalInformation() {
-        this.choice='stafflist'
+        this.choice='manageinfo'
       },
       tabEvent(tab){
         if(tab.label==="员工管理"){
