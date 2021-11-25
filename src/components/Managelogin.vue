@@ -44,6 +44,7 @@
           })
           .get()
           .then((res) => {
+            console.log(res)
             if (res.data.length == 1) {
               localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant))
               localStorage.setItem('account', JSON.stringify(res.data[0].account))
@@ -64,7 +65,7 @@
     },
     mounted() {
       this.db = this.$app.database();
-      localStorage.clear()
+      // localStorage.clear()
     },
   }
 </script>

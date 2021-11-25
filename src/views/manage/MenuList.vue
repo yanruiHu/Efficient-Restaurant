@@ -102,6 +102,7 @@
         .get()
         .then((res) => {
           console.log(res.data)
+          console.log(res.data[0].image)
           this.menu = res.data
         })
     },

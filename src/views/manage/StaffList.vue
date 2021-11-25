@@ -94,7 +94,7 @@
           })
           .get()
           .then((res) => {
-            if(res.data.length!==0){
+            if(res.data.length!=0){
               this.$message("该账号已注册过")
               isAccountExist = true
             }
