@@ -29,7 +29,7 @@
     },
     async mounted() {
       if(localStorage.getItem("head")!==null){
-        this.head =await JSON.parse(localStorage.getItem("head"))
+        this.head = await JSON.parse(localStorage.getItem("head"))
       } 
       if(localStorage.getItem("address")!==null){
         this.address = await JSON.parse(localStorage.getItem("address"))

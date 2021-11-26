@@ -4,14 +4,15 @@ import Vue from "vue";
 
 import Welcome from "../components/Welcome.vue";
 import ManageLogin from "../components/Managelogin.vue";
-import WaiterLogin from "../components/Waiterlogin.vue";
+import StaffLogin from "../components/Stafflogin.vue";
 import Manageregister from "../components/Manageregister.vue";
 import FloorPlanBar from "../components/FloorPlanBar.vue";
 import MainPage from "../components/MainPage.vue";
 import ManageHome from "../views/manage/ManageHome.vue";
 import StaffList from "../views/manage/StaffList.vue";
 import WaiterHome from "../views/waiter/WaiterHome.vue";
-import MenuList from "../views/manage/MenuList.vue"
+import MenuList from "../views/manage/MenuList.vue";
+import Table from "../components/Table.vue";
 
 
 Vue.use(VueRouter);
@@ -26,8 +27,8 @@ const routes = [
     component: ManageLogin
   },
   {
-    path: '/waiterlogin',
-    component: WaiterLogin
+    path: '/stafflogin',
+    component: StaffLogin
   },
   {
     path: '/manageregister',
@@ -66,7 +67,11 @@ const routes = [
   {
     path: '/menulist',
     component: MenuList
-  }
+  },
+  {
+    path: '/Table',
+    component: Table
+  },
 ]
 
 const router = new VueRouter({
