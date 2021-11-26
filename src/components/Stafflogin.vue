@@ -5,8 +5,8 @@
       <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以员工身份进入(仅供开发人员测试)</el-button>
     </div>
     <div>
-      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" class="login-box">
-        <h3 class="login-title">服务员登录</h3>
+      <el-form class="login-box">
+        <h3 class="login-title">员工登录</h3>
         <el-form-item label="账号" prop="name">
           <el-input type="text" placeholder="请输入用户名" v-model="account"></el-input>
         </el-form-item>
@@ -14,8 +14,7 @@
           <el-input type="password" placeholder="请输入密码" v-model="password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="primary" @click="Login">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -24,7 +23,7 @@
 
 <script>
   export default {
-    name: 'WaiterLogin',
+    name: 'StaffLogin',
     data() {
       return {
         account: null,
@@ -32,26 +31,48 @@
       }
     },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.$router.push('/floorplanbar')
-            alert('submit!')
-          } else {
-            this.$message.error('用户名或密码错误')
-            return false
-          }
-        });
+      // submitForm(formName) {
+      //   this.$refs[formName].validate((valid) => {
+      //     if (valid) {
+      //       this.$router.push('/floorplanbar')
+      //       alert('submit!')
+      //     } else {
+      //       this.$message.error('用户名或密码错误')
+      //       return false
+      //     }
+      //   });
+      // },
+      Login(){
+        this.db.collection("staff")
+          .where({
+            account: this.account,
+            password: this.password,
+          })
+          .get()
+          .then((res) => {
+            if (res.data.length == 1) {
+              localStorage.setItem('account', JSON.stringify(res.data[0].account))
+              localStorage.setItem('position', JSON.stringify(res.data[0].position))
+              this.$router.push('./mainpage')
+            }
+            else {
+              alert("账号或密码错误")
+            }
+          })
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
+      // resetForm(formName) {
+      //   this.$refs[formName].resetFields();
+      // },
       manageloginClick() {
         this.$router.push('/managelogin');
       },
       VIP() {
         this.$router.push('./mainpage')
       }
+    },
+    mounted() {
+      this.db = this.$app.database()
+      // localStorage.clear()
     }
   }
 </script>
@@ -71,6 +92,9 @@
   }
 
   .login-title {
+    text-align: center;
+  }
+  .el-form-item {
     text-align: center;
   }
 </style>

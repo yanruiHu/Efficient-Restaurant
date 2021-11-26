@@ -2,7 +2,7 @@
   <div>
     <header>
       <el-button @click="manageloginClick">管理员登录</el-button>
-      <el-button @click="waiterloginClick">服务员登录</el-button>
+      <el-button @click="waiterloginClick">员工登录</el-button>
     </header>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
       this.$router.push('/managelogin');
     },
     waiterloginClick() {
-      this.$router.push('/waiterlogin');
+      this.$router.push('/stafflogin');
     }
   },
 }

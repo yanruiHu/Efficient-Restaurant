@@ -1,6 +1,6 @@
 <template>
-  <el-tabs @tab-click="setData">
-    <el-tab-pane label="前台" name="host">
+  <el-tabs :value="position">
+    <el-tab-pane label="前台" name="host" v-if="position==='host'||position==='manager'">
       <el-container>
         <el-main>
           <FloorPlan :currentData="data"></FloorPlan>
@@ -10,7 +10,7 @@
         </el-aside>
       </el-container>
     </el-tab-pane>
-    <el-tab-pane label="服务员" name="waiter">
+    <el-tab-pane label="服务员" name="waiter" v-if="position==='waiter'||position==='manager'">
       <el-container>
         <el-main>
           <FloorPlan :currentData="data"></FloorPlan>
@@ -21,7 +21,7 @@
         </el-aside>
       </el-container>
     </el-tab-pane>
-    <el-tab-pane label="清洁员" name="busboy">
+    <el-tab-pane label="清洁员" name="busboy" v-if="position==='busboy'||position==='manager'">
       <el-container>
         <el-main>
           <FloorPlan :currentData="data"></FloorPlan>
@@ -31,7 +31,7 @@
         </el-aside>
       </el-container>
     </el-tab-pane>
-    <el-tab-pane label="经理" name="manager">
+    <el-tab-pane label="经理" name="manager" v-if="position==='manager'">
       <el-container>
         <el-main>
           <FloorPlan :currentData="data"></FloorPlan>
@@ -57,21 +57,29 @@ export default {
   data() {
     return {
       db: '',
-      data: ['', '', '']
+      data: ['', '', ''],
+      position: '',
     }
   },
   methods: {
-    setData(tab){
+    setData(position){
       this.db.collection("floorplan")
         .get()
         .then((res)=>{
-          this.data.splice(0, 3, tab.name, res.data[0].row, res.data[0].column)
+          this.data.splice(0, 3, position, res.data[0].row, res.data[0].column)
         })
     }
   },
   mounted() {
     this.db = this.$app.database()
+    this.position = JSON.parse(localStorage.getItem('position'))
+    this.setData(this.position)
   }
 }
-
 </script>
+
+<style scoped>
+  .el-aside {
+    width: 100px !important;
+  }
+</style>

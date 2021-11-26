@@ -48,6 +48,7 @@
               localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant))
               localStorage.setItem('account', JSON.stringify(res.data[0].account))
               localStorage.setItem('address', JSON.stringify(res.data[0].address))
+              localStorage.setItem('position', JSON.stringify('manager'))
               this.$router.push('./managehome')
             }
             else {
@@ -56,7 +57,7 @@
           })
       },
       waiterloginClick() {
-        this.$router.push('/waiterlogin');
+        this.$router.push('/stafflogin');
       },
       VIP() {
         this.$router.push('./managehome')
@@ -64,7 +65,7 @@
     },
     mounted() {
       this.db = this.$app.database();
-      localStorage.clear()
+      // localStorage.clear()
     },
   }
 </script>
