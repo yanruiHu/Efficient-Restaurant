@@ -53,6 +53,7 @@
             if (res.data.length == 1) {
               localStorage.setItem('account', JSON.stringify(res.data[0].account))
               localStorage.setItem('position', JSON.stringify(res.data[0].position))
+              localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant))
               this.$router.push('./mainpage')
             }
             else {

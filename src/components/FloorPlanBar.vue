@@ -1,27 +1,27 @@
 <template>
   <el-tabs :value="position">
-    <el-tab-pane label="前台" name="host" v-if="position==='host'||position==='manager'">
+    <el-tab-pane label="前台" name="host" v-if="position==='host'">
       <el-container>
         <el-main>
           <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
         <el-aside>
-          <div>绿：空闲</div>
+          <div>灰：空闲</div>
         </el-aside>
       </el-container>
     </el-tab-pane>
-    <el-tab-pane label="服务员" name="waiter" v-if="position==='waiter'||position==='manager'">
+    <el-tab-pane label="服务员" name="waiter" v-if="position==='waiter'">
       <el-container>
         <el-main>
           <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
         <el-aside>
-          <div>绿：空闲</div>
-          <div>红：忙碌</div>
+          <div>灰：空闲</div>
+          <div>蓝：忙碌</div>
         </el-aside>
       </el-container>
     </el-tab-pane>
-    <el-tab-pane label="清洁员" name="busboy" v-if="position==='busboy'||position==='manager'">
+    <el-tab-pane label="清洁员" name="busboy" v-if="position==='busboy'">
       <el-container>
         <el-main>
           <FloorPlan :currentData="data"></FloorPlan>
@@ -37,8 +37,8 @@
           <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
         <el-aside>
-          <div>绿：空闲</div>
-          <div>红：忙碌</div>
+          <div>灰：空闲</div>
+          <div>蓝：忙碌</div>
           <div>黄：待清洁</div>
         </el-aside>
       </el-container>
