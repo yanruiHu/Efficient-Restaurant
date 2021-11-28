@@ -107,7 +107,7 @@
           return
         }
         if (this.newPassword.length < 8 || this.newPassword.length > 16) {
-          this.$message("账号必须为八到十六位")
+          this.$message("密码必须为八到十六位")
           return
         }
         if (this.newName == null || this.newPosition == null || this.newPhone == null) {

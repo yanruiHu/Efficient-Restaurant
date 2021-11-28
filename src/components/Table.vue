@@ -73,6 +73,7 @@ export default {
   methods: {
     async markBegin() {
       this.state = 'primary'
+      this.plain = false
       await this.db.collection('table')
         .where({
           restaurant: this.restaurant,
@@ -89,9 +90,11 @@ export default {
             type: 'success'
           })
         })
+      this.showInfo = false
     },
     async markEnd() {
       this.state = 'warning'
+      this.plain = false
       await this.db.collection('table')
         .where({
           restaurant: this.restaurant,
@@ -107,7 +110,7 @@ export default {
             type: 'success'
           })
         })
-      location.reload()
+      this.showInfo = false
     },
     async markCleaned() {
       this.state = 'info'
@@ -125,7 +128,7 @@ export default {
             type: 'success'
           })
         })
-      location.reload()
+      this.showInfo = false
     },
     async goServe() {
       

@@ -69,7 +69,7 @@ export default {
             state: 'info'
         })
       }
-      location.reload()
+      //location.reload()
     },
   },
   mounted() {
