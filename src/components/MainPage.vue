@@ -7,11 +7,14 @@
             <i class="el-icon-user-solid"></i>
             <span slot="title">个人信息</span>
           </template>
+          <el-menu-item-group title="姓名">
+            <el-menu-item index="1-1">{{ name }}</el-menu-item>
+          </el-menu-item-group>
           <el-menu-item-group title="工号">
-            <el-menu-item index="1-1">{{ id }}</el-menu-item>
+            <el-menu-item index="1-2">{{ id }}</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group title="职位">
-            <el-menu-item index="1-2">{{ position }}</el-menu-item>
+            <el-menu-item index="1-3">{{ position }}</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-menu-item index="2" v-if="position!=='cooker'" @click="toFloorPlanBar">
@@ -40,6 +43,7 @@
     name: 'MainPage',
     data() {
       return {
+        name: '',
         id: '',
         db: '',
         timer: '',
@@ -72,9 +76,10 @@
     },
     async mounted() {
       this.db = this.$app.database()
-      this.timer = setInterval(this.toNewTask, 3000)
+      // this.timer = setInterval(this.toNewTask, 3000)
       this.id = JSON.parse(localStorage.getItem('account'))
       this.position = JSON.parse(localStorage.getItem('position'))
+      this.name = JSON.parse(localStorage.getItem('name'))
     },
     beforeDestroy() {
       clearInterval(this.timer)
@@ -85,7 +90,7 @@
 <style scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
-    min-height: 400px;
+    min-height: 500px;
   }
   .el-aside {
     width: 210px !important;

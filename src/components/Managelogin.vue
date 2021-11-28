@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>
-      <el-button @click="waiterloginClick">服务员登录</el-button>
+    <div class="vip">
+      <el-button @click="waiterloginClick">员工登录</el-button>
       <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以管理员身份进入(仅供开发人员测试)</el-button>
     </div>
     <div>
@@ -86,8 +86,13 @@
     border-radius: 8px;
     box-shadow: 0 0 30px #DCDFE6;
   }
-
   .login-title {
+    text-align: center;
+  }
+  .vip {
+    text-align: center;
+  }
+  .el-form-item {
     text-align: center;
   }
 </style>

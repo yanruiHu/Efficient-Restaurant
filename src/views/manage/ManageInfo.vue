@@ -40,9 +40,6 @@
     methods: {
       toManageLogin() {
         this.dialogVisible = false
-        this.$router.push("/managelogin")
-      },
-      logOut(){
         this.$router.push('/')
         localStorage.clear()
         location.reload()

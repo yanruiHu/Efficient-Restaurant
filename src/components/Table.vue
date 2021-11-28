@@ -147,5 +147,6 @@ export default {
     height: 60px;
     border-color: dimgray;
     border-width: 1.5px;
+    font-size: 18px;
   }
 </style>
