@@ -27,13 +27,10 @@
             </el-table-column>
             <el-table-column prop="phone" label="电话">
             </el-table-column>
-            <!-- <el-table-column prop="right" label="操作" v-if="viewDelButton == true">
-              <el-button class="delete-button" type="danger" size="mini" icon="el-icon-delete"></el-button>
-            </el-table-column> -->
-            <el-table-column fixed="right" label="操作" width="120">
+            <el-table-column fixed="right" label="操作" width="120" v-if="viewDelButton == true">
               <template slot-scope="scope">
-                <el-button @click.native.prevent="deleteStaff(scope.$index, staffData)" type="text" size="small">
-                  移除
+                <el-button @click.native.prevent="deleteStaff(scope.$index, staffData)" icon="el-icon-delete"
+                  type="danger" size="mini">
                 </el-button>
               </template>
             </el-table-column>
@@ -41,6 +38,7 @@
         </el-main>
       </el-container>
     </div>
+
     <div>
 
       <el-dialog title="请输入员工信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose">
@@ -62,6 +60,7 @@
               <el-option label="服务员" value="waiter"></el-option>
               <el-option label="厨师" value="cooker"></el-option>
               <el-option label="清洁工" value="busboy"></el-option>
+              <el-option label="前台" value="host"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -150,6 +149,31 @@
             done();
           })
           .catch(() => { });
+      },
+      async deleteStaff(index, data) {
+        await this.$confirm('此操作将永久删除' + data[index].name + '用户，是否继续?', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.db.collection("staff")
+            .where({
+              account: data[index].account
+            })
+            .remove()
+            .then(() => {
+              this.$message({
+                type:'success',
+                message:"删除成功！"
+              })
+            });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+        location.reload()
       }
     },
   }
