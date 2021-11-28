@@ -1,21 +1,47 @@
 <template>
   <div>
     <div>
-      <el-table :data="staffData" style="width: 100%">
-        <el-table-column prop="position" label="职位" width="180">
-        </el-table-column>
-        <el-table-column prop="account" label="账号" width="180">
-        </el-table-column>
-        <el-table-column prop="name" label="姓名" width="180">
-        </el-table-column>
-        <el-table-column prop="phone" label="电话">
-        </el-table-column>
-        <el-table-column prop="right" label="权限">
-        </el-table-column>
-      </el-table>
+      <el-container>
+        <el-header style="text-align: right; font-size: 12px">
+          <el-dropdown>
+            <el-button v-if="viewDelButton==false">修改</el-button>
+            <el-button v-if="viewDelButton==true" @click="viewDelButton=false">完成修改</el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <el-button style="border: 0;" @click="viewAddBox = true">添加员工</el-button>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-button style="border: 0;" @click="viewDelButton = true">删除员工</el-button>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-header>
+
+        <el-main>
+          <el-table :data="staffData" style="width: 100%">
+            <el-table-column prop="position" label="职位" width="150">
+            </el-table-column>
+            <el-table-column prop="account" label="账号" width="150">
+            </el-table-column>
+            <el-table-column prop="name" label="姓名" width="150">
+            </el-table-column>
+            <el-table-column prop="phone" label="电话">
+            </el-table-column>
+            <!-- <el-table-column prop="right" label="操作" v-if="viewDelButton == true">
+              <el-button class="delete-button" type="danger" size="mini" icon="el-icon-delete"></el-button>
+            </el-table-column> -->
+            <el-table-column fixed="right" label="操作" width="120">
+              <template slot-scope="scope">
+                <el-button @click.native.prevent="deleteStaff(scope.$index, staffData)" type="text" size="small">
+                  移除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-main>
+      </el-container>
     </div>
     <div>
-      <el-button @click="viewAddBox = true">添加员工</el-button>
 
       <el-dialog title="请输入员工信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose">
         <el-form>
@@ -60,6 +86,7 @@
       return {
         db: null,
         viewAddBox: false,
+        viewDelButton: false,
         newAccount: null,
         newName: null,
         newPassword: null,
@@ -72,11 +99,11 @@
     },
     methods: {
       async addStaff() {
-        if(this.newAccount==null){
+        if (this.newAccount == null) {
           this.$message("账号不能为空")
           return
         }
-        if(this.newAccount.length<8||this.newAccount.length>12){
+        if (this.newAccount.length < 8 || this.newAccount.length > 12) {
           this.$message("账号必须为八到十二位")
           return
         }
@@ -84,7 +111,7 @@
           this.$message("密码必须为八到十六位")
           return
         }
-        if(this.newName==null||this.newPosition==null||this.newPhone==null){
+        if (this.newName == null || this.newPosition == null || this.newPhone == null) {
           this.$message("员工基本信息必须填完")
           return
         }
@@ -95,12 +122,12 @@
           })
           .get()
           .then((res) => {
-            if(res.data.length!==0){
+            if (res.data.length != 0) {
               this.$message("该账号已注册过")
               isAccountExist = true
             }
           })
-        if(isAccountExist){
+        if (isAccountExist) {
           return
         }
         this.db.collection("staff")

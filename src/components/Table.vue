@@ -103,6 +103,7 @@ export default {
           this.showInfo = false
           this.$message.success('标记成功！')
         })
+      location.reload()
     },
     async markCleaned() {
       this.state = 'info'
@@ -118,6 +119,7 @@ export default {
           this.showInfo = false
           this.$message.success('标记成功！')
         })
+      location.reload()
     },
     async goServe() {
 

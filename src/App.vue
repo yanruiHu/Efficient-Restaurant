@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='app'>
     <header>
       <h2>欢迎来到餐厅管理系统</h2>
     </header>
