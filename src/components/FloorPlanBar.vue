@@ -6,7 +6,7 @@
           <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
         <el-aside>
-          <div>灰：空闲</div>
+          <span class="demo-free">空闲</span>
         </el-aside>
       </el-container>
     </el-tab-pane>
@@ -16,8 +16,8 @@
           <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
         <el-aside>
-          <div>灰：空闲</div>
-          <div>蓝：忙碌</div>
+          <span class="demo-free">空闲</span>
+          <span class="demo-busy">忙碌</span>
         </el-aside>
       </el-container>
     </el-tab-pane>
@@ -27,7 +27,7 @@
           <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
         <el-aside>
-          <div>黄：待清洁</div>
+          <span class="demo-clean">待清洁</span>
         </el-aside>
       </el-container>
     </el-tab-pane>
@@ -37,9 +37,9 @@
           <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
         <el-aside>
-          <div>灰：空闲</div>
-          <div>蓝：忙碌</div>
-          <div>黄：待清洁</div>
+          <span class="demo-free">空闲</span>
+          <span class="demo-busy">忙碌</span>
+          <span class="demo-clean">待清洁</span>
         </el-aside>
       </el-container>
     </el-tab-pane>
@@ -80,6 +80,31 @@ export default {
 
 <style scoped>
   .el-aside {
-    width: 100px !important;
+    display: flex;
+    flex-flow: column;
+    width: 110px !important;
+  }
+  .demo-free {
+    width: 60px;
+    height: 60px;
+    background-color: #f4f4f5;
+  }
+  .demo-busy {
+    width: 60px;
+    height: 60px;
+    background-color: #409EFF;
+  }
+  .demo-clean {
+    width: 60px;
+    height: 60px;
+    background-color: #E6A23C;
+  }
+  span {
+    border: 1.5px solid dimgray;
+    border-radius: 20px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 60px;
+    margin: 45px auto 0;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button id="button-table" :type="state" round
+    <el-button id="button-table" :type="state" round :plain="plain"
     @click="showInfo=true">{{ tableId }}
     </el-button>
     <el-dialog title="餐桌状态" :visible.sync="showInfo" width="30%" center>
@@ -19,13 +19,17 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button id="button-order" type="primary" plain
-        v-if="position==='waiter'">前往服务</el-button>
+        v-if="position==='host'" @click="markBegin">标记用餐</el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='host'" @click="markTable">标记用餐</el-button>
+        v-if="position==='waiter'" @click="goServe">前往服务</el-button>
         <el-button id="button-order" type="primary" plain
         v-if="position==='waiter'">点餐</el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='busboy'">前往清理</el-button>
+        v-if="position==='waiter'" @click="markEnd">标记结束</el-button>
+        <el-button id="button-order" type="primary" plain
+        v-if="position==='busboy'" @click="goClean">前往清理</el-button>
+        <el-button id="button-order" type="primary" plain
+        v-if="position==='busboy'" @click="markCleaned">清理完毕</el-button>
       </span>
     </el-dialog>
   </div>
@@ -40,7 +44,8 @@ export default {
       db: '',
       beginTime: '',
       number: '',
-      state: ''
+      state: '',
+      plain: false
     }
   },
   props: {
@@ -60,12 +65,15 @@ export default {
         this.state = res.data[0].state
         this.number = res.data[0].number
         this.beginTime = res.data[0].begin_time
+        if(this.state=='info') {
+          this.plain = true
+        }
       })
   },
   methods: {
-    async markTable() {
+    async markBegin() {
       this.state = 'primary'
-      this.db.collection('table')
+      await this.db.collection('table')
         .where({
           restaurant: this.restaurant,
           table_id: this.tableId
@@ -78,6 +86,41 @@ export default {
         .then(()=>{
           this.$message('标记成功！')
         })
+    },
+    async markEnd() {
+      this.state = 'warning'
+      await this.db.collection('table')
+        .where({
+          restaurant: this.restaurant,
+          table_id: this.tableId
+        })
+        .update({
+          state: this.state,
+          end_time: (new Date()).toLocaleTimeString()
+        })
+        .then(()=>{
+          this.$message('标记成功！')
+        })
+    },
+    async markCleaned() {
+      this.state = 'info'
+      await this.db.collection('table')
+        .where({
+          restaurant: this.restaurant,
+          table_id: this.tableId
+        })
+        .update({
+          state: this.state,
+        })
+        .then(()=>{
+          this.$message('标记成功！')
+        })
+    },
+    async goServe() {
+
+    },
+    async goClean() {
+
     }
   }
 }
@@ -85,8 +128,11 @@ export default {
 
 <style scoped>
   #button-table {
+    padding: 0;
     width: 60px;
     height: 60px;
     align-items: center;
+    border-color: dimgray;
+    border-width: 1.5px;
   }
 </style>
