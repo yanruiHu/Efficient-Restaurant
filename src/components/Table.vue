@@ -107,6 +107,7 @@ export default {
             type: 'success'
           })
         })
+      location.reload()
     },
     async markCleaned() {
       this.state = 'info'
@@ -124,6 +125,7 @@ export default {
             type: 'success'
           })
         })
+      location.reload()
     },
     async goServe() {
       

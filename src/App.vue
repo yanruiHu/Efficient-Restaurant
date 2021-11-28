@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='app'>
     <header>
       <h2>欢迎来到餐厅管理系统</h2>
     </header>
@@ -16,11 +16,6 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin: 0;
 }
 </style>
