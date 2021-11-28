@@ -65,7 +65,7 @@ export default {
         this.state = res.data[0].state
         this.number = res.data[0].number
         this.beginTime = res.data[0].begin_time
-        if(this.state=='info') {
+        if(this.state==='info') {
           this.plain = true
         }
       })

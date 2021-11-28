@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside>
-      <el-menu default-active="1" class="el-menu-vertical-demo">
+      <el-menu :default-active="activeIndex" class="el-menu-vertical-demo">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-user-solid"></i>
@@ -14,7 +14,7 @@
             <el-menu-item index="1-2">{{ position }}</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item index="2" v-if="position!='cooker'" @click="toFloorPlanBar">
+        <el-menu-item index="2" v-if="position!=='cooker'" @click="toFloorPlanBar">
           <i class="el-icon-view"></i>
           <span slot="title">餐桌平面图</span>
         </el-menu-item>
@@ -45,6 +45,7 @@
         timer: '',
         newTask: '',
         position: '',
+        activeIndex: '2',
       }
     },
     methods: {
@@ -52,7 +53,7 @@
         this.$router.push('/mainpage/floorplanbar')
       },
       toDishesList() {
-        
+
       },
       toNewTask() {
         this.db.collection('task')

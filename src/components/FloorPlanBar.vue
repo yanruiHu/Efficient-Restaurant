@@ -7,6 +7,8 @@
         </el-main>
         <el-aside>
           <span class="demo-free">空闲</span>
+          <span class="demo-busy">用餐中</span>
+          <span class="demo-clean">待清洁</span>
         </el-aside>
       </el-container>
     </el-tab-pane>
@@ -17,7 +19,8 @@
         </el-main>
         <el-aside>
           <span class="demo-free">空闲</span>
-          <span class="demo-busy">忙碌</span>
+          <span class="demo-busy">用餐中</span>
+          <span class="demo-clean">待清洁</span>
         </el-aside>
       </el-container>
     </el-tab-pane>
@@ -27,6 +30,8 @@
           <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
         <el-aside>
+          <span class="demo-free">空闲</span>
+          <span class="demo-busy">用餐中</span>
           <span class="demo-clean">待清洁</span>
         </el-aside>
       </el-container>
@@ -38,7 +43,7 @@
         </el-main>
         <el-aside>
           <span class="demo-free">空闲</span>
-          <span class="demo-busy">忙碌</span>
+          <span class="demo-busy">用餐中</span>
           <span class="demo-clean">待清洁</span>
         </el-aside>
       </el-container>
