@@ -69,6 +69,7 @@ export default {
             state: 'info'
         })
       }
+      location.reload()
     },
   },
   mounted() {

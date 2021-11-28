@@ -73,6 +73,7 @@ export default {
   methods: {
     async markBegin() {
       this.state = 'primary'
+      this.plain = false
       await this.db.collection('table')
         .where({
           restaurant: this.restaurant,
@@ -84,12 +85,16 @@ export default {
           begin_time: (new Date()).toLocaleTimeString()
         })
         .then(()=>{
-          this.showInfo = false
-          this.$message.success('标记成功！')
+          this.$message({
+            message: '标记成功！',
+            type: 'success'
+          })
         })
+      this.showInfo = false
     },
     async markEnd() {
       this.state = 'warning'
+      this.plain = false
       await this.db.collection('table')
         .where({
           restaurant: this.restaurant,
@@ -100,10 +105,12 @@ export default {
           end_time: (new Date()).toLocaleTimeString()
         })
         .then(()=>{
-          this.showInfo = false
-          this.$message.success('标记成功！')
+          this.$message({
+            message: '标记成功！',
+            type: 'success'
+          })
         })
-      location.reload()
+      this.showInfo = false
     },
     async markCleaned() {
       this.state = 'info'
@@ -116,13 +123,15 @@ export default {
           state: this.state,
         })
         .then(()=>{
-          this.showInfo = false
-          this.$message.success('标记成功！')
+          this.$message({
+            message: '标记成功！',
+            type: 'success'
+          })
         })
-      location.reload()
+      this.showInfo = false
     },
     async goServe() {
-
+      
     },
     async goClean() {
 
@@ -136,8 +145,8 @@ export default {
     padding: 0;
     width: 60px;
     height: 60px;
-    align-items: center;
     border-color: dimgray;
     border-width: 1.5px;
+    font-size: 18px;
   }
 </style>

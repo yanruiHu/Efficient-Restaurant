@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="vip">
       <el-button @click="manageloginClick">管理员登录</el-button>
       <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以员工身份进入(仅供开发人员测试)</el-button>
     </div>
@@ -31,17 +31,6 @@
       }
     },
     methods: {
-      // submitForm(formName) {
-      //   this.$refs[formName].validate((valid) => {
-      //     if (valid) {
-      //       this.$router.push('/floorplanbar')
-      //       alert('submit!')
-      //     } else {
-      //       this.$message.error('用户名或密码错误')
-      //       return false
-      //     }
-      //   });
-      // },
       Login(){
         this.db.collection("staff")
           .where({
@@ -50,10 +39,11 @@
           })
           .get()
           .then((res) => {
-            if (res.data.length == 1) {
+            if (res.data.length === 1) {
               localStorage.setItem('account', JSON.stringify(res.data[0].account))
               localStorage.setItem('position', JSON.stringify(res.data[0].position))
               localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant))
+              localStorage.setItem('name', JSON.stringify(res.data[0].name))
               this.$router.push('./mainpage')
             }
             else {
@@ -61,9 +51,6 @@
             }
           })
       },
-      // resetForm(formName) {
-      //   this.$refs[formName].resetFields();
-      // },
       manageloginClick() {
         this.$router.push('/managelogin');
       },
@@ -91,11 +78,13 @@
     border-radius: 8px;
     box-shadow: 0 0 30px #DCDFE6;
   }
-
   .login-title {
     text-align: center;
   }
   .el-form-item {
+    text-align: center;
+  }
+  .vip {
     text-align: center;
   }
 </style>
