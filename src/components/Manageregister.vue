@@ -25,6 +25,7 @@
 
         <el-form-item>
           <el-button type="primary" @click="Register">注册</el-button>
+          <el-button type="primary" @click="Back">返回</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -109,6 +110,9 @@
           .add({
             name: this.restaurant
           })
+      },
+      Back() {
+        this.$router.push("/managelogin")
       }
     },
     mounted() {
@@ -131,7 +135,7 @@
     border-radius: 8px;
     box-shadow: 0 0 30px #DCDFE6;
   }
-  
+
   .login-title{
     text-align: center;
   }

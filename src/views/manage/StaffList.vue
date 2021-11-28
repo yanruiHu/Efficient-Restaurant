@@ -57,6 +57,7 @@
           </el-form-item>
           <el-form-item label="员工职位">
             <el-select v-model="newPosition" placeholder="请选择员工职位">
+              <el-option label="前台" value="host"></el-option>
               <el-option label="服务员" value="waiter"></el-option>
               <el-option label="厨师" value="cooker"></el-option>
               <el-option label="清洁工" value="busboy"></el-option>
@@ -105,8 +106,8 @@
           this.$message("账号必须为八到十二位")
           return
         }
-        if (this.newPassword.length < 8 || this.newPassword.length > 16) {
-          this.$message("账号必须为八到十六位")
+        if(this.newPassword.length<8||this.newPassword.length>16){
+          this.$message("密码必须为八到十六位")
           return
         }
         if (this.newName == null || this.newPosition == null || this.newPhone == null) {
@@ -137,8 +138,8 @@
             name: this.newName,
             position: this.newPosition
           })
-          .then(() => {
-            this.$message("创建员工成功！")
+          .then(()=>{
+            this.$message.success("创建员工成功！")
             this.viewAddBox = false
           })
         location.reload()
@@ -180,13 +181,4 @@
 </script>
 
 <style>
-  .el-header {
-    background-color: #B3C0D1;
-    color: #333;
-    line-height: 60px;
-  }
-
-  .el-aside {
-    color: #333;
-  }
 </style>
