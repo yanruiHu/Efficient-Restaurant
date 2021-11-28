@@ -10,7 +10,7 @@
       <el-descriptions-item label="餐馆">{{restaurant}}</el-descriptions-item>
       <el-descriptions-item label="餐馆地址">{{address}}</el-descriptions-item>
     </el-descriptions>
-    <el-button>退出登录</el-button>
+    <el-button @click='logOut'>退出登录</el-button>
   </div>
 </template>
 
@@ -28,14 +28,18 @@
       restaurant: null
     },
     async mounted() {
-      if(localStorage.getItem("head")!==null){
-        this.head =await JSON.parse(localStorage.getItem("head"))
-      } 
-      if(localStorage.getItem("address")!==null){
-        this.address = await JSON.parse(localStorage.getItem("address"))
-      }
-      if(localStorage.getItem("account")!==null){
+      if(localStorage.getItem("account")!==null||localStorage.getItem("account")!==undefined){
         this.account = await JSON.parse(localStorage.getItem("account"))
+      }
+      // if(localStorage.getItem("head")!==null || localStorage.getItem("head")!==undefined){
+      //   this.head = await JSON.parse(localStorage.getItem("head"))
+      // } 
+    },
+    methods: {
+      logOut(){
+        this.$router.push('/')
+        localStorage.clear()
+        location.reload()
       }
     },
   }

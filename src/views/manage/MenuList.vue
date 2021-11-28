@@ -1,8 +1,6 @@
 <template>
   <div>
-    <el-divider></el-divider>
-    <div v-for="(item,index) in menu" :key="index">
-      <el-divider></el-divider>
+    <div class="dish-box" v-for="(item,index) in menu" :key="index">
       <el-container>
         <el-aside width="80px">
           <div class="demo-type">
@@ -20,19 +18,18 @@
           </el-descriptions>
         </el-main>
       </el-container>
-      <el-divider></el-divider>
     </div>
     <div>
       <el-button @click="viewAddBox = true">添加菜品</el-button>
       <el-dialog title="请输菜品信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose">
         <el-form>
-          <el-form-item label="展示图片">
+          <!-- <el-form-item label="展示图片">
             <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+              :show-file-list="false" :on-success="handleAvatarSuccess">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="菜名">
             <el-input v-model="newName" autocomplete="off"></el-input>
           </el-form-item>
@@ -70,8 +67,17 @@
         this.imageUrl = URL.createObjectURL(file.raw);
       },
       addDish() {
-        
-        return
+        this.db.collection("dish_list")
+          .add({
+            name: this.newName,
+            price: this.newPrice,
+            restaurant: this.restaurant
+          })
+          .then(()=>{
+            this.$message("添加菜品成功！")
+            this.viewAddBox=false
+            location.reload()
+          })
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -80,18 +86,6 @@
           })
           .catch(() => { });
       },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      }
     },
     async mounted() {
       this.db = await this.$app.database()
@@ -108,3 +102,9 @@
     },
   }
 </script>
+
+<style>
+  .dish-box {
+    margin: 0
+  }
+</style>

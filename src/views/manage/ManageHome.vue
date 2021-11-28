@@ -1,10 +1,9 @@
 <template>
   <div>
-    <el-container>
-      <!-- <el-header>Header</el-header> -->
+    <el-container style="height: 200%; border: 1px solid #eee">
       <el-container>
         <el-aside width="150px">
-          <el-tabs :tab-position="tabPosition" style="height: 750px;" @tab-click="tabEvent">
+          <el-tabs :tab-position="tabPosition" style="height: 600px;" @tab-click="tabEvent">
             <el-tab-pane label="员工管理"></el-tab-pane>
             <el-tab-pane label="餐厅界面设置" @click="interfaceSettings">
             </el-tab-pane>

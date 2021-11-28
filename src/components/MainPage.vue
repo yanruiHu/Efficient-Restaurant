@@ -1,24 +1,24 @@
 <template>
   <el-container>
     <el-aside>
-      <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+      <el-menu default-active="1" class="el-menu-vertical-demo">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-user-solid"></i>
             <span slot="title">个人信息</span>
           </template>
           <el-menu-item-group title="工号">
-            <el-menu-item index="1-1">{{id}}</el-menu-item>
+            <el-menu-item index="1-1">{{ id }}</el-menu-item>
           </el-menu-item-group>
-          <el-menu-item-group title="状态">
-            <el-menu-item index="1-3">工作中</el-menu-item>
+          <el-menu-item-group title="职位">
+            <el-menu-item index="1-2">{{ position }}</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item index="2" @click="toFloorPlanBar">
+        <el-menu-item index="2" v-if="position!='cooker'" @click="toFloorPlanBar">
           <i class="el-icon-view"></i>
           <span slot="title">餐桌平面图</span>
         </el-menu-item>
-        <el-menu-item index="3" @click="toDishesList">
+        <el-menu-item index="3" v-if="position==='cooker'" @click="toDishesList">
           <i class="el-icon-tickets"></i>
           <span slot="title">出菜分配表</span>
         </el-menu-item>
@@ -40,22 +40,14 @@
     name: 'MainPage',
     data() {
       return {
-        id: '12345678',
+        id: '',
         db: '',
         timer: '',
         newTask: '',
+        position: '',
       }
     },
-    props: {
-      staffId: String
-    },
     methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath)
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath)
-      },
       toFloorPlanBar() {
         this.$router.push('/mainpage/floorplanbar')
       },
@@ -77,9 +69,11 @@
           })
       }
     },
-    mounted() {
+    async mounted() {
       this.db = this.$app.database()
-      this.timer = setInterval(this.toNewTask, 3000)
+      // this.timer = setInterval(this.toNewTask, 3000)
+      this.id = JSON.parse(localStorage.getItem('account'))
+      this.position = JSON.parse(localStorage.getItem('position'))
     },
     beforeDestroy() {
       clearInterval(this.timer)
@@ -87,10 +81,12 @@
   }
 </script>
 
-<style>
+<style scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 180px;
+    width: 200px;
     min-height: 400px;
   }
-  
+  .el-aside {
+    width: 210px !important;
+  }
 </style>
