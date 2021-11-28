@@ -101,6 +101,7 @@ export default {
         .then(()=>{
           this.$message('标记成功！')
         })
+      location.reload()
     },
     async markCleaned() {
       this.state = 'info'
@@ -115,6 +116,7 @@ export default {
         .then(()=>{
           this.$message('标记成功！')
         })
+      location.reload()
     },
     async goServe() {
 
