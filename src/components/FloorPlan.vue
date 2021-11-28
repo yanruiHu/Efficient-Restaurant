@@ -1,11 +1,12 @@
 <template>
   <el-container direction="vertical">
     <el-main>
-      <el-row v-for="index in Number(row)" :key="index"
+      <el-row v-for="rowIndex in Number(row)" :key="rowIndex"
       type="flex" justify="space-between">
-        <el-col v-for="index in Number(column)" :key="index"
+        <el-col v-for="colIndex in Number(column)" :key="colIndex"
         :span="Math.floor(24/column)">
-          <Table :position="position"></Table>
+          <Table :restaurant="restaurant" :position="position"
+          :tableId="column*(rowIndex-1)+colIndex"></Table>
         </el-col>
       </el-row>
     </el-main>
@@ -34,6 +35,8 @@ export default {
     position: '',
     row: '',
     column: '',
+    id: 1,
+    restaurant: '',
    }
   },
   watch: {
@@ -47,16 +50,30 @@ export default {
     currentData: Array
   },
   methods: {
-    saveCurrentData() {
+    async saveCurrentData() {
       this.db.collection('floorplan')
         .update({
           row: this.row,
           column: this.column
         })
-    }
+      this.db.collection('table')
+        .where({
+          restaurant: this.db.command.eq(this.restaurant),
+        })
+        .remove()
+      for(var i=1;i<=this.row*this.column;i++){
+        await this.db.collection('table')
+          .add({
+            restaurant: this.restaurant,
+            table_id: i,
+            state: 'info'
+        })
+      }
+    },
   },
   mounted() {
     this.db = this.$app.database()
+    this.restaurant = JSON.parse(localStorage.getItem('restaurant'))
   }
 }
 </script>
@@ -66,7 +83,7 @@ export default {
     width: 100px !important;
   }
   .el-row {
-    height: 60px;
+    height: 70px;
   }
   .el-col {
     text-align: center;

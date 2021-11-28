@@ -87,6 +87,6 @@
     min-height: 400px;
   }
   .el-aside {
-    width: 220px !important;
+    width: 210px !important;
   }
 </style>

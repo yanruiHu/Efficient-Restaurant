@@ -1,18 +1,35 @@
 <template>
   <div>
-    <el-button id="button-table" type="info" round
-    @click="showInfo=true" plain>{{ id }}
+    <el-button id="button-table" :type="state" round :plain="plain"
+    @click="showInfo=true">{{ tableId }}
     </el-button>
     <el-dialog title="餐桌状态" :visible.sync="showInfo" width="30%" center>
       <el-descriptions title="客人信息" :column="1" border
-      v-if="position!='host'">
-        <el-descriptions-item label="落座时间" size="mini"> {{ Date() }} </el-descriptions-item>
+      v-if="position==='waiter'">
+        <el-descriptions-item label="落座时间" size="mini"> {{ beginTime }} </el-descriptions-item>
         <el-descriptions-item label="人数"> {{ number }} </el-descriptions-item>
       </el-descriptions>
+      <div v-if="position==='host'">
+        <span class="customer-info"></span>
+        <el-form :inline="true">
+          <el-form-item label="人数">
+            <el-input v-model="number"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button id="button-order" type="primary" plain>前往点餐</el-button>
-        <el-button id="button-order" type="primary" plain>标记用餐</el-button>
-        <el-button id="button-order" type="primary" plain>点餐</el-button>
+        <el-button id="button-order" type="primary" plain
+        v-if="position==='host'" @click="markBegin">标记用餐</el-button>
+        <el-button id="button-order" type="primary" plain
+        v-if="position==='waiter'" @click="goServe">前往服务</el-button>
+        <el-button id="button-order" type="primary" plain
+        v-if="position==='waiter'">点餐</el-button>
+        <el-button id="button-order" type="primary" plain
+        v-if="position==='waiter'" @click="markEnd">标记结束</el-button>
+        <el-button id="button-order" type="primary" plain
+        v-if="position==='busboy'" @click="goClean">前往清理</el-button>
+        <el-button id="button-order" type="primary" plain
+        v-if="position==='busboy'" @click="markCleaned">清理完毕</el-button>
       </span>
     </el-dialog>
   </div>
@@ -25,25 +42,97 @@ export default {
     return {
       showInfo: false,
       db: '',
-      id: 5,
-      number: '3',
+      beginTime: '',
+      number: '',
+      state: '',
+      plain: false
     }
   },
   props: {
-    position: String
+    tableId: Number,
+    restaurant: String,
+    position: String,
   },
   mounted() {
     this.db = this.$app.database()
+    this.db.collection('table')
+      .where({
+        restaurant: this.restaurant,
+        table_id: this.tableId
+      })
+      .get()
+      .then((res) => {
+        this.state = res.data[0].state
+        this.number = res.data[0].number
+        this.beginTime = res.data[0].begin_time
+        if(this.state=='info') {
+          this.plain = true
+        }
+      })
   },
   methods: {
-    
+    async markBegin() {
+      this.state = 'primary'
+      await this.db.collection('table')
+        .where({
+          restaurant: this.restaurant,
+          table_id: this.tableId
+        })
+        .update({
+          number: this.number,
+          state: this.state,
+          begin_time: (new Date()).toLocaleTimeString()
+        })
+        .then(()=>{
+          this.$message('标记成功！')
+        })
+    },
+    async markEnd() {
+      this.state = 'warning'
+      await this.db.collection('table')
+        .where({
+          restaurant: this.restaurant,
+          table_id: this.tableId
+        })
+        .update({
+          state: this.state,
+          end_time: (new Date()).toLocaleTimeString()
+        })
+        .then(()=>{
+          this.$message('标记成功！')
+        })
+    },
+    async markCleaned() {
+      this.state = 'info'
+      await this.db.collection('table')
+        .where({
+          restaurant: this.restaurant,
+          table_id: this.tableId
+        })
+        .update({
+          state: this.state,
+        })
+        .then(()=>{
+          this.$message('标记成功！')
+        })
+    },
+    async goServe() {
+
+    },
+    async goClean() {
+
+    }
   }
 }
 </script>
 
 <style scoped>
-  #button-table{
-    width: 50px;
-    height: 50px;
+  #button-table {
+    padding: 0;
+    width: 60px;
+    height: 60px;
+    align-items: center;
+    border-color: dimgray;
+    border-width: 1.5px;
   }
 </style>
