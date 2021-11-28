@@ -40,7 +40,9 @@
     methods: {
       toManageLogin() {
         this.dialogVisible = false
-        this.$router.push("/managelogin")
+        this.$router.push('/')
+        localStorage.clear()
+        location.reload()
       }
     },
     async mounted() {
@@ -50,13 +52,6 @@
       // if(localStorage.getItem("head")!==null || localStorage.getItem("head")!==undefined){
       //   this.head = await JSON.parse(localStorage.getItem("head"))
       // } 
-    },
-    methods: {
-      logOut(){
-        this.$router.push('/')
-        localStorage.clear()
-        location.reload()
-      }
     },
   }
 </script>
