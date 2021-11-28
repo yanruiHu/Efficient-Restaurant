@@ -10,7 +10,16 @@
       <el-descriptions-item label="餐馆">{{restaurant}}</el-descriptions-item>
       <el-descriptions-item label="餐馆地址">{{address}}</el-descriptions-item>
     </el-descriptions>
-    <el-button>退出登录</el-button>
+    <el-button type="danger" @click="dialogVisible = true">退出登录</el-button>
+    <el-dialog :visible.sync="dialogVisible">
+      <span>确定退出登录？</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="toManageLogin">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -21,16 +30,23 @@
       return {
         head: null,
         address: null,
-        account: null
+        account: null,
+        dialogVisible: false
       }
     },
     props: {
       restaurant: null
     },
+    methods: {
+      toManageLogin() {
+        this.dialogVisible = false
+        this.$router.push("/managelogin")
+      }
+    },
     async mounted() {
       if(localStorage.getItem("head")!==null){
         this.head = await JSON.parse(localStorage.getItem("head"))
-      } 
+      }
       if(localStorage.getItem("address")!==null){
         this.address = await JSON.parse(localStorage.getItem("address"))
       }

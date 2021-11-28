@@ -65,7 +65,7 @@ export default {
         this.state = res.data[0].state
         this.number = res.data[0].number
         this.beginTime = res.data[0].begin_time
-        if(this.state=='info') {
+        if(this.state==='info') {
           this.plain = true
         }
       })
@@ -84,7 +84,8 @@ export default {
           begin_time: (new Date()).toLocaleTimeString()
         })
         .then(()=>{
-          this.$message('标记成功！')
+          this.showInfo = false
+          this.$message.success('标记成功！')
         })
     },
     async markEnd() {
@@ -99,7 +100,8 @@ export default {
           end_time: (new Date()).toLocaleTimeString()
         })
         .then(()=>{
-          this.$message('标记成功！')
+          this.showInfo = false
+          this.$message.success('标记成功！')
         })
     },
     async markCleaned() {
@@ -113,7 +115,8 @@ export default {
           state: this.state,
         })
         .then(()=>{
-          this.$message('标记成功！')
+          this.showInfo = false
+          this.$message.success('标记成功！')
         })
     },
     async goServe() {
