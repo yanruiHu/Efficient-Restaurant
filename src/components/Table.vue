@@ -84,7 +84,10 @@ export default {
           begin_time: (new Date()).toLocaleTimeString()
         })
         .then(()=>{
-          this.$message('标记成功！')
+          this.$message({
+            message: '标记成功！',
+            type: 'success'
+          })
         })
     },
     async markEnd() {
@@ -99,7 +102,10 @@ export default {
           end_time: (new Date()).toLocaleTimeString()
         })
         .then(()=>{
-          this.$message('标记成功！')
+          this.$message({
+            message: '标记成功！',
+            type: 'success'
+          })
         })
     },
     async markCleaned() {
@@ -113,11 +119,14 @@ export default {
           state: this.state,
         })
         .then(()=>{
-          this.$message('标记成功！')
+          this.$message({
+            message: '标记成功！',
+            type: 'success'
+          })
         })
     },
     async goServe() {
-
+      
     },
     async goClean() {
 
@@ -131,7 +140,6 @@ export default {
     padding: 0;
     width: 60px;
     height: 60px;
-    align-items: center;
     border-color: dimgray;
     border-width: 1.5px;
   }

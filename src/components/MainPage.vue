@@ -24,7 +24,7 @@
         </el-menu-item>
         <el-menu-item index="4">
           <i class="el-icon-bell"></i>
-          <!-- <span slot="title">任务！</span> -->
+          <span slot="title">任务！</span>
           <el-badge :value="newTask" />
         </el-menu-item>
       </el-menu>
@@ -71,7 +71,7 @@
     },
     async mounted() {
       this.db = this.$app.database()
-      // this.timer = setInterval(this.toNewTask, 3000)
+      this.timer = setInterval(this.toNewTask, 3000)
       this.id = JSON.parse(localStorage.getItem('account'))
       this.position = JSON.parse(localStorage.getItem('position'))
     },
