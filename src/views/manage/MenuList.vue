@@ -21,9 +21,8 @@
             <el-aside width="80px">
               <div class="demo-type">
                 <div class="block">
-                  <el-avatar  :size="80" :src="item.imagePath" class="avatar">
+                  <el-avatar  :size="80" :src="imageArray[index]" class="avatar">
                   </el-avatar >
-                  <img  :size="80" :src="item.imagePath" class="avatar">
                 </div>
               </div>
             </el-aside>
@@ -32,7 +31,7 @@
                 <el-descriptions-item label="菜名">{{item.name}}</el-descriptions-item>
                 <el-descriptions-item label="单价">{{item.price}}元</el-descriptions-item>
                 <el-descriptions-item label="原料">无记录{{item.imagePath}}</el-descriptions-item>
-                <el-descriptions-item label="热度">无记录</el-descriptions-item>
+                <el-descriptions-item label="热度">无记录{{index}}</el-descriptions-item>
               </el-descriptions>
             </el-main>
             <el-aside v-if="viewAlter===true">
@@ -81,7 +80,6 @@
         </span>
       </el-dialog>
     </div>
-    <img v-if="menu[0].imagePath" :src="menu[0].imagePath" class="avatar">
   </div>
 </template>
 
@@ -89,12 +87,15 @@
   export default {
     name: "MenuList",
     props: {
-      restaurant: String
+      restaurant: String,
+      menu: Array,
+      imageArray: Array
     },
     data() {
       return {
         db: null,
-        menu: [],
+        // menu: [],
+        // image: "https://6675-fuyou-8g8jpe9008479ad1-1308142842.tcb.qcloud.la/cloudbase-cms/upload/2021-12-02/en3xhukm4ominv3d6nkbwa8jie55qm9n_.jpg",
         viewAddBox: false,
         newName: null,
         imageUrl: null,
@@ -151,8 +152,7 @@
         this.altdish = dish
         this.viewAlterBox = true
       },
-      alterDish(dish) {
-        console.log(dish)
+      alterDish() {
         this.db.collection("dish_list")
           .where({
             _id: this.altdish._id
@@ -178,30 +178,8 @@
           .catch(() => { });
       },
     },
-    async mounted() {
-      this.db = await this.$app.database()
-      await this.db.collection("dish_list")
-        .where({
-          restaurant: this.restaurant
-        })
-        .get()
-        .then((res) => {
-          console.log(res.data)
-          this.menu = res.data
-          console.log(res.data[0].image)
-        })
-      for (let item = 0; item < this.menu.length; item++) {
-        console.log(this.menu[item].image)
-        await this.$app
-          .getTempFileURL({
-            fileList: [this.menu[item].image]
-          })
-          .then((res) => {
-            console.log("res:",res.fileList);
-            this.menu[item].imagePath = res.fileList[0].tempFileURL
-          });
-      }
-      console.log(this.menu[0].imagePath)
+    mounted() {
+      this.db = this.$app.database()
     },
   }
 </script>

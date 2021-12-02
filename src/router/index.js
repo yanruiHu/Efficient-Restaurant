@@ -50,7 +50,7 @@ const routes = [
       {
         path: '/floorplanbar',
         name: 'floorplanbar',
-        component: FloorPlanBar
+        component: FloorPlanBar,
       },
       {
         path: '/stafflist',
