@@ -21,7 +21,9 @@
             <el-aside width="80px">
               <div class="demo-type">
                 <div class="block">
-                  <el-avatar :size="80" :src="item.image"></el-avatar>
+                  <el-avatar  :size="80" :src="item.imagePath" class="avatar">
+                  </el-avatar >
+                  <img  :size="80" :src="item.imagePath" class="avatar">
                 </div>
               </div>
             </el-aside>
@@ -29,7 +31,7 @@
               <el-descriptions>
                 <el-descriptions-item label="菜名">{{item.name}}</el-descriptions-item>
                 <el-descriptions-item label="单价">{{item.price}}元</el-descriptions-item>
-                <el-descriptions-item label="原料">无记录</el-descriptions-item>
+                <el-descriptions-item label="原料">无记录{{item.imagePath}}</el-descriptions-item>
                 <el-descriptions-item label="热度">无记录</el-descriptions-item>
               </el-descriptions>
             </el-main>
@@ -79,11 +81,11 @@
         </span>
       </el-dialog>
     </div>
+    <img v-if="menu[0].imagePath" :src="menu[0].imagePath" class="avatar">
   </div>
 </template>
 
 <script>
-  // import $ from "jquery";
   export default {
     name: "MenuList",
     props: {
@@ -100,7 +102,7 @@
         viewOptButton: false,
         viewAlter: false,
         altdish: [],
-        viewAlterBox: false
+        viewAlterBox: false,
       }
     },
     methods: {
@@ -159,7 +161,7 @@
             name: this.altdish.name,
             price: this.altdish.price
           })
-        this.viewAlterBox=false
+        this.viewAlterBox = false
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -174,7 +176,7 @@
             done();
           })
           .catch(() => { });
-      }
+      },
     },
     async mounted() {
       this.db = await this.$app.database()
@@ -184,8 +186,22 @@
         })
         .get()
         .then((res) => {
+          console.log(res.data)
           this.menu = res.data
+          console.log(res.data[0].image)
         })
+      for (let item = 0; item < this.menu.length; item++) {
+        console.log(this.menu[item].image)
+        await this.$app
+          .getTempFileURL({
+            fileList: [this.menu[item].image]
+          })
+          .then((res) => {
+            console.log("res:",res.fileList);
+            this.menu[item].imagePath = res.fileList[0].tempFileURL
+          });
+      }
+      console.log(this.menu[0].imagePath)
     },
   }
 </script>
