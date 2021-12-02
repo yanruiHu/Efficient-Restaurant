@@ -91,7 +91,7 @@
     },
     data() {
       return {
-        db: null,
+        // db: null,
         menu: [],
         viewAddBox: false,
         newName: null,
@@ -108,7 +108,7 @@
         this.imageUrl = URL.createObjectURL(file.raw);
       },
       addDish() {
-        this.db.collection("dish_list")
+        this.$db.collection("dish_list")
           .add({
             name: this.newName,
             price: this.newPrice,
@@ -126,7 +126,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.db.collection("dish_list")
+          this.$db.collection("dish_list")
             .where({
               _id: dish._id
             })
@@ -151,7 +151,7 @@
       },
       alterDish(dish) {
         console.log(dish)
-        this.db.collection("dish_list")
+        this.$db.collection("dish_list")
           .where({
             _id: this.altdish._id
           })
@@ -177,8 +177,8 @@
       }
     },
     async mounted() {
-      this.db = await this.$app.database()
-      await this.db.collection("dish_list")
+      // this.db = await this.$app.database()
+      await this.$db.collection("dish_list")
         .where({
           restaurant: this.restaurant
         })

@@ -64,7 +64,6 @@ export default {
     return {
       staffId: '',
       showInfo: false,
-      db: '',
       beginTime: '',
       number: '',
       state: '',
@@ -78,8 +77,8 @@ export default {
   },
   mounted() {
     this.staffId = JSON.parse(localStorage.getItem('account'))
-    this.db = this.$app.database()
-    this.db.collection('table')
+    // this.db = this.$app.database()
+    this.$db.collection('table')
       .where({
         restaurant: this.restaurant,
         table_id: this.tableId
@@ -96,20 +95,23 @@ export default {
   },
   methods: {
     getState() {
-      this.db.collection('table')
+      this.$db.collection('table')
         .where({
           restaurant: this.restaurant,
           table_id: this.tableId
         })
         .watch({
           onChange: (snapshot) => {
-            var data = snapshot.docChanges[0]
-            if(this.staffId === data.doc.on_task){
+            var mydata = snapshot.docChanges[0]
+            if(mydata==null){
+              return
+            }
+            else if(this.staffId == mydata.doc.on_task){
                 this.state = 'danger'
                 this.plain = false
             }
-            else if(data.dataType === 'update'){
-              this.state = data.doc.state
+            else if(mydata.dataType == 'update'){
+              this.state = mydata.doc.state
               if(this.state!=='info'){
                 this.plain = false
               }
@@ -127,7 +129,7 @@ export default {
     markBegin() {
       this.state = 'primary'
       this.plain = false
-      this.db.collection('table')
+      this.$db.collection('table')
         .where({
           restaurant: this.restaurant,
           table_id: this.tableId
@@ -148,7 +150,7 @@ export default {
     markEnd() {
       this.state = 'warning'
       this.plain = false
-      this.db.collection('table')
+      this.$db.collection('table')
         .where({
           restaurant: this.restaurant,
           table_id: this.tableId
@@ -167,7 +169,7 @@ export default {
     },
     markCleaned() {
       this.state = 'info'
-      this.db.collection('table')
+      this.$db.collection('table')
         .where({
           restaurant: this.restaurant,
           table_id: this.tableId
@@ -184,7 +186,7 @@ export default {
       this.showInfo = false
     },
     goServe() {
-      this.db.collection('task')
+      this.$db.collection('task')
         .where({
           staff_id: this.staffId,
           state: true
@@ -192,18 +194,17 @@ export default {
         .update({
           state: false
         })
-      this.db.collection('table')
+      this.$db.collection('table')
         .where({
           restaurant: this.restaurant,
           table_id: this.tableId
         })
         .update({
-          on_task: 'none'
+          on_task: ''
         })
         .then((res) => {
-          console.log('我是res:' + res)
+          this.state = res.data[0].state
         })
-      console.log('执行完毕')
     },
   }
 }

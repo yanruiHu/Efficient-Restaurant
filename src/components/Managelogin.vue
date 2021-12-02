@@ -29,7 +29,7 @@
       return {
         account: null,
         password: null,
-        db: null,
+        // db: null,
       }
     },
     methods: {
@@ -37,7 +37,7 @@
         this.$router.push('/manageregister')
       },
       Login() {
-        this.db.collection("manage")
+        this.$db.collection("manage")
           .where({
             account: this.account,
             password: this.password,
@@ -67,7 +67,7 @@
       }
     },
     mounted() {
-      this.db = this.$app.database();
+      // this.db = this.$app.database();
       // localStorage.clear()
     },
   }

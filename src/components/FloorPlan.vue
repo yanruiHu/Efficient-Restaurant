@@ -35,7 +35,7 @@ export default {
   name: 'FloorPlan',
   data() {
    return {
-    db: '',
+    // db: '',
     position: '',
     row: '',
     column: '',
@@ -55,18 +55,18 @@ export default {
   },
   methods: {
     saveCurrentData() {
-      this.db.collection('floorplan')
+      this.$db.collection('floorplan')
         .update({
           row: this.row,
           column: this.column
         })
-      this.db.collection('table')
+      this.$db.collection('table')
         .where({
-          restaurant: this.db.command.eq(this.restaurant),
+          restaurant: this.$db.command.eq(this.restaurant),
         })
         .remove()
       for(var i=1;i<=this.row*this.column;i++){
-        this.db.collection('table')
+        this.$db.collection('table')
           .add({
             restaurant: this.restaurant,
             table_id: i,
@@ -77,7 +77,7 @@ export default {
     },
   },
   mounted() {
-    this.db = this.$app.database()
+    // this.db = this.$app.database()
     this.restaurant = JSON.parse(localStorage.getItem('restaurant'))
   }
 }

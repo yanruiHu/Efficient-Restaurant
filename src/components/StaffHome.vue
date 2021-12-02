@@ -64,7 +64,7 @@
       return {
         staffId: '',
         restaurant: '',
-        db: '',
+        // db: '',
         name: '',
         newTask: false,
         position: '',
@@ -80,28 +80,32 @@
         this.$router.push('/staffhome/cookassign')
       },
       onTask() {
-        this.db.collection('task')
+        this.$db.collection('task')
           .where({
             staff_id: this.staffId,
             state: true
           })
           .watch({
             onChange: (snapshot) => {
-              let data = snapshot.docChanges[0]
-              if(data.dataType == 'init' || data.dataType == 'add'){
+              console.log(snapshot)
+              var mydata = snapshot.docChanges[0]
+              if(mydata==null){
+                return
+              }
+              else if(mydata.dataType == 'init' || mydata.dataType == 'add'){
                 this.newTask = true
-              }
-              else{
-                this.newTask = false
-              }
-              this.db.collection('table')
+                this.$db.collection('table')
                 .where({
                   restaurant: this.restaurant,
-                  table_id: data.doc.table_id
+                  table_id: mydata.doc.table_id
                 })
                 .update({
                   on_task: this.staffId
                 })
+              }
+              else{
+                this.newTask = false
+              }
             },
             onError: () => {
               console.log('watch error!')
@@ -117,7 +121,7 @@
       }
     },
     mounted() {
-      this.db = this.$app.database()
+      // this.$db = this.$app.database()
       this.staffId = JSON.parse(localStorage.getItem('account'))
       this.position = JSON.parse(localStorage.getItem('position'))
       this.name = JSON.parse(localStorage.getItem('name'))

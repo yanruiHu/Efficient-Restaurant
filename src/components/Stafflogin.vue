@@ -32,7 +32,7 @@
     },
     methods: {
       Login(){
-        this.db.collection("staff")
+        this.$db.collection("staff")
           .where({
             account: this.account,
             password: this.password,
@@ -59,7 +59,7 @@
       }
     },
     mounted() {
-      this.db = this.$app.database()
+      // this.db = this.$app.database()
       // localStorage.clear()
     }
   }

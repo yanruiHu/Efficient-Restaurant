@@ -65,14 +65,14 @@ export default {
   },
   data() {
     return {
-      db: '',
+      // db: '',
       data: ['', '', ''],
       position: '',
     }
   },
   methods: {
     setData(position){
-      this.db.collection("floorplan")
+      this.$db.collection("floorplan")
         .get()
         .then((res)=>{
           this.data.splice(0, 3, position, res.data[0].row, res.data[0].column)
@@ -80,7 +80,7 @@ export default {
     }
   },
   mounted() {
-    this.db = this.$app.database()
+    // this.$db = this.$app.database()
     this.position = JSON.parse(localStorage.getItem('position'))
     this.setData(this.position)
   }
