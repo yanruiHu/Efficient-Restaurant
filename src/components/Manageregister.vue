@@ -121,7 +121,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 
   .login-box{
     width: 250px;
