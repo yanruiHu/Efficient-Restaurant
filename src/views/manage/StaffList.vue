@@ -59,9 +59,9 @@
             <el-select v-model="newPosition" placeholder="请选择员工职位">
               <el-option label="前台" value="host"></el-option>
               <el-option label="服务员" value="waiter"></el-option>
+              <el-option label="主厨" value="chef"></el-option>
               <el-option label="厨师" value="cooker"></el-option>
               <el-option label="清洁工" value="busboy"></el-option>
-              <el-option label="前台" value="host"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -83,7 +83,7 @@
     },
     data() {
       return {
-        db: null,
+        // db: null,
         viewAddBox: false,
         viewDelButton: false,
         newAccount: null,
@@ -94,7 +94,7 @@
       }
     },
     mounted() {
-      this.db = this.$app.database()
+      // this.db = this.$app.database()
     },
     methods: {
       async addStaff() {
@@ -115,7 +115,7 @@
           return
         }
         let isAccountExist = false
-        await this.db.collection("staff")
+        await this.$db.collection("staff")
           .where({
             account: this.newAccount
           })
@@ -129,7 +129,7 @@
         if (isAccountExist) {
           return
         }
-        this.db.collection("staff")
+        this.$db.collection("staff")
           .add({
             restaurant: this.restaurant,
             account: this.newAccount,
@@ -157,7 +157,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.db.collection("staff")
+          this.$db.collection("staff")
             .where({
               account: data[index].account
             })

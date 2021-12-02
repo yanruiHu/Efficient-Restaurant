@@ -35,7 +35,7 @@ import ManageInfo from "./ManageInfo.vue";
     data() {
       return {
         tabPosition: 'left',
-        db: null,
+        // db: null,
         choice: 'stafflist',
         staffData: [
           {
@@ -55,8 +55,8 @@ import ManageInfo from "./ManageInfo.vue";
     },
     async mounted() {
       this.restaurant = JSON.parse(localStorage.getItem("restaurant"))
-      this.db = this.$app.database()
-      await this.db.collection("staff")
+      // this.db = this.$app.database()
+      await this.$db.collection("staff")
         .where({
           restaurant: this.restaurant
         })

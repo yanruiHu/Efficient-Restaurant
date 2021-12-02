@@ -16,7 +16,10 @@ async function db_login(){
 }
 db_login();
 
+const db = app.database()
+
 Vue.prototype.$app = app
+Vue.prototype.$db = db
 
 Vue.use(ElementUI)
 
