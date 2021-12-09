@@ -2,9 +2,8 @@
   <el-container direction="vertical">
     <el-main>
       <el-row v-for="rowIndex in Number(row)" :key="rowIndex"
-      type="flex" justify="space-between">
-        <el-col v-for="colIndex in Number(column)" :key="colIndex"
-        :span="Math.floor(24/column)">
+      type="flex" justify="start">
+        <el-col v-for="colIndex in Number(column)" :key="colIndex">
           <Table :restaurant="restaurant" :position="position"
           :tableId="column*(rowIndex-1)+colIndex"></Table>
         </el-col>

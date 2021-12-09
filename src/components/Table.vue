@@ -37,7 +37,7 @@
           前往服务
         </el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='waiter'">
+        v-if="position==='waiter'" @click="goOrder()">
           点餐
         </el-button>
         <el-button id="button-order" type="primary" plain
@@ -45,7 +45,7 @@
           标记结束用餐
         </el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='busboy'">
+        v-if="position==='busboy'" @click="goServe()">
           前往清理
         </el-button>
         <el-button id="button-order" type="primary" plain
@@ -77,7 +77,6 @@ export default {
   },
   mounted() {
     this.staffId = JSON.parse(localStorage.getItem('account'))
-    // this.db = this.$app.database()
     this.$db.collection('table')
       .where({
         restaurant: this.restaurant,
@@ -141,7 +140,7 @@ export default {
         })
         .then(()=>{
           this.$message({
-            message: '标记成功！',
+            message: '标记成功!',
             type: 'success'
           })
         })
@@ -161,7 +160,7 @@ export default {
         })
         .then(()=>{
           this.$message({
-            message: '标记成功！',
+            message: '标记成功!',
             type: 'success'
           })
         })
@@ -179,7 +178,7 @@ export default {
         })
         .then(()=>{
           this.$message({
-            message: '标记成功！',
+            message: '标记成功!',
             type: 'success'
           })
         })
@@ -204,8 +203,16 @@ export default {
         })
         .then((res) => {
           this.state = res.data[0].state
+          this.$message({
+            message: '已接受任务!',
+            type: 'success'
+          })
         })
+      this.showInfo = false
     },
+    goOrder() {
+      
+    }
   }
 }
 </script>

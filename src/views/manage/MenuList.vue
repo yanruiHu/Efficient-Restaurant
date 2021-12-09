@@ -115,7 +115,7 @@
             restaurant: this.restaurant
           })
           .then(() => {
-            this.$message("添加菜品成功！")
+            this.$message("添加菜品成功!")
             this.viewAddBox = false
             location.reload()
           })
@@ -134,7 +134,7 @@
             .then(() => {
               this.$message({
                 type: 'success',
-                message: "删除成功！"
+                message: "删除成功!"
               })
             });
         }).catch(() => {

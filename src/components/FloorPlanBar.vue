@@ -9,7 +9,7 @@
           <span class="demo-free">空闲</span>
           <span class="demo-busy">用餐中</span>
           <span class="demo-clean">待清洁</span>
-          <span class="demo-ontask">有任务</span>
+          <span class="demo-ontask">任务</span>
         </el-aside>
       </el-container>
     <!-- </el-tab-pane>
@@ -116,7 +116,7 @@ export default {
   span {
     border: 1.5px solid dimgray;
     border-radius: 20px;
-    font-size: 16px;
+    font-size: 15px;
     text-align: center;
     line-height: 50px;
     margin: 30px auto 0;
