@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="vip">
-      <el-button @click="manageloginClick">管理员登录</el-button>
+      <el-button @click="manageloginClick()">管理员登录</el-button>
       <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以员工身份进入(仅供开发人员测试)</el-button>
     </div>
     <div>
@@ -14,7 +14,7 @@
           <el-input type="password" placeholder="请输入密码" v-model="password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="Login">登录</el-button>
+          <el-button type="primary" @click="Login()">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -32,7 +32,7 @@
     },
     methods: {
       Login(){
-        this.db.collection("staff")
+        this.$db.collection("staff")
           .where({
             account: this.account,
             password: this.password,
@@ -44,7 +44,7 @@
               localStorage.setItem('position', JSON.stringify(res.data[0].position))
               localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant))
               localStorage.setItem('name', JSON.stringify(res.data[0].name))
-              this.$router.push('./mainpage')
+              this.$router.push('./staffhome')
             }
             else {
               alert("账号或密码错误")
@@ -55,11 +55,11 @@
         this.$router.push('/managelogin');
       },
       VIP() {
-        this.$router.push('./mainpage')
+        this.$router.push('./staffhome')
       }
     },
     mounted() {
-      this.db = this.$app.database()
+      // this.db = this.$app.database()
       // localStorage.clear()
     }
   }

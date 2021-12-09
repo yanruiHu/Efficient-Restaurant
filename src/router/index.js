@@ -7,11 +7,12 @@ import ManageLogin from "../components/Managelogin.vue";
 import StaffLogin from "../components/Stafflogin.vue";
 import Manageregister from "../components/Manageregister.vue";
 import FloorPlanBar from "../components/FloorPlanBar.vue";
-import MainPage from "../components/MainPage.vue";
+import StaffHome from "../components/StaffHome.vue";
 import ManageHome from "../views/manage/ManageHome.vue";
 import StaffList from "../views/manage/StaffList.vue";
 import MenuList from "../views/manage/MenuList.vue";
 import Table from "../components/Table.vue";
+import CookAssign from "../components/CookAssign";
 
 
 Vue.use(VueRouter);
@@ -34,12 +35,16 @@ const routes = [
     component: Manageregister
   },
   {
-    path: '/mainpage',
-    component: MainPage,
+    path: '/staffhome',
+    component: StaffHome,
     children: [
       {
-        path: '/mainpage/floorplanbar',
-        component: FloorPlanBar,
+        path: '/staffhome/floorplanbar',
+        component: FloorPlanBar
+      },
+      {
+        path: '/staffhome/cookassign',
+        component: CookAssign
       }
     ]
   },
@@ -49,12 +54,10 @@ const routes = [
     children: [
       {
         path: '/floorplanbar',
-        name: 'floorplanbar',
         component: FloorPlanBar,
       },
       {
         path: '/stafflist',
-        name: 'StaffList',
         component: StaffList
       }
     ]
@@ -67,6 +70,9 @@ const routes = [
     path: '/Table',
     component: Table
   },
+  {
+    path: '/'
+  }
 ]
 
 const router = new VueRouter({

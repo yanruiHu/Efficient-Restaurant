@@ -1,35 +1,57 @@
 <template>
   <div>
-    <el-button id="button-table" :type="state" round :plain="plain"
-    @click="showInfo=true">{{ tableId }}
+    <el-button id="button-table" :type="getState()" round :plain="plain"
+    @click="showInfo=true">
+      {{ tableId }}
     </el-button>
-    <el-dialog title="餐桌状态" :visible.sync="showInfo" width="30%" center>
+    <el-dialog title="餐桌状态" width="30%" center 
+    :visible.sync="showInfo">
       <el-descriptions title="客人信息" :column="1" border
-      v-if="position==='waiter'">
-        <el-descriptions-item label="落座时间" size="mini"> {{ beginTime }} </el-descriptions-item>
-        <el-descriptions-item label="人数"> {{ number }} </el-descriptions-item>
+      v-if="position!=='host'">
+        <el-descriptions-item label="落座时间" size="mini"> 
+          {{ beginTime }} 
+        </el-descriptions-item>
+        <el-descriptions-item label="人数"> 
+          {{ number }} 
+        </el-descriptions-item>
       </el-descriptions>
       <div v-if="position==='host'">
         <span class="customer-info"></span>
         <el-form :inline="true">
           <el-form-item label="人数">
-            <el-input v-model="number"></el-input>
+            <el-select v-model="number">
+              <el-option v-for="num in Number(8)" 
+              :key="num" :value="num" :label="num">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button id="button-order" type="primary" plain
-        v-if="position==='host'" @click="markBegin">标记用餐</el-button>
+        v-if="position==='host'" @click="markBegin()">
+          标记用餐
+        </el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='waiter'" @click="goServe">前往服务</el-button>
+        v-if="position==='waiter'" @click="goServe()">
+          前往服务
+        </el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='waiter'">点餐</el-button>
+        v-if="position==='waiter'">
+          点餐
+        </el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='waiter'" @click="markEnd">标记结束</el-button>
+        v-if="position==='waiter'" @click="markEnd()">
+          标记结束用餐
+        </el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='busboy'" @click="goClean">前往清理</el-button>
+        v-if="position==='busboy'">
+          前往清理
+        </el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='busboy'" @click="markCleaned">清理完毕</el-button>
+        v-if="position==='busboy'" @click="markCleaned()">
+          清理完毕
+        </el-button>
       </span>
     </el-dialog>
   </div>
@@ -40,8 +62,8 @@ export default {
   name: 'Table',
   data() {
     return {
+      staffId: '',
       showInfo: false,
-      db: '',
       beginTime: '',
       number: '',
       state: '',
@@ -54,8 +76,9 @@ export default {
     position: String,
   },
   mounted() {
-    this.db = this.$app.database()
-    this.db.collection('table')
+    this.staffId = JSON.parse(localStorage.getItem('account'))
+    // this.db = this.$app.database()
+    this.$db.collection('table')
       .where({
         restaurant: this.restaurant,
         table_id: this.tableId
@@ -71,10 +94,42 @@ export default {
       })
   },
   methods: {
-    async markBegin() {
+    getState() {
+      this.$db.collection('table')
+        .where({
+          restaurant: this.restaurant,
+          table_id: this.tableId
+        })
+        .watch({
+          onChange: (snapshot) => {
+            var mydata = snapshot.docChanges[0]
+            if(mydata==null){
+              return
+            }
+            else if(this.staffId == mydata.doc.on_task){
+                this.state = 'danger'
+                this.plain = false
+            }
+            else if(mydata.dataType == 'update'){
+              this.state = mydata.doc.state
+              if(this.state!=='info'){
+                this.plain = false
+              }
+              else{
+                this.plain = true
+              }
+            }
+          },
+          onError: () => {
+            console.log('watch error!')
+          }
+        })
+      return this.state
+    },
+    markBegin() {
       this.state = 'primary'
       this.plain = false
-      await this.db.collection('table')
+      this.$db.collection('table')
         .where({
           restaurant: this.restaurant,
           table_id: this.tableId
@@ -92,10 +147,10 @@ export default {
         })
       this.showInfo = false
     },
-    async markEnd() {
+    markEnd() {
       this.state = 'warning'
       this.plain = false
-      await this.db.collection('table')
+      this.$db.collection('table')
         .where({
           restaurant: this.restaurant,
           table_id: this.tableId
@@ -112,9 +167,9 @@ export default {
         })
       this.showInfo = false
     },
-    async markCleaned() {
+    markCleaned() {
       this.state = 'info'
-      await this.db.collection('table')
+      this.$db.collection('table')
         .where({
           restaurant: this.restaurant,
           table_id: this.tableId
@@ -130,12 +185,27 @@ export default {
         })
       this.showInfo = false
     },
-    async goServe() {
-      
+    goServe() {
+      this.$db.collection('task')
+        .where({
+          staff_id: this.staffId,
+          state: true
+        })
+        .update({
+          state: false
+        })
+      this.$db.collection('table')
+        .where({
+          restaurant: this.restaurant,
+          table_id: this.tableId
+        })
+        .update({
+          on_task: ''
+        })
+        .then((res) => {
+          this.state = res.data[0].state
+        })
     },
-    async goClean() {
-
-    }
   }
 }
 </script>

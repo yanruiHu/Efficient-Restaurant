@@ -1,7 +1,7 @@
 <template>
-  <el-tabs :value="position">
-    <el-tab-pane label="前台" name="host" v-if="position==='host'">
-      <el-container>
+  <!-- <el-tabs :value="position">
+    <el-tab-pane label="前台" name="host" v-if="position==='host'"> -->
+      <el-container direction="horizontal">
         <el-main>
           <FloorPlan :currentData="data"></FloorPlan>
         </el-main>
@@ -9,9 +9,10 @@
           <span class="demo-free">空闲</span>
           <span class="demo-busy">用餐中</span>
           <span class="demo-clean">待清洁</span>
+          <span class="demo-ontask">有任务</span>
         </el-aside>
       </el-container>
-    </el-tab-pane>
+    <!-- </el-tab-pane>
     <el-tab-pane label="服务员" name="waiter" v-if="position==='waiter'">
       <el-container>
         <el-main>
@@ -21,6 +22,7 @@
           <span class="demo-free">空闲</span>
           <span class="demo-busy">用餐中</span>
           <span class="demo-clean">待清洁</span>
+          <span class="demo-ontask">有任务</span>
         </el-aside>
       </el-container>
     </el-tab-pane>
@@ -33,6 +35,7 @@
           <span class="demo-free">空闲</span>
           <span class="demo-busy">用餐中</span>
           <span class="demo-clean">待清洁</span>
+          <span class="demo-ontask">有任务</span>
         </el-aside>
       </el-container>
     </el-tab-pane>
@@ -45,10 +48,11 @@
           <span class="demo-free">空闲</span>
           <span class="demo-busy">用餐中</span>
           <span class="demo-clean">待清洁</span>
+          <span class="demo-ontask">有任务</span>
         </el-aside>
       </el-container>
-    </el-tab-pane>
-  </el-tabs>
+    </el-tab-pane> -->
+  <!-- </el-tabs> -->
 </template>
 
 <script>
@@ -61,14 +65,14 @@ export default {
   },
   data() {
     return {
-      db: '',
+      // db: '',
       data: ['', '', ''],
       position: '',
     }
   },
   methods: {
     setData(position){
-      this.db.collection("floorplan")
+      this.$db.collection("floorplan")
         .get()
         .then((res)=>{
           this.data.splice(0, 3, position, res.data[0].row, res.data[0].column)
@@ -76,7 +80,7 @@ export default {
     }
   },
   mounted() {
-    this.db = this.$app.database()
+    // this.$db = this.$app.database()
     this.position = JSON.parse(localStorage.getItem('position'))
     this.setData(this.position)
   }
@@ -90,26 +94,31 @@ export default {
     width: 110px !important;
   }
   .demo-free {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     background-color: #f4f4f5;
   }
   .demo-busy {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     background-color: #409EFF;
   }
   .demo-clean {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     background-color: #E6A23C;
+  }
+  .demo-ontask {
+    width: 50px;
+    height: 50px;
+    background-color: #F56C6C;
   }
   span {
     border: 1.5px solid dimgray;
     border-radius: 20px;
     font-size: 16px;
     text-align: center;
-    line-height: 60px;
-    margin: 45px auto 0;
+    line-height: 50px;
+    margin: 30px auto 0;
   }
 </style>

@@ -35,7 +35,7 @@
     data() {
       return {
         tabPosition: 'left',
-        db: null,
+        // db: null,
         choice: 'stafflist',
         staffData: [
           {
@@ -57,8 +57,8 @@
     },
     async mounted() {
       this.restaurant = JSON.parse(localStorage.getItem("restaurant"))
-      this.db = this.$app.database()
-      await this.db.collection("staff")
+      // this.db = this.$app.database()
+      await this.$db.collection("staff")
         .where({
           restaurant: this.restaurant
         })
@@ -75,7 +75,7 @@
         this.choice = 'floorplanbar'
       },
       async setupMenu() {
-        await this.db.collection("dish_list")
+        await this.$db.collection("dish_list")
           .where({
             restaurant: this.restaurant
           })
@@ -84,7 +84,9 @@
             this.menu = res.data
           })
         for (let item = 0; item < this.menu.length; item++) {
-          this.menu[item].imagePath = null
+          if(this.menu[item].image===undefined){
+            continue
+          }
           this.$app
             .getTempFileURL({
               fileList: [this.menu[item].image]

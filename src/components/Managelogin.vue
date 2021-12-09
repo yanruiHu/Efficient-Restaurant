@@ -29,7 +29,6 @@
       return {
         account: null,
         password: null,
-        db: null,
       }
     },
     methods: {
@@ -37,7 +36,7 @@
         this.$router.push('/manageregister')
       },
       Login() {
-        this.db.collection("manage")
+        this.$db.collection("manage")
           .where({
             account: this.account,
             password: this.password,
@@ -52,6 +51,13 @@
               localStorage.setItem('address', JSON.stringify(res.data[0].address))
               localStorage.setItem('head', JSON.stringify(res.data[0].head))
               localStorage.setItem('position', JSON.stringify('manager'))
+              this.$app
+                .getTempFileURL({
+                  fileList: [res.data[0].head]
+                })
+                .then((res) => {
+                  localStorage.setItem('head', JSON.stringify(res.fileList[0].tempFileURL))
+                });
               this.$router.push('./managehome')
             }
             else {
@@ -67,8 +73,6 @@
       }
     },
     mounted() {
-      this.db = this.$app.database();
-      // localStorage.clear()
     },
   }
 </script>
@@ -86,12 +90,15 @@
     border-radius: 8px;
     box-shadow: 0 0 30px #DCDFE6;
   }
+
   .login-title {
     text-align: center;
   }
+
   .vip {
     text-align: center;
   }
+
   .el-form-item {
     text-align: center;
   }

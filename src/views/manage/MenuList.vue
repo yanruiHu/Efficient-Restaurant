@@ -4,7 +4,7 @@
       <el-header style="text-align: right; font-size: 12px">
         <el-dropdown>
           <el-button v-if="viewOptButton===false">修改</el-button>
-          <el-button v-if="viewOptButton===true" @click="viewOptButton=false">退出修改</el-button>
+          <el-button v-if="viewOptButton===true" @click="viewOptButton=false, viewAlter=false">退出修改</el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
               <el-button style="border: 0;" @click="viewAddBox = true">添加菜品</el-button>
@@ -17,28 +17,30 @@
       </el-header>
       <el-main v-if="menu.length>0">
         <div class="dish-box" v-for="(item,index) in menu" :key="index">
-          <el-container>
-            <el-aside width="80px">
-              <div class="demo-type">
-                <div class="block">
-                  <el-avatar  :size="80" :src="imageArray[index]" class="avatar">
-                  </el-avatar >
+          <el-card style="border: 1px;">
+            <el-container>
+              <el-aside width="80px">
+                <div class="demo-type">
+                  <div class="block">
+                    <el-avatar shape="square" :size="80" :src="imageList[index]" class="avatar">
+                    </el-avatar>
+                  </div>
                 </div>
-              </div>
-            </el-aside>
-            <el-main>
-              <el-descriptions>
-                <el-descriptions-item label="菜名">{{item.name}}</el-descriptions-item>
-                <el-descriptions-item label="单价">{{item.price}}元</el-descriptions-item>
-                <el-descriptions-item label="原料">无记录{{item.imagePath}}</el-descriptions-item>
-                <el-descriptions-item label="热度">无记录{{index}}</el-descriptions-item>
-              </el-descriptions>
-            </el-main>
-            <el-aside v-if="viewAlter===true">
-              <el-button @click="viewAlterDish(item)">修改</el-button>
-              <el-button @click="delDish(item)">删除</el-button>
-            </el-aside>
-          </el-container>
+              </el-aside>
+              <el-main>
+                <el-descriptions>
+                  <el-descriptions-item label="菜名">{{item.name}}</el-descriptions-item>
+                  <el-descriptions-item label="单价">{{item.price}}元</el-descriptions-item>
+                  <el-descriptions-item label="原料">无记录</el-descriptions-item>
+                  <el-descriptions-item label="热度">无记录{{index}}</el-descriptions-item>
+                </el-descriptions>
+              </el-main>
+              <el-aside v-if="viewAlter===true">
+                <el-button @click="viewAlterDish(item)">修改</el-button>
+                <el-button @click="delDish(item)">删除</el-button>
+              </el-aside>
+            </el-container>
+          </el-card>
         </div>
       </el-main>
     </el-container>
@@ -46,13 +48,9 @@
     <div>
       <el-dialog title="请输菜品信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose">
         <el-form>
-          <!-- <el-form-item label="展示图片">
-            <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false" :on-success="handleAvatarSuccess">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-          </el-form-item> -->
+          <a type="button" class="layui-btn layui-btn-primary">
+            <input class="" type="file" multiple="multiple" id="up-img" />
+          </a>
           <el-form-item label="菜名">
             <el-input v-model="newName" autocomplete="off"></el-input>
           </el-form-item>
@@ -67,6 +65,10 @@
       </el-dialog>
       <el-dialog title="修改菜品信息" :visible.sync="viewAlterBox" width="50%" :before-close="handleCloseAlter">
         <el-form>
+          <el-form-item label="图片"></el-form-item>
+          <a type="button" class="layui-btn layui-btn-primary">
+            <input class="" type="file" multiple="multiple" id="alter-img" />
+          </a>
           <el-form-item label="菜名">
             <el-input v-model="altdish.name" autocomplete="off"></el-input>
           </el-form-item>
@@ -93,9 +95,6 @@
     },
     data() {
       return {
-        db: null,
-        // menu: [],
-        // image: "https://6675-fuyou-8g8jpe9008479ad1-1308142842.tcb.qcloud.la/cloudbase-cms/upload/2021-12-02/en3xhukm4ominv3d6nkbwa8jie55qm9n_.jpg",
         viewAddBox: false,
         newName: null,
         imageUrl: null,
@@ -104,23 +103,44 @@
         viewAlter: false,
         altdish: [],
         viewAlterBox: false,
+        imageList: [],
+        file: null,
       }
     },
     methods: {
+      delAll() {
+        var f = document.getElementById("files");
+        console.log(f.files[0]);
+      },
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
       },
-      addDish() {
-        this.db.collection("dish_list")
+      async addDish() {
+        var file = document.getElementById("up-img").files[0];
+        let fileId = null;
+        await this.$app
+          .uploadFile({
+            // 云存储的路径
+            cloudPath: file.name,
+            // 需要上传的文件，File 类型
+            filePath: file
+          })
+          .then((res) => {
+            // 返回文件 ID
+            console.log(res.fileID);
+            fileId = res.fileID;
+          });
+        this.$db.collection("dish_list")
           .add({
             name: this.newName,
             price: this.newPrice,
-            restaurant: this.restaurant
+            restaurant: this.restaurant,
+            image: fileId
           })
           .then(() => {
             this.$message("添加菜品成功！")
             this.viewAddBox = false
-            location.reload()
+            location.reload(true)
           })
       },
       async delDish(dish) {
@@ -129,7 +149,11 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.db.collection("dish_list")
+          this.$app
+            .deleteFile({
+              fileList: [dish.image]
+            })
+          this.$db.collection("dish_list")
             .where({
               _id: dish._id
             })
@@ -152,16 +176,33 @@
         this.altdish = dish
         this.viewAlterBox = true
       },
-      alterDish() {
-        this.db.collection("dish_list")
+      async alterDish() {
+        this.$app
+          .deleteFile({
+            fileList: [this.altdish.image]
+          })
+        var file = document.getElementById("alter-img").files[0];
+        let fileId = null;
+        await this.$app
+          .uploadFile({
+            cloudPath: file.name,
+            filePath: file
+          })
+          .then((res) => {
+            console.log(res.fileID);
+            fileId = res.fileID;
+          });
+        this.$db.collection("dish_list")
           .where({
             _id: this.altdish._id
           })
           .update({
             name: this.altdish.name,
-            price: this.altdish.price
+            price: this.altdish.price,
+            image: fileId,
           })
         this.viewAlterBox = false
+        location.reload()
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -179,7 +220,7 @@
       },
     },
     mounted() {
-      this.db = this.$app.database()
+      this.imageList = this.imageArray
     },
   }
 </script>
@@ -187,5 +228,17 @@
 <style>
   .dish-box {
     margin: 0
+  }
+  .upload {
+    padding: 4px 10px;
+    height: 20px;
+    position: relative;
+  }
+  .change {
+    position: absolute;
+    overflow: hidden;
+    right: 0;
+    top: 0;
+    opacity: 0;
   }
 </style>

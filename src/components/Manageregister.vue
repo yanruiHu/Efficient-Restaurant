@@ -42,7 +42,7 @@
         account: null,
         password: null,
         confirm: null,
-        db: null
+        // db: null
       }
     },
     methods: {
@@ -55,7 +55,7 @@
           return
         }
         let isRestaurantExist = false
-        await this.db.collection("restaurant")
+        await this.$db.collection("restaurant")
           .where({
             name: this.restaurant
           })
@@ -82,7 +82,7 @@
           return
         }
         let isAccountExist
-        isAccountExist = await this.db.collection("manage")//查看数据库中申请账号是否已存在。
+        isAccountExist = await this.$db.collection("manage")//查看数据库中申请账号是否已存在。
           .where({
             account: this.account
           })
@@ -96,7 +96,7 @@
         if(isAccountExist===true){
           return
         }
-        this.db.collection("manage")
+        this.$db.collection("manage")
           .add({
             account: this.account,
             password: this.password,
@@ -106,7 +106,7 @@
             this.$message("创建用户成功！")
             this.$router.push('/managelogin')
           })
-        this.db.collection("restaurant")
+        this.$db.collection("restaurant")
           .add({
             name: this.restaurant
           })
@@ -116,12 +116,12 @@
       }
     },
     mounted() {
-      this.db = this.$app.database();
+      // this.db = this.$app.database();
     },
   }
 </script>
 
-<style>
+<style scoped>
 
   .login-box{
     width: 250px;

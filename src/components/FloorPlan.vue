@@ -11,14 +11,18 @@
       </el-row>
     </el-main>
     <el-footer v-if="position === 'manager'">
-      <el-input type="number" size="small"
-      v-model="row" placeholder="行数">
-      </el-input>
-      <el-input type="number" size="small" max="24"
-      v-model="column" placeholder="列数">
-      </el-input>
+      <el-select v-model="row" placeholder="行数">
+        <el-option v-for="num in Number(12)" 
+        :key="num" :value="num" :label="num">
+        </el-option>
+      </el-select>
+      <el-select v-model="column" placeholder="列数">
+        <el-option v-for="num in Number(12)" 
+        :key="num" :value="num" :label="num">
+        </el-option>
+      </el-select>
       <el-button type="primary" size="small" 
-      @click="saveCurrentData">确认
+      @click="saveCurrentData()">确认
       </el-button>
     </el-footer>
   </el-container>
@@ -31,7 +35,7 @@ export default {
   name: 'FloorPlan',
   data() {
    return {
-    db: '',
+    // db: '',
     position: '',
     row: '',
     column: '',
@@ -50,38 +54,39 @@ export default {
     currentData: Array
   },
   methods: {
-    async saveCurrentData() {
-      this.db.collection('floorplan')
+    saveCurrentData() {
+      this.$db.collection('floorplan')
         .update({
           row: this.row,
           column: this.column
         })
-      this.db.collection('table')
+      this.$db.collection('table')
         .where({
-          restaurant: this.db.command.eq(this.restaurant),
+          restaurant: this.$db.command.eq(this.restaurant),
         })
         .remove()
       for(var i=1;i<=this.row*this.column;i++){
-        await this.db.collection('table')
+        this.$db.collection('table')
           .add({
             restaurant: this.restaurant,
             table_id: i,
-            state: 'info'
+            state: 'info',
+            on_task: ''
         })
       }
-      location.reload()
     },
   },
   mounted() {
-    this.db = this.$app.database()
+    // this.db = this.$app.database()
     this.restaurant = JSON.parse(localStorage.getItem('restaurant'))
   }
 }
 </script>
 
 <style scoped>
-  .el-input {
+  .el-select {
     width: 100px !important;
+    margin-right: 20px;
   }
   .el-row {
     height: 70px;
@@ -89,10 +94,10 @@ export default {
   .el-col {
     text-align: center;
   }
+  .el-main {
+    height: 500px;
+  }
   .el-footer {
     text-align: center;
-  }
-  .el-input {
-    margin-right: 20px;
   }
 </style>
