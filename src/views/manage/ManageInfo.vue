@@ -1,9 +1,9 @@
 <template>
   <div>
     <p>个人信息</p>
-    <el-avatar :size="80" src="https://empty">
-      <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
-    </el-avatar>
+    <el-avatar :size="80" :src="head">
+    </el-avatar><p></p>
+    <!-- <el-button size="mini" @click="changeHead">点击切换头像</el-button> -->
     <p></p>
     <el-descriptions>
       <el-descriptions-item label="账号">{{account}}</el-descriptions-item>
@@ -43,15 +43,25 @@
         this.$router.push('/')
         localStorage.clear()
         location.reload()
-      }
+      },
+      // changeHead(){
+      //   this.$db.collection("manage")
+      //     .where({
+      //       account: this.account,
+      //     })
+      //     .get()
+      //     .then((res) => {
+      //       console.log(res.data[0])
+      //     })
+      // }
     },
     async mounted() {
       if(localStorage.getItem("account")!==null||localStorage.getItem("account")!==undefined){
         this.account = await JSON.parse(localStorage.getItem("account"))
       }
-      // if(localStorage.getItem("head")!==null || localStorage.getItem("head")!==undefined){
-      //   this.head = await JSON.parse(localStorage.getItem("head"))
-      // } 
+      if(localStorage.getItem("head")!==null || localStorage.getItem("head")!==undefined){
+        this.head = await JSON.parse(localStorage.getItem("head"))
+      } 
     },
   }
 </script>
