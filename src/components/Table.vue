@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-button id="button-table" :type="getState()" round :plain="plain"
-    @click="showInfo=true">
+    @click="showDialog=true">
       {{ tableId }}
     </el-button>
     <el-dialog title="餐桌状态" width="30%" center 
-    :visible.sync="showInfo">
+    :visible.sync="showDialog">
       <el-descriptions title="客人信息" :column="1" border
       v-if="position!=='host'">
         <el-descriptions-item label="落座时间" size="mini"> 
@@ -37,7 +37,7 @@
           前往服务
         </el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='waiter'">
+        v-if="position==='waiter'" @click="goOrder()">
           点餐
         </el-button>
         <el-button id="button-order" type="primary" plain
@@ -45,7 +45,7 @@
           标记结束用餐
         </el-button>
         <el-button id="button-order" type="primary" plain
-        v-if="position==='busboy'">
+        v-if="position==='busboy'" @click="goServe()">
           前往清理
         </el-button>
         <el-button id="button-order" type="primary" plain
@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       staffId: '',
-      showInfo: false,
+      showDialog: false,
       beginTime: '',
       number: '',
       state: '',
@@ -77,7 +77,6 @@ export default {
   },
   mounted() {
     this.staffId = JSON.parse(localStorage.getItem('account'))
-    // this.db = this.$app.database()
     this.$db.collection('table')
       .where({
         restaurant: this.restaurant,
@@ -141,11 +140,11 @@ export default {
         })
         .then(()=>{
           this.$message({
-            message: '标记成功！',
+            message: '标记成功!',
             type: 'success'
           })
         })
-      this.showInfo = false
+      this.showDialog = false
     },
     markEnd() {
       this.state = 'warning'
@@ -161,11 +160,11 @@ export default {
         })
         .then(()=>{
           this.$message({
-            message: '标记成功！',
+            message: '标记成功!',
             type: 'success'
           })
         })
-      this.showInfo = false
+      this.showDialog = false
     },
     markCleaned() {
       this.state = 'info'
@@ -179,11 +178,11 @@ export default {
         })
         .then(()=>{
           this.$message({
-            message: '标记成功！',
+            message: '标记成功!',
             type: 'success'
           })
         })
-      this.showInfo = false
+      this.showDialog = false
     },
     goServe() {
       this.$db.collection('task')
@@ -204,8 +203,16 @@ export default {
         })
         .then((res) => {
           this.state = res.data[0].state
+          this.$message({
+            message: '已接受任务!',
+            type: 'success'
+          })
         })
+      this.showDialog = false
     },
+    goOrder() {
+      
+    }
   }
 }
 </script>

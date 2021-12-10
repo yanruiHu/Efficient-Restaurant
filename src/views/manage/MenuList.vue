@@ -138,7 +138,7 @@
             image: fileId
           })
           .then(() => {
-            this.$message("添加菜品成功！")
+            this.$message("添加菜品成功!")
             this.viewAddBox = false
             location.reload(true)
           })
@@ -161,7 +161,7 @@
             .then(() => {
               this.$message({
                 type: 'success',
-                message: "删除成功！"
+                message: "删除成功!"
               })
             });
         }).catch(() => {
@@ -225,7 +225,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .dish-box {
     margin: 0
   }

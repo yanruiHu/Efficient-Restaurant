@@ -37,17 +37,16 @@
         <el-menu-item index="2" v-if="position!=='chef'" 
         @click="toFloorPlanBar()">
           <i class="el-icon-view"></i>
-          <span slot="title">餐桌平面图</span>
+          <span>餐桌平面图</span>
         </el-menu-item>
         <el-menu-item index="3" v-if="position==='chef'" 
         @click="toCookAssign()">
           <i class="el-icon-tickets"></i>
-          <span slot="title">出菜分配表</span>
+          <span>出菜分配表</span>
         </el-menu-item>
         <el-menu-item index="4">
           <i class="el-icon-bell"></i>
-          <span slot="title" v-if="onTask()">任务！</span>
-          <!-- <el-badge :value="newTask===true" /> -->
+          <span v-if="onTask()">任务!</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -64,7 +63,6 @@
       return {
         staffId: '',
         restaurant: '',
-        // db: '',
         name: '',
         newTask: false,
         position: '',
@@ -121,7 +119,6 @@
       }
     },
     mounted() {
-      // this.$db = this.$app.database()
       this.staffId = JSON.parse(localStorage.getItem('account'))
       this.position = JSON.parse(localStorage.getItem('position'))
       this.name = JSON.parse(localStorage.getItem('name'))
@@ -136,7 +133,7 @@
   }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
-    height: 600px;
+    height: 700px;
   }
   .el-aside {
     width: 210px !important;
