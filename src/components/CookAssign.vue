@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col v-for="item in assignData" 
+    <el-col v-for="item in assignData"
     :key="item" :span="4">
       <span>工号:{{ item }}</span>
       <Assign :staffId="item"></Assign>
@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       restaurant: '',
-      assignData: ''
+      assignData: []
     }
   },
   methods: {
@@ -24,19 +24,17 @@ export default {
   },
   mounted() {
     this.restaurant = JSON.parse(localStorage.getItem('restaurant'))
-    this.$db.collection('cook_assign')
+    this.$db.collection('staff')
       .where({
         restaurant: this.restaurant,
-        state: true,
+        position: "cooker"
       })
       .get()
       .then((res) => {
-        var data = []
+        console.log(res)
         for(var i in res.data){
-          data.push(res.data[i].staff_id)
+          this.assignData.push(res.data[i].account)
         }
-        this.assignData = Array.from(new Set(data))
-        console.log(this.assignData)
       })
   }
 }

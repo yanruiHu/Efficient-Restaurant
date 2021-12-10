@@ -225,7 +225,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .dish-box {
     margin: 0
   }

@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-button id="button-table" :type="getState()" round :plain="plain"
-    @click="showInfo=true">
+    @click="showDialog=true">
       {{ tableId }}
     </el-button>
     <el-dialog title="餐桌状态" width="30%" center 
-    :visible.sync="showInfo">
+    :visible.sync="showDialog">
       <el-descriptions title="客人信息" :column="1" border
       v-if="position!=='host'">
         <el-descriptions-item label="落座时间" size="mini"> 
@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       staffId: '',
-      showInfo: false,
+      showDialog: false,
       beginTime: '',
       number: '',
       state: '',
@@ -144,7 +144,7 @@ export default {
             type: 'success'
           })
         })
-      this.showInfo = false
+      this.showDialog = false
     },
     markEnd() {
       this.state = 'warning'
@@ -164,7 +164,7 @@ export default {
             type: 'success'
           })
         })
-      this.showInfo = false
+      this.showDialog = false
     },
     markCleaned() {
       this.state = 'info'
@@ -182,7 +182,7 @@ export default {
             type: 'success'
           })
         })
-      this.showInfo = false
+      this.showDialog = false
     },
     goServe() {
       this.$db.collection('task')
@@ -208,7 +208,7 @@ export default {
             type: 'success'
           })
         })
-      this.showInfo = false
+      this.showDialog = false
     },
     goOrder() {
       
