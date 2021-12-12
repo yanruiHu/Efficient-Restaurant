@@ -41,13 +41,13 @@ export default {
     }
   },
   props: {
-    staffId: String
+    staffAccount: String
   },
   mounted() {
     this.timer = setInterval(() => {
       this.$db.collection('cook_assign')
         .where({
-          staff_id: this.staffId,
+          staff_account: this.staffAccount,
           state: true
         })
         .get()
@@ -67,14 +67,14 @@ export default {
           this.$db.collection('task')
             .add({
             // 此处应该通过算法智能选择某空闲的员工
-              staff_id: '77777777',
+              staff_account: '77777777',
               table_id: this.tableId,
               task: 'serve',
               state: true
             })
           this.$message({
             message: '出餐成功!',
-            type: 'success',
+            type: 'success'
           })
         })
       this.showDialog = false

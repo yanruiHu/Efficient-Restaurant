@@ -3,7 +3,7 @@
     <el-col v-for="item in assignData"
     :key="item" :span="4">
       <span>工号:{{ item }}</span>
-      <Assign :staffId="item"></Assign>
+      <Assign :staffAccount="item"></Assign>
     </el-col>
   </el-row>
 </template>
@@ -27,7 +27,7 @@ export default {
     this.$db.collection('staff')
       .where({
         restaurant: this.restaurant,
-        position: "cooker"
+        position: "cook"
       })
       .get()
       .then((res) => {
@@ -42,7 +42,9 @@ export default {
 
 <style scoped>
   .el-row {
+    margin: 20px 30px;
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
   }
 </style>

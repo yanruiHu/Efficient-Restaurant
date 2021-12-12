@@ -1,13 +1,14 @@
 <template>
   <div>
-    <el-button id="button-table" :type="getState()" round :plain="plain"
+    <el-button id="button-table" round 
+    :type="getState()" :plain="plain"
     @click="showDialog=true">
       {{ tableId }}
     </el-button>
     <el-dialog title="餐桌状态" width="30%" center 
     :visible.sync="showDialog">
-      <el-descriptions title="客人信息" :column="1" border
-      v-if="position!=='host'">
+      <el-descriptions title="客人信息" border 
+      :column="1" v-if="position!=='host'">
         <el-descriptions-item label="落座时间" size="mini"> 
           {{ beginTime }} 
         </el-descriptions-item>
@@ -42,7 +43,7 @@
         </el-button>
         <el-button id="button-order" type="primary" plain
         v-if="position==='waiter'" @click="markEnd()">
-          标记结束用餐
+          结束用餐
         </el-button>
         <el-button id="button-order" type="primary" plain
         v-if="position==='busboy'" @click="goServe()">
@@ -62,7 +63,7 @@ export default {
   name: 'Table',
   data() {
     return {
-      staffId: '',
+      staffAccount: '',
       showDialog: false,
       beginTime: '',
       number: '',
@@ -76,7 +77,7 @@ export default {
     position: String,
   },
   mounted() {
-    this.staffId = JSON.parse(localStorage.getItem('account'))
+    this.staffAccount = JSON.parse(localStorage.getItem('account'))
     this.$db.collection('table')
       .where({
         restaurant: this.restaurant,
@@ -105,7 +106,7 @@ export default {
             if(mydata==null){
               return
             }
-            else if(this.staffId == mydata.doc.on_task){
+            else if(this.staffAccount == mydata.doc.on_task){
                 this.state = 'danger'
                 this.plain = false
             }
@@ -156,9 +157,11 @@ export default {
         })
         .update({
           state: this.state,
-          end_time: (new Date()).toLocaleTimeString()
+          end_time: (new Date()).toLocaleTimeString(),
         })
         .then(()=>{
+          this.number = ''
+          this.beginTime = ''
           this.$message({
             message: '标记成功!',
             type: 'success'
@@ -187,7 +190,7 @@ export default {
     goServe() {
       this.$db.collection('task')
         .where({
-          staff_id: this.staffId,
+          staff_account: this.staffAccount,
           state: true
         })
         .update({
@@ -211,7 +214,11 @@ export default {
       this.showDialog = false
     },
     goOrder() {
-      
+      this.$router.push({
+        path: '/staffhome/order',
+        query: {
+          tableId: this.tableId
+        }})
     }
   }
 }

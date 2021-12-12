@@ -60,7 +60,7 @@
               <el-option label="前台" value="host"></el-option>
               <el-option label="服务员" value="waiter"></el-option>
               <el-option label="主厨" value="chef"></el-option>
-              <el-option label="厨师" value="cooker"></el-option>
+              <el-option label="厨师" value="cook"></el-option>
               <el-option label="清洁工" value="busboy"></el-option>
             </el-select>
           </el-form-item>

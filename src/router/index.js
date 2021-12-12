@@ -12,7 +12,8 @@ import ManageHome from "../views/manage/ManageHome.vue";
 import StaffList from "../views/manage/StaffList.vue";
 import MenuList from "../views/manage/MenuList.vue";
 import Table from "../components/Table.vue";
-import CookAssign from "../components/CookAssign";
+import CookAssign from "../components/CookAssign.vue";
+import Order from "../components/Order.vue";
 
 
 Vue.use(VueRouter);
@@ -45,6 +46,11 @@ const routes = [
       {
         path: '/staffhome/cookassign',
         component: CookAssign
+      },
+      {
+        path: '/staffhome/order',
+        component: Order,
+        name: 'Order'
       }
     ]
   },
@@ -59,7 +65,7 @@ const routes = [
       {
         path: '/stafflist',
         component: StaffList
-      }
+      },
     ]
   },
   {
@@ -67,8 +73,8 @@ const routes = [
     component: MenuList
   },
   {
-    path: '/Table',
-    component: Table
+    path: '/table',
+    component: Table,
   },
   {
     path: '/'

@@ -58,19 +58,15 @@ export default {
 </script>
 
 <style scoped>
-  .el-image {
-    width: 150px;
-    height: 90px;
-  }
   .el-card {
     padding: 0;
-    width: 150px;
+    /* width: 150px; */
   }
   .dish-name {
     font-size: 16px;
   }
   .price {
-    font-size: 13px;
+    font-size: 14px;
     margin-right: 15px;
   }
   .content {
