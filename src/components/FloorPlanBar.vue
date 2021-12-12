@@ -1,9 +1,10 @@
 <template>
   <el-container direction="horizontal">
     <el-main>
+      <h2>实时用餐情况</h2>
       <FloorPlan :currentData="data"></FloorPlan>
     </el-main>
-    <el-aside>
+    <el-aside :class="isCollapse?'el-aside-narrow':'el-aside-wide'">
       <span class="demo-free">空闲</span>
       <span class="demo-busy">用餐中</span>
       <span class="demo-clean">待清洁</span>
@@ -24,6 +25,7 @@ export default {
     return {
       data: ['', '', ''],
       position: '',
+      isCollapse: false
     }
   },
   methods: {
@@ -38,6 +40,9 @@ export default {
   mounted() {
     this.position = JSON.parse(localStorage.getItem('position'))
     this.setData(this.position)
+    if(document.documentElement.clientWidth < 800){
+          this.isCollapse = true
+        }
   }
 }
 </script>
@@ -46,7 +51,17 @@ export default {
   .el-aside {
     display: flex;
     flex-flow: column;
-    width: 110px !important;
+    border-left: 1.5px solid #eee;
+  }
+  .el-aside-wide {
+    width: 180px !important;
+  }
+  .el-aside-narrow {
+    width: 80px !important;
+  }
+  h2 {
+    text-align: center;
+    margin: 15px 0 5px;
   }
   .demo-free {
     width: 50px;
@@ -75,5 +90,8 @@ export default {
     text-align: center;
     line-height: 50px;
     margin: 30px auto 0;
+  }
+  .el-main {
+    padding: 0;
   }
 </style>
