@@ -127,7 +127,6 @@
           })
           .then((res) => {
             // 返回文件 ID
-            console.log(res.fileID);
             fileId = res.fileID;
           });
         this.$db.collection("dish_list")
