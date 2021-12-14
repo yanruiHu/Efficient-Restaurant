@@ -1,58 +1,16 @@
 <template>
-  <!-- <el-tabs :value="position">
-    <el-tab-pane label="前台" name="host" v-if="position==='host'"> -->
-      <el-container direction="horizontal">
-        <el-main>
-          <FloorPlan :currentData="data"></FloorPlan>
-        </el-main>
-        <el-aside>
-          <span class="demo-free">空闲</span>
-          <span class="demo-busy">用餐中</span>
-          <span class="demo-clean">待清洁</span>
-          <span class="demo-ontask">有任务</span>
-        </el-aside>
-      </el-container>
-    <!-- </el-tab-pane>
-    <el-tab-pane label="服务员" name="waiter" v-if="position==='waiter'">
-      <el-container>
-        <el-main>
-          <FloorPlan :currentData="data"></FloorPlan>
-        </el-main>
-        <el-aside>
-          <span class="demo-free">空闲</span>
-          <span class="demo-busy">用餐中</span>
-          <span class="demo-clean">待清洁</span>
-          <span class="demo-ontask">有任务</span>
-        </el-aside>
-      </el-container>
-    </el-tab-pane>
-    <el-tab-pane label="清洁员" name="busboy" v-if="position==='busboy'">
-      <el-container>
-        <el-main>
-          <FloorPlan :currentData="data"></FloorPlan>
-        </el-main>
-        <el-aside>
-          <span class="demo-free">空闲</span>
-          <span class="demo-busy">用餐中</span>
-          <span class="demo-clean">待清洁</span>
-          <span class="demo-ontask">有任务</span>
-        </el-aside>
-      </el-container>
-    </el-tab-pane>
-    <el-tab-pane label="经理" name="manager" v-if="position==='manager'">
-      <el-container>
-        <el-main>
-          <FloorPlan :currentData="data"></FloorPlan>
-        </el-main>
-        <el-aside>
-          <span class="demo-free">空闲</span>
-          <span class="demo-busy">用餐中</span>
-          <span class="demo-clean">待清洁</span>
-          <span class="demo-ontask">有任务</span>
-        </el-aside>
-      </el-container>
-    </el-tab-pane> -->
-  <!-- </el-tabs> -->
+  <el-container direction="horizontal">
+    <el-main>
+      <h2>实时用餐情况</h2>
+      <FloorPlan :currentData="data"></FloorPlan>
+    </el-main>
+    <el-aside :class="isCollapse?'el-aside-narrow':'el-aside-wide'">
+      <span class="demo-free">空闲</span>
+      <span class="demo-busy">用餐中</span>
+      <span class="demo-clean">待清洁</span>
+      <span class="demo-ontask">任务</span>
+    </el-aside>
+  </el-container>
 </template>
 
 <script>
@@ -65,9 +23,9 @@ export default {
   },
   data() {
     return {
-      // db: '',
       data: ['', '', ''],
       position: '',
+      isCollapse: false
     }
   },
   methods: {
@@ -80,9 +38,11 @@ export default {
     }
   },
   mounted() {
-    // this.$db = this.$app.database()
     this.position = JSON.parse(localStorage.getItem('position'))
     this.setData(this.position)
+    if(document.documentElement.clientWidth < 800){
+          this.isCollapse = true
+        }
   }
 }
 </script>
@@ -91,7 +51,17 @@ export default {
   .el-aside {
     display: flex;
     flex-flow: column;
-    width: 110px !important;
+    border-left: 1.5px solid #eee;
+  }
+  .el-aside-wide {
+    width: 180px !important;
+  }
+  .el-aside-narrow {
+    width: 80px !important;
+  }
+  h2 {
+    text-align: center;
+    margin: 15px 0 5px;
   }
   .demo-free {
     width: 50px;
@@ -116,9 +86,12 @@ export default {
   span {
     border: 1.5px solid dimgray;
     border-radius: 20px;
-    font-size: 16px;
+    font-size: 15px;
     text-align: center;
     line-height: 50px;
     margin: 30px auto 0;
+  }
+  .el-main {
+    padding: 0;
   }
 </style>

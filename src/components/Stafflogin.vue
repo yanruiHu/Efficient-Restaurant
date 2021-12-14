@@ -1,20 +1,31 @@
 <template>
   <div>
     <div class="vip">
-      <el-button @click="manageloginClick()">管理员登录</el-button>
-      <el-button @click="VIP" style="color:red">VIP通道：无需密码即可以员工身份进入(仅供开发人员测试)</el-button>
+      <el-button 
+      @click="manageloginClick()">
+        管理员登录
+      </el-button>
+      <el-button style="color:red"
+      @click="VIP">
+        VIP通道: 无需密码即可以员工身份进入(仅供开发人员测试)
+      </el-button>
     </div>
     <div>
       <el-form class="login-box">
         <h3 class="login-title">员工登录</h3>
         <el-form-item label="账号" prop="name">
-          <el-input type="text" placeholder="请输入用户名" v-model="account"></el-input>
+          <el-input type="text" placeholder="请输入用户名" v-model="account">
+          </el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="password" placeholder="请输入密码" v-model="password"></el-input>
+          <el-input type="password" placeholder="请输入密码" v-model="password">
+          </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="Login()">登录</el-button>
+          <el-button type="primary" 
+          @click="Login()">
+            登录
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -59,8 +70,6 @@
       }
     },
     mounted() {
-      // this.db = this.$app.database()
-      // localStorage.clear()
     }
   }
 </script>

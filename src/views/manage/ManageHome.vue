@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-container style="height: 200%; border: 1px solid #eee">
+    <el-container style="height: 100%; border: 1px solid #eee">
       <el-container>
-        <el-aside width="150px">
+        <el-aside width="10%">
           <el-tabs :tab-position="tabPosition" style="height: 600px;" @tab-click="tabEvent">
             <el-tab-pane label="员工管理"></el-tab-pane>
             <el-tab-pane label="餐厅界面设置" @click="interfaceSettings">
@@ -11,12 +11,12 @@
             <el-tab-pane label="个人信息" @click='personalInformation'></el-tab-pane>
           </el-tabs>
         </el-aside>
-        <el-main>
+        <el-aside width="90%">
           <StaffList v-if="choice==='stafflist'" :staffData=staffData :restaurant=restaurant></StaffList>
           <MenuList v-else-if="choice==='menulist'" :restaurant=restaurant :menu=menu :imageArray=imageArray></MenuList>
           <ManageInfo v-else-if="choice==='manageinfo'" :restaurant=restaurant :head=head></ManageInfo>
           <FloorPlanBar v-else></FloorPlanBar>
-        </el-main>
+        </el-aside>
       </el-container>
     </el-container>
     <div>
