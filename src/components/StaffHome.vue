@@ -1,20 +1,27 @@
 <template>
   <el-container>
-    <el-aside>
-      <el-menu :default-active="activeIndex" class="el-menu-vertical-demo">
+    <el-aside :class="isCollapse?'el-aside-close':'el-aside-open'">
+      <el-menu default-active="1" class="el-menu-vertical-demo"
+      :collapse="isCollapse">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-user-solid"></i>
             <span slot="title">个人信息</span>
           </template>
           <el-menu-item-group title="姓名">
-            <el-menu-item index="1-1">{{ name }}</el-menu-item>
+            <el-menu-item index="1-1">
+              {{ name }}
+            </el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group title="工号">
-            <el-menu-item index="1-2">{{ staffId }}</el-menu-item>
+            <el-menu-item index="1-2">
+              {{ staffAccount }}
+            </el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group title="职位">
-            <el-menu-item index="1-3">{{ position }}</el-menu-item>
+            <el-menu-item index="1-3">
+              {{ position }}
+            </el-menu-item>
           </el-menu-item-group>
           <el-button type="danger" size="small"
           @click="dialogVisible = true">
@@ -24,30 +31,31 @@
             <span>确定退出登录？</span>
             <template #footer>
               <span class="dialog-footer">
-                <el-button @click="dialogVisible = false">
+                <el-button
+                @click="dialogVisible = false">
                   取 消
                 </el-button>
-                <el-button type="primary" @click="toStaffLogin()">
+                <el-button type="primary"
+                @click="toStaffLogin()">
                   确 定
                 </el-button>
-                </span>
-              </template>
-            </el-dialog>
+              </span>
+            </template>
+          </el-dialog>
         </el-submenu>
-        <el-menu-item index="2" v-if="position!=='chef'" 
-        @click="toFloorPlanBar()">
+        <el-menu-item index="2" 
+        v-if="position!=='chef'" @click="toFloorPlanBar()">
           <i class="el-icon-view"></i>
-          <span slot="title">餐桌平面图</span>
+          <span>餐桌平面图</span>
         </el-menu-item>
-        <el-menu-item index="3" v-if="position==='chef'" 
-        @click="toCookAssign()">
+        <el-menu-item index="3" 
+        v-if="position==='chef'" @click="toCookAssign()">
           <i class="el-icon-tickets"></i>
-          <span slot="title">出菜分配表</span>
+          <span>出菜分配表</span>
         </el-menu-item>
         <el-menu-item index="4">
           <i class="el-icon-bell"></i>
-          <span slot="title" v-if="onTask()">任务！</span>
-          <!-- <el-badge :value="newTask===true" /> -->
+          <span v-if="onTask()" class="span-task">有任务!</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -62,13 +70,12 @@
     name: 'StaffHome',
     data() {
       return {
-        staffId: '',
+        isCollapse: false,
+        staffAccount: '',
         restaurant: '',
-        // db: '',
         name: '',
         newTask: false,
         position: '',
-        activeIndex: '1',
         dialogVisible: false
       }
     },
@@ -82,7 +89,7 @@
       onTask() {
         this.$db.collection('task')
           .where({
-            staff_id: this.staffId,
+            staff_account: this.staffAccount,
             state: true
           })
           .watch({
@@ -100,7 +107,7 @@
                   table_id: mydata.doc.table_id
                 })
                 .update({
-                  on_task: this.staffId
+                  on_task: this.staffAccount
                 })
               }
               else{
@@ -118,31 +125,44 @@
         this.$router.push('/')
         localStorage.clear()
         location.reload()
-      }
+      },
     },
     mounted() {
-      // this.$db = this.$app.database()
-      this.staffId = JSON.parse(localStorage.getItem('account'))
+      this.staffAccount = JSON.parse(localStorage.getItem('account'))
       this.position = JSON.parse(localStorage.getItem('position'))
       this.name = JSON.parse(localStorage.getItem('name'))
       this.restaurant = JSON.parse(localStorage.getItem('restaurant'))
+      if(document.documentElement.clientWidth < 800){
+          this.isCollapse = true
+        }
     },
   }
 </script>
 
 <style scoped>
   .el-container {
-    border: 1.5px solid #eee;
+    border-top: 1px solid #eee;
+    max-height: 600px;
   }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    height: 600px;
+    width: 190px;
+    height: 500px;
   }
-  .el-aside {
-    width: 210px !important;
+  .el-aside-open {
+    width: 200px !important;
+  }
+  .el-aside-close {
+    width: 70px !important;
   }
   .el-button {
     margin-top: 5px;
-    margin-left: 40px;
+    margin-left: 35px;
+  }
+  .el-main {
+    padding: 0;
+    height: 700px;
+  }
+  .span-task {
+    color: #F56C6C;
   }
 </style>

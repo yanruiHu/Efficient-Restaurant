@@ -1,35 +1,41 @@
 <template>
   <div>
     <div>
-      <el-button @click="waiterloginClick">服务员登录</el-button>
+      <el-button @click="waiterloginClick">
+        服务员登录
+      </el-button>
     </div>
     <div>
       <el-form class="login-box">
         <h3 class="login-title">管理员注册</h3>
-
         <el-form-item label="餐厅" prop="restaurant">
-          <el-input type="text" placeholder="请输入餐厅名" v-model="restaurant"></el-input>
+          <el-input type="text" placeholder="请输入餐厅名" v-model="restaurant">
+          </el-input>
         </el-form-item>
-
         <el-form-item label="账号" prop="name">
-          <el-input type="text" placeholder="请输入账号" v-model="account"></el-input>
+          <el-input type="text" placeholder="请输入账号" v-model="account">
+          </el-input>
         </el-form-item>
-
         <el-form-item label="密码" prop="password">
-          <el-input type=password placeholder="请输入密码" v-model="password"></el-input>
+          <el-input type=password placeholder="请输入密码" v-model="password">
+          </el-input>
         </el-form-item>
-
         <el-form-item label="验证密码" prop="confirm">
-          <el-input type=password placeholder="请再次输入密码" v-model="confirm"></el-input>
+          <el-input type=password placeholder="请再次输入密码" v-model="confirm">
+          </el-input>
         </el-form-item>
-
         <el-form-item>
-          <el-button type="primary" @click="Register">注册</el-button>
-          <el-button type="primary" @click="Back">返回</el-button>
+          <el-button type="primary" 
+          @click="Register">
+            注册
+          </el-button>
+          <el-button type="primary" 
+          @click="Back">
+            返回
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
-
   </div>
 </template>
 
@@ -42,7 +48,6 @@
         account: null,
         password: null,
         confirm: null,
-        // db: null
       }
     },
     methods: {
@@ -51,7 +56,7 @@
       },
       async Register() {
         if(this.restaurant==null||this.account==null||this.password==null){
-          this.$message("请填完注册信息！")
+          this.$message("请填完注册信息!")
           return
         }
         let isRestaurantExist = false
@@ -103,7 +108,7 @@
             restaurant: this.restaurant
           })
           .then(()=>{
-            this.$message("创建用户成功！")
+            this.$message("创建用户成功!")
             this.$router.push('/managelogin')
           })
         this.$db.collection("restaurant")
@@ -116,7 +121,6 @@
       }
     },
     mounted() {
-      // this.db = this.$app.database();
     },
   }
 </script>

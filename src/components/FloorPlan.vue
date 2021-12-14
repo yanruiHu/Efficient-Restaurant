@@ -1,10 +1,9 @@
 <template>
   <el-container direction="vertical">
     <el-main>
-      <el-row v-for="rowIndex in Number(row)" :key="rowIndex"
-      type="flex" justify="space-between">
-        <el-col v-for="colIndex in Number(column)" :key="colIndex"
-        :span="Math.floor(24/column)">
+      <el-row type="flex" justify="start"
+      v-for="rowIndex in Number(row)" :key="rowIndex" >
+        <el-col v-for="colIndex in Number(column)" :key="colIndex">
           <Table :restaurant="restaurant" :position="position"
           :tableId="column*(rowIndex-1)+colIndex"></Table>
         </el-col>
@@ -35,11 +34,9 @@ export default {
   name: 'FloorPlan',
   data() {
    return {
-    // db: '',
     position: '',
     row: '',
     column: '',
-    id: 1,
     restaurant: '',
    }
   },
@@ -77,7 +74,6 @@ export default {
     },
   },
   mounted() {
-    // this.db = this.$app.database()
     this.restaurant = JSON.parse(localStorage.getItem('restaurant'))
   }
 }
