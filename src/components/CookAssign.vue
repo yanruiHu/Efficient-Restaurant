@@ -3,7 +3,7 @@
     <el-col v-for="item in assignData"
     :key="item" :span="4">
       <span>工号:{{ item }}</span>
-      <Assign :staffAccount="item"></Assign>
+      <Assign :cookAccount="item" :waiterAccounts="waiterAccounts"></Assign>
     </el-col>
   </el-row>
 </template>
@@ -16,7 +16,8 @@ export default {
   data() {
     return {
       restaurant: '',
-      assignData: []
+      assignData: [],
+      waiterAccounts: []
     }
   },
   methods: {
@@ -27,13 +28,23 @@ export default {
     this.$db.collection('staff')
       .where({
         restaurant: this.restaurant,
-        position: "cook"
+        position: 'cook'
       })
       .get()
       .then((res) => {
-        console.log(res)
         for(var i in res.data){
           this.assignData.push(res.data[i].account)
+        }
+      })
+    this.$db.collection('staff')
+      .where({
+        restaurant: this.restaurant,
+        position: 'waiter'
+      })
+      .get()
+      .then((res) => {
+        for(var i in res.data){
+          this.waiterAccounts.push(res.data[i].account)
         }
       })
   }

@@ -75,6 +75,8 @@ export default {
     tableId: Number,
     restaurant: String,
     position: String,
+    busboyAccounts: Array,
+    waiterAccounts: Array
   },
   mounted() {
     this.staffAccount = JSON.parse(localStorage.getItem('account'))
@@ -94,6 +96,7 @@ export default {
       })
   },
   methods: {
+    // 获取餐桌实时状态
     getState() {
       this.$db.collection('table')
         .where({
@@ -126,6 +129,7 @@ export default {
         })
       return this.state
     },
+    // 前台标记某餐桌, 并通知服务员
     markBegin() {
       this.state = 'primary'
       this.plain = false
@@ -139,6 +143,13 @@ export default {
           state: this.state,
           begin_time: (new Date()).toLocaleTimeString()
         })
+      this.$db.collection('task')
+        .add({
+          staff_account: this.waiterAccounts[Math.floor(Math.random()*this.waiterAccounts.length)],
+          table_id: this.tableId,
+          task: 'order',
+          state: true
+        })
         .then(()=>{
           this.$message({
             message: '标记成功!',
@@ -147,6 +158,7 @@ export default {
         })
       this.showDialog = false
     },
+    // 服务员标记某餐桌用餐结束, 并通知清洁员
     markEnd() {
       this.state = 'warning'
       this.plain = false
@@ -159,6 +171,13 @@ export default {
           state: this.state,
           end_time: (new Date()).toLocaleTimeString(),
         })
+      this.$db.collection('task')
+        .add({
+          staff_account: this.busboyAccounts[Math.floor(Math.random()*this.busboyAccounts.length)],
+          table_id: this.tableId,
+          task: 'clean',
+          state: true
+        })
         .then(()=>{
           this.number = ''
           this.beginTime = ''
@@ -169,6 +188,7 @@ export default {
         })
       this.showDialog = false
     },
+    // 清洁员清洁完毕, 更新餐桌状态
     markCleaned() {
       this.state = 'info'
       this.$db.collection('table')
@@ -187,6 +207,7 @@ export default {
         })
       this.showDialog = false
     },
+    // 服务员接受为某桌点菜或上菜的任务
     goServe() {
       this.$db.collection('task')
         .where({
@@ -213,6 +234,7 @@ export default {
         })
       this.showDialog = false
     },
+    // 跳转菜单页面
     goOrder() {
       this.$router.push({
         path: '/staffhome/order',
