@@ -1,13 +1,14 @@
 <template>
   <el-container>
     <el-main>
+      <!-- <h2>菜单</h2> -->
       <el-row>
         <el-col v-for="(dish, index) in dishList"
-        :key="index" :span="7">
+        :key="index" :span="5">
           <Dish :id="dish._id"></Dish>
           <span>
             <el-input-number size="mini" 
-            :min="0" :max="10" v-model="dishOrder[index].num">
+            :min="0" :max="10" v-model="dishOrder[index].num" :step="1">
             </el-input-number>
             <el-button size="mini"
             @click="addRemark(index)">
@@ -18,11 +19,14 @@
       </el-row>
     </el-main>
     <el-footer>
+      <el-button @click="goBack()">
+        返回
+      </el-button>
       <el-button type="primary"
       @click="showDialog = true">
         提交点单
       </el-button>
-      <el-dialog title="确认点单" width="50%"
+      <el-dialog title="确认点单" width="40%"
       :visible.sync="showDialog">
         <el-row type="flex" justify="space-around" :gutter="30">
           <el-col :span="6">菜品名</el-col>
@@ -70,7 +74,7 @@ export default {
       dishOrder: [],
       restaruant: '',
       showDialog: false,
-      staffAccounts: []
+      cookAccounts: []
     }
   },
   async mounted() {
@@ -100,7 +104,7 @@ export default {
       .get()
       .then((res) => {
         for(var i in res.data){
-          this.staffAccounts.push(res.data[i].account)
+          this.cookAccounts.push(res.data[i].account)
         }
       })
   },
@@ -115,7 +119,7 @@ export default {
               table_id: this.tableId,
               state: true,
               // 暂时根据餐厅厨师数随机分配
-              staff_account: this.staffAccounts[Math.floor(Math.random()*this.staffAccounts.length)],
+              staff_account: this.cookAccounts[Math.floor(Math.random()*this.cookAccounts.length)],
               remark: this.dishOrder[i].remark
           })
         }
@@ -142,6 +146,9 @@ export default {
     },
     getDishOrder() {
       console.log(this.dishOrder)
+    },
+    goBack() {
+      this.$router.go(-1)
     }
   }
 }
@@ -150,6 +157,10 @@ export default {
 <style scoped>
   .el-main {
     max-height: 400px;
+  }
+  h2 {
+    text-align: center;
+    margin-top: 0;
   }
   .el-footer {
     display: flex;
@@ -160,7 +171,7 @@ export default {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    row-gap: 20px;
+    row-gap: 15px;
   }
   .el-main .el-col {
     display: flex;
@@ -168,9 +179,22 @@ export default {
     align-items: center;
   }
   .el-input-number {
-    width: 100px;
+    width: 70px;
+  }
+  .el-input-number >>> .el-input-number__increase {
+    width: 20px;
+  }
+  .el-input-number >>> .el-input-number__decrease {
+    width: 20px;
+  }
+  .el-input-number >>> .el-input__inner {
+    padding-left: 0;
+    padding-right: 0;
   }
   .el-divider {
     margin: 8px 0;
+  }
+  .el-col span {
+    margin-top: 5px;
   }
 </style>

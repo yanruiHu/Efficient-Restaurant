@@ -4,8 +4,11 @@
       <el-row type="flex" justify="start"
       v-for="rowIndex in Number(row)" :key="rowIndex" >
         <el-col v-for="colIndex in Number(column)" :key="colIndex">
-          <Table :restaurant="restaurant" :position="position"
-          :tableId="column*(rowIndex-1)+colIndex"></Table>
+          <Table :restaurant="restaurant" 
+          :position="position"
+          :tableId="column*(rowIndex-1)+colIndex" :busboyAccounts="busboyAccounts"
+          :waiterAccounts="waiterAccounts">
+          </Table>
         </el-col>
       </el-row>
     </el-main>
@@ -38,6 +41,8 @@ export default {
     row: '',
     column: '',
     restaurant: '',
+    busboyAccounts: [],
+    waiterAccounts: []
    }
   },
   watch: {
@@ -75,6 +80,28 @@ export default {
   },
   mounted() {
     this.restaurant = JSON.parse(localStorage.getItem('restaurant'))
+    this.$db.collection('staff')
+      .where({
+        restaurant: this.restaurant,
+        position: 'busboy'
+      })
+      .get()
+      .then((res) => {
+        for(var i in res.data){
+          this.busboyAccounts.push(res.data[i].account)
+        }
+      })
+    this.$db.collection('staff')
+      .where({
+        restaurant: this.restaurant,
+        position: 'waiter'
+      })
+      .get()
+      .then((res) => {
+        for(var i in res.data){
+          this.waiterAccounts.push(res.data[i].account)
+        }
+      })
   }
 }
 </script>
