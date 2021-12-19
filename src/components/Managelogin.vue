@@ -47,29 +47,20 @@
       toRegister() {
         this.$router.push('/manageregister')
       },
-      Login() {
-        this.$db.collection("manage")
+      async Login() {
+        await this.$db.collection("manage")
           .where({
             account: this.account,
             password: this.password,
           })
           .get()
-          .then((res) => {
+          .then(async (res) => {
             console.log(res)
             if (res.data.length == 1) {
               console.log(res.data)
               localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant))
               localStorage.setItem('account', JSON.stringify(res.data[0].account))
-              localStorage.setItem('address', JSON.stringify(res.data[0].address))
-              localStorage.setItem('head', JSON.stringify(res.data[0].head))
               localStorage.setItem('position', JSON.stringify('manager'))
-              this.$app
-                .getTempFileURL({
-                  fileList: [res.data[0].head]
-                })
-                .then((res) => {
-                  localStorage.setItem('head', JSON.stringify(res.fileList[0].tempFileURL))
-                });
               this.$router.push('./managehome')
             }
             else {
