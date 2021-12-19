@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container class="out-container">
     <el-aside :class="isCollapse?'el-aside-close':'el-aside-open'">
       <el-menu default-active="1" class="el-menu-vertical-demo"
       :collapse="isCollapse">
@@ -27,22 +27,6 @@
           @click="showDialog = true">
             退出登录
           </el-button>
-          <el-dialog title="提示" width="30%"
-          :visible.sync="showDialog">
-            <span>确定退出登录？</span>
-            <template #footer>
-              <span class="dialog-footer">
-                <el-button
-                @click="showDialog = false">
-                  取 消
-                </el-button>
-                <el-button type="primary"
-                @click="toStaffLogin()">
-                  确 定
-                </el-button>
-              </span>
-            </template>
-          </el-dialog>
         </el-submenu>
         <el-menu-item index="2" 
         v-if="position!=='chef'" @click="toFloorPlanBar()">
@@ -54,17 +38,29 @@
           <i class="el-icon-tickets"></i>
           <span>出菜分配表</span>
         </el-menu-item>
-        <el-menu-item index="4" @click="showTask()">
+         <el-menu-item index="4" @click="showTask()">
           <el-badge is-dot :hidden="!onTask()">
             <i class="el-icon-bell"></i>
           </el-badge>
           <span>任务</span>
-          <!-- <span class="span-task"
-          v-if="onTask()">
-            有任务!
-          </span> -->
         </el-menu-item>
       </el-menu>
+      <el-dialog title="提示" width="30%"
+      :visible.sync="showDialog" :append-to-body="true">
+        <span>确定退出登录？</span>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button
+            @click="showDialog = false">
+              取 消
+            </el-button>
+            <el-button type="primary"
+            @click="toStaffLogin()">
+              确 定
+            </el-button>
+          </span>
+        </template>
+      </el-dialog>
     </el-aside>
     <el-main>
       <router-view></router-view>
@@ -163,13 +159,15 @@
 </script>
 
 <style scoped>
-  .el-container {
+  .out-container {
     border-top: 1px solid #eee;
-    max-height: 600px;
+    background-color: white;
+    opacity: 0.95;
+    height: 75%;
+    /* max-height: 600px; */
   }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 190px;
-    height: 500px;
   }
   .el-aside-open {
     width: 200px !important;
@@ -183,12 +181,11 @@
   }
   .el-main {
     padding: 0;
-    height: 700px;
   }
-  i {
-    font-size: 22px !important;
+  .span-task {
+    color: #F56C6C;
   }
   .el-badge {
-    line-height: 36px;
+    line-height: 30px;
   }
 </style>

@@ -126,7 +126,6 @@
 </script>
 
 <style scoped>
-
   .login-box{
     width: 250px;
     margin: 100px auto;
@@ -139,10 +138,7 @@
     border-radius: 8px;
     box-shadow: 0 0 30px #DCDFE6;
   }
-
   .login-title{
     text-align: center;
   }
-
-
 </style>

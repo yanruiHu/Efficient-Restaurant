@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="vip">
+    <!-- <div class="vip">
       <el-button @click="waiterloginClick">
         员工登录
       </el-button>
       <el-button @click="VIP" style="color:red">
         VIP通道: 无需密码即可以管理员身份进入(仅供开发人员测试)
       </el-button>
-    </div>
+    </div> -->
     <div>
       <el-form class="login-box">
         <h3 class="login-title">管理员登录</h3>
@@ -83,7 +83,7 @@
 <style scoped>
   .login-box {
     width: 250px;
-    margin: 100px auto;
+    margin: 40px auto;
     border: 1px solid #DCDFE6;
     padding: 20px;
     position: absolute;
@@ -91,17 +91,16 @@
     top: 40%;
     transform: translate(-50%, -50%);
     border-radius: 8px;
-    box-shadow: 0 0 30px #DCDFE6;
+    /* box-shadow: 0 0 30px #DCDFE6; */
+    background-color: white;
+    opacity: 0.95;
   }
-
   .login-title {
     text-align: center;
   }
-
   .vip {
     text-align: center;
   }
-
   .el-form-item {
     text-align: center;
   }

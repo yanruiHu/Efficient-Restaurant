@@ -68,7 +68,6 @@
         .then((res) => {
           this.head_id = res.data[0].head
         })
-      // this.db = this.$app.database()
       await this.$db.collection("staff")
         .where({
           restaurant: this.restaurant
@@ -145,3 +144,10 @@
     },
   }
 </script>
+
+<style scoped>
+  .el-container {
+    background-color: white;
+    opacity: 0.95;
+  }
+</style>

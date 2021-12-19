@@ -13,7 +13,7 @@
     <el-button size="small" @click="isViewAlterBox = true">信息设置</el-button>
     <el-button size="small" @click="isViewAlpassBox = true">修改密码</el-button>
     <el-button size="small" type="danger" @click="dialogVisible = true">退出登录</el-button>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog :visible.sync="dialogVisible" :append-to-body="true">
       <span>确定退出登录？</span>
       <template #footer>
         <span class="dialog-footer">
@@ -22,7 +22,7 @@
         </span>
       </template>
     </el-dialog>
-    <el-dialog :visible.sync="isViewAlterBox">
+    <el-dialog :visible.sync="isViewAlterBox" :append-to-body="true">
       <el-form>
         <el-form-item label="修改头像"></el-form-item>
         <a type="button" class="layui-btn layui-btn-primary">
@@ -37,7 +37,7 @@
         <el-button type="primary" @click="alterInfo">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog :visible.sync="isViewAlpassBox">
+    <el-dialog :visible.sync="isViewAlpassBox" :append-to-body="true">
       <el-form>
         <el-form-item label="原密码">
           <el-input v-model="oldPassword" type="password"></el-input>

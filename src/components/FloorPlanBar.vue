@@ -48,6 +48,9 @@ export default {
 </script>
 
 <style scoped>
+  .el-container {
+    height: 90% !important;
+  }
   .el-aside {
     display: flex;
     flex-flow: column;
@@ -67,6 +70,7 @@ export default {
     width: 50px;
     height: 50px;
     background-color: #f4f4f5;
+    margin-top: 50px;
   }
   .demo-busy {
     width: 50px;
@@ -89,7 +93,7 @@ export default {
     font-size: 15px;
     text-align: center;
     line-height: 50px;
-    margin: 30px auto 0;
+    margin: 25px auto 0;
   }
   .el-main {
     padding: 0;
