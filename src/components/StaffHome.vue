@@ -54,12 +54,15 @@
           <i class="el-icon-tickets"></i>
           <span>出菜分配表</span>
         </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-bell"></i>
-          <span class="span-task"
-          v-if="onTask()" @click="showTask()">
+        <el-menu-item index="4" @click="showTask()">
+          <el-badge is-dot :hidden="!onTask()">
+            <i class="el-icon-bell"></i>
+          </el-badge>
+          <span>任务</span>
+          <!-- <span class="span-task"
+          v-if="onTask()">
             有任务!
-          </span>
+          </span> -->
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -142,15 +145,18 @@
         location.reload()
       },
       showTask() {
-        this.$alert(this.task.task, '任务', {
-          confirmButtonText: '确定',
-          callback:() => {
-            this.$message({
-              type: 'info',
-              message: '请前往服务'
-            })
-          }
-        })
+        if(this.newTask){
+          var msg = '请为' + this.task.table_id + '号桌' + this.task.task
+          this.$alert(msg, '任务', {
+            confirmButtonText: '确定',
+            callback:() => {
+              this.$message({
+                type: 'info',
+                message: msg
+              })
+            }
+          })
+        }
       }
     }
   }
@@ -179,7 +185,10 @@
     padding: 0;
     height: 700px;
   }
-  .span-task {
-    color: #F56C6C;
+  i {
+    font-size: 22px !important;
+  }
+  .el-badge {
+    line-height: 36px;
   }
 </style>

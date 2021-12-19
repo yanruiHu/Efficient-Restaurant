@@ -70,7 +70,7 @@ export default {
             // 根据餐厅当前服务员数随机分配任务
               staff_account: this.waiterAccounts[Math.floor(Math.random()*this.waiterAccounts.length)],
               table_id: this.tableId,
-              task: 'serve',
+              task: '上菜',
               state: true
             })
           this.$message({

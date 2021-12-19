@@ -147,7 +147,7 @@ export default {
         .add({
           staff_account: this.waiterAccounts[Math.floor(Math.random()*this.waiterAccounts.length)],
           table_id: this.tableId,
-          task: 'order',
+          task: '点菜',
           state: true
         })
         .then(()=>{
