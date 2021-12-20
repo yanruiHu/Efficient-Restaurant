@@ -46,7 +46,7 @@
     </el-container>
 
     <div>
-      <el-dialog title="请输菜品信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose">
+      <el-dialog title="请输菜品信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose" :append-to-body="true">
         <el-form>
           <a type="button" class="layui-btn layui-btn-primary">
             <input class="" type="file" multiple="multiple" id="up-img" />
@@ -63,7 +63,7 @@
           <el-button type="primary" @click="addDish">确 定</el-button>
         </span>
       </el-dialog>
-      <el-dialog title="修改菜品信息" :visible.sync="viewAlterBox" width="50%" :before-close="handleCloseAlter">
+      <el-dialog title="修改菜品信息" :visible.sync="viewAlterBox" width="50%" :before-close="handleCloseAlter" :append-to-body="true">
         <el-form>
           <el-form-item label="图片"></el-form-item>
           <a type="button" class="layui-btn layui-btn-primary">

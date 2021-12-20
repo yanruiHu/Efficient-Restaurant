@@ -27,7 +27,7 @@
         提交点单
       </el-button>
       <el-dialog title="确认点单" width="40%"
-      :visible.sync="showDialog">
+      :visible.sync="showDialog" :append-to-body="true">
         <el-row type="flex" justify="space-around" :gutter="30">
           <el-col :span="6">菜品名</el-col>
           <el-col :span="6">数量</el-col>
@@ -155,8 +155,8 @@ export default {
 </script>
 
 <style scoped>
-  .el-main {
-    max-height: 400px;
+  .el-container {
+    height: 100%;
   }
   h2 {
     text-align: center;

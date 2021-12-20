@@ -1,8 +1,5 @@
 <template>
   <div id='app'>
-    <header>
-      <h2>欢迎来到餐厅管理系统</h2>
-    </header>
     <router-view></router-view>
   </div>
 </template>
@@ -15,7 +12,15 @@ export default {
 </script>
 
 <style scoped>
-  header {
-    text-align: center;
+  #app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-image: url(./pics/welcome.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
   }
 </style>

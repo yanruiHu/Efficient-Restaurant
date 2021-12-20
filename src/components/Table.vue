@@ -6,7 +6,7 @@
       {{ tableId }}
     </el-button>
     <el-dialog title="餐桌状态" width="30%" center 
-    :visible.sync="showDialog">
+    :visible.sync="showDialog" :append-to-body="true">
       <el-descriptions title="客人信息" border 
       :column="1" v-if="position!=='host'">
         <el-descriptions-item label="落座时间" size="mini"> 
