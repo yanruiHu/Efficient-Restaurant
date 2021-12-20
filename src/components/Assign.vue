@@ -41,13 +41,14 @@ export default {
     }
   },
   props: {
-    staffAccount: String
+    cookAccount: String,
+    waiterAccounts: Array
   },
   mounted() {
     this.timer = setInterval(() => {
       this.$db.collection('cook_assign')
         .where({
-          staff_account: this.staffAccount,
+          staff_account: this.cookAccount,
           state: true
         })
         .get()
@@ -66,10 +67,10 @@ export default {
         .then(() => {
           this.$db.collection('task')
             .add({
-            // 此处应该通过算法智能选择某空闲的员工
-              staff_account: '77777777',
+            // 根据餐厅当前服务员数随机分配任务
+              staff_account: this.waiterAccounts[Math.floor(Math.random()*this.waiterAccounts.length)],
               table_id: this.tableId,
-              task: 'serve',
+              task: '上菜',
               state: true
             })
           this.$message({

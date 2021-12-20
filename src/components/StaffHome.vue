@@ -24,15 +24,16 @@
             </el-menu-item>
           </el-menu-item-group>
           <el-button type="danger" size="small"
-          @click="dialogVisible = true">
+          @click="showDialog = true">
             退出登录
           </el-button>
-          <el-dialog :visible.sync="dialogVisible">
+          <el-dialog title="提示" width="30%"
+          :visible.sync="showDialog">
             <span>确定退出登录？</span>
             <template #footer>
               <span class="dialog-footer">
                 <el-button
-                @click="dialogVisible = false">
+                @click="showDialog = false">
                   取 消
                 </el-button>
                 <el-button type="primary"
@@ -53,9 +54,15 @@
           <i class="el-icon-tickets"></i>
           <span>出菜分配表</span>
         </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-bell"></i>
-          <span v-if="onTask()" class="span-task">有任务!</span>
+        <el-menu-item index="4" @click="showTask()">
+          <el-badge is-dot :hidden="!onTask()">
+            <i class="el-icon-bell"></i>
+          </el-badge>
+          <span>任务</span>
+          <!-- <span class="span-task"
+          v-if="onTask()">
+            有任务!
+          </span> -->
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -76,8 +83,18 @@
         name: '',
         newTask: false,
         position: '',
-        dialogVisible: false
+        showDialog: false,
+        task: {}
       }
+    },
+    mounted() {
+      this.staffAccount = JSON.parse(localStorage.getItem('account'))
+      this.position = JSON.parse(localStorage.getItem('position'))
+      this.name = JSON.parse(localStorage.getItem('name'))
+      this.restaurant = JSON.parse(localStorage.getItem('restaurant'))
+      if(document.documentElement.clientWidth < 800){
+          this.isCollapse = true
+        }
     },
     methods: {
       toFloorPlanBar() {
@@ -101,6 +118,7 @@
               }
               else if(mydata.dataType == 'init' || mydata.dataType == 'add'){
                 this.newTask = true
+                this.task = mydata.doc
                 this.$db.collection('table')
                 .where({
                   restaurant: this.restaurant,
@@ -121,21 +139,26 @@
         return this.newTask
       },
       toStaffLogin() {
-        this.dialogVisible = false
+        this.showDialog = false
         this.$router.push('/')
         localStorage.clear()
         location.reload()
       },
-    },
-    mounted() {
-      this.staffAccount = JSON.parse(localStorage.getItem('account'))
-      this.position = JSON.parse(localStorage.getItem('position'))
-      this.name = JSON.parse(localStorage.getItem('name'))
-      this.restaurant = JSON.parse(localStorage.getItem('restaurant'))
-      if(document.documentElement.clientWidth < 800){
-          this.isCollapse = true
+      showTask() {
+        if(this.newTask){
+          var msg = '请为' + this.task.table_id + '号桌' + this.task.task
+          this.$alert(msg, '任务', {
+            confirmButtonText: '确定',
+            callback:() => {
+              this.$message({
+                type: 'info',
+                message: msg
+              })
+            }
+          })
         }
-    },
+      }
+    }
   }
 </script>
 
@@ -162,7 +185,10 @@
     padding: 0;
     height: 700px;
   }
-  .span-task {
-    color: #F56C6C;
+  i {
+    font-size: 22px !important;
+  }
+  .el-badge {
+    line-height: 36px;
   }
 </style>
