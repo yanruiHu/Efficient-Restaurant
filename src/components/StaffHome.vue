@@ -164,7 +164,6 @@
     background-color: white;
     opacity: 0.95;
     height: 75%;
-    /* max-height: 600px; */
   }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 190px;

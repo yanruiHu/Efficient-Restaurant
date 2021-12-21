@@ -117,9 +117,6 @@ export default {
   .el-col {
     text-align: center;
   }
-  /* .el-main {
-    height: 500px;
-  } */
   .el-footer {
     text-align: center;
   }
