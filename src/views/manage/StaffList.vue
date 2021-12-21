@@ -83,7 +83,6 @@
     },
     data() {
       return {
-        // db: null,
         viewAddBox: false,
         viewDelButton: false,
         newAccount: null,
@@ -94,7 +93,6 @@
       }
     },
     mounted() {
-      // this.db = this.$app.database()
     },
     methods: {
       async addStaff() {

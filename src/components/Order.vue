@@ -1,7 +1,6 @@
 <template>
   <el-container>
     <el-main>
-      <!-- <h2>菜单</h2> -->
       <el-row>
         <el-col v-for="(dish, index) in dishList"
         :key="index" :span="5">

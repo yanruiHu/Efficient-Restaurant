@@ -1,35 +1,20 @@
 <template>
-  <div>
-    <!-- <div class="vip">
-      <el-button 
-      @click="manageloginClick()">
-        管理员登录
+  <el-form>
+    <el-form-item label="账号" prop="name">
+      <el-input type="text" placeholder="请输入用户名" v-model="account">
+      </el-input>
+    </el-form-item>
+    <el-form-item label="密码" prop="password">
+      <el-input type="password" placeholder="请输入密码" v-model="password">
+      </el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" 
+      @click="Login()">
+        登录
       </el-button>
-      <el-button style="color:red"
-      @click="VIP">
-        VIP通道: 无需密码即可以员工身份进入(仅供开发人员测试)
-      </el-button>
-    </div> -->
-    <div>
-      <el-form class="login-box">
-        <h3 class="login-title">员工登录</h3>
-        <el-form-item label="账号" prop="name">
-          <el-input type="text" placeholder="请输入用户名" v-model="account">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" placeholder="请输入密码" v-model="password">
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" 
-          @click="Login()">
-            登录
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-  </div>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
@@ -61,12 +46,6 @@
               alert("账号或密码错误")
             }
           })
-      },
-      manageloginClick() {
-        this.$router.push('/managelogin');
-      },
-      VIP() {
-        this.$router.push('./staffhome')
       }
     },
     mounted() {
@@ -75,27 +54,16 @@
 </script>
 
 <style scoped>
-  .login-box {
-    width: 250px;
-    margin: 40px auto;
-    border: 1px solid #DCDFE6;
-    padding: 20px;
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    transform: translate(-50%,-50%);
-    border-radius: 8px;
-    /* box-shadow: 0 0 30px #DCDFE6; */
-    background-color: white;
-    opacity: 0.95;
-  }
-  .login-title {
-    text-align: center;
+  .el-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   .el-form-item {
-    text-align: center;
+    height: 60px;
   }
-  .vip {
-    text-align: center;
+  .el-button {
+    margin-top: 25px;
   }
 </style>
