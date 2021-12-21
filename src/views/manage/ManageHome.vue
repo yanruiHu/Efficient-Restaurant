@@ -13,7 +13,7 @@
         </el-aside>
         <el-aside width="90%">
           <StaffList v-if="choice==='stafflist'" :staffData=staffData :restaurant=restaurant></StaffList>
-          <MenuList v-else-if="choice==='menulist'" :restaurant=restaurant :menu=menu :imageArray=imageArray></MenuList>
+          <MenuList v-else-if="choice==='menulist'" :restaurant=restaurant :menu=menu></MenuList>
           <ManageInfo v-else-if="choice==='manageinfo'" :restaurant=restaurant :head=head></ManageInfo>
           <FloorPlanBar v-else></FloorPlanBar>
         </el-aside>
@@ -47,7 +47,6 @@
         ],
         restaurant: null,
         menu: [],
-        imageArray: [],
         head: null,
       }
     },
@@ -68,7 +67,6 @@
         .then((res) => {
           this.head_id = res.data[0].head
         })
-      // this.db = this.$app.database()
       await this.$db.collection("staff")
         .where({
           restaurant: this.restaurant
@@ -120,7 +118,8 @@
               fileList: [this.menu[item].image]
             })
             .then((res) => {
-              this.imageArray[item] = res.fileList[0].tempFileURL
+              this.$set(this.menu[item],"imageURL",res.fileList[0].tempFileURL)
+              //this.imageArray[item] = res.fileList[0].tempFileURL
             });
         }
         this.choice = 'menulist'
@@ -145,3 +144,10 @@
     },
   }
 </script>
+
+<style scoped>
+  .el-container {
+    background-color: white;
+    opacity: 0.95;
+  }
+</style>

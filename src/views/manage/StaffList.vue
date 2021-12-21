@@ -41,7 +41,7 @@
 
     <div>
 
-      <el-dialog title="请输入员工信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose">
+      <el-dialog title="请输入员工信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose" :append-to-body="true">
         <el-form>
           <el-form-item label="员工账号">
             <el-input v-model="newAccount" autocomplete="off"></el-input>

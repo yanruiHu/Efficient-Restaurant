@@ -9,7 +9,7 @@
         <span> {{ assign.remark }}</span>
       </el-button>
       <el-dialog title="确认完成" width="30%"
-      :visible.sync="showDialog">
+      :visible.sync="showDialog" :append-to-body="true">
         <span>是否准备出餐？</span>
         <span slot="footer" class="dialog-footer">
           <el-button
@@ -65,6 +65,7 @@ export default {
           state: false
         })
         .then(() => {
+          console.log(this.waiterAccounts)
           this.$db.collection('task')
             .add({
             // 根据餐厅当前服务员数随机分配任务

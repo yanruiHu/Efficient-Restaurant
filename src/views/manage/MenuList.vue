@@ -22,7 +22,7 @@
               <el-aside width="80px">
                 <div class="demo-type">
                   <div class="block">
-                    <el-avatar shape="square" :size="80" :src="imageList[index]" class="avatar">
+                    <el-avatar shape="square" :size="80" :src="item.imageURL" class="avatar">
                     </el-avatar>
                   </div>
                 </div>
@@ -46,7 +46,7 @@
     </el-container>
 
     <div>
-      <el-dialog title="请输菜品信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose">
+      <el-dialog title="请输菜品信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose" :append-to-body="true">
         <el-form>
           <a type="button" class="layui-btn layui-btn-primary">
             <input class="" type="file" multiple="multiple" id="up-img" />
@@ -63,7 +63,7 @@
           <el-button type="primary" @click="addDish">确 定</el-button>
         </span>
       </el-dialog>
-      <el-dialog title="修改菜品信息" :visible.sync="viewAlterBox" width="50%" :before-close="handleCloseAlter">
+      <el-dialog title="修改菜品信息" :visible.sync="viewAlterBox" width="50%" :before-close="handleCloseAlter" :append-to-body="true">
         <el-form>
           <el-form-item label="图片"></el-form-item>
           <a type="button" class="layui-btn layui-btn-primary">
@@ -97,13 +97,11 @@
       return {
         viewAddBox: false,
         newName: null,
-        imageUrl: null,
         newPrice: null,
         viewOptButton: false,
         viewAlter: false,
         altdish: [],
         viewAlterBox: false,
-        imageList: [],
         file: null,
       }
     },
@@ -111,9 +109,6 @@
       delAll() {
         var f = document.getElementById("files");
         console.log(f.files[0]);
-      },
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
       },
       async addDish() {
         var file = document.getElementById("up-img").files[0];
@@ -217,9 +212,6 @@
           })
           .catch(() => { });
       },
-    },
-    mounted() {
-      this.imageList = this.imageArray
     },
   }
 </script>
