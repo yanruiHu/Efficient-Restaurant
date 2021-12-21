@@ -120,7 +120,8 @@ export default {
               state: true,
               // 暂时根据餐厅厨师数随机分配
               staff_account: this.cookAccounts[Math.floor(Math.random()*this.cookAccounts.length)],
-              remark: this.dishOrder[i].remark
+              remark: this.dishOrder[i].remark,
+              create_time: new Date().getTime()
           })
         }
       }
