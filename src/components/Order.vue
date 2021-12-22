@@ -1,7 +1,6 @@
 <template>
   <el-container>
     <el-main>
-      <!-- <h2>菜单</h2> -->
       <el-row>
         <el-col v-for="(dish, index) in dishList"
         :key="index" :span="5">
@@ -120,7 +119,8 @@ export default {
               state: true,
               // 暂时根据餐厅厨师数随机分配
               staff_account: this.cookAccounts[Math.floor(Math.random()*this.cookAccounts.length)],
-              remark: this.dishOrder[i].remark
+              remark: this.dishOrder[i].remark,
+              create_time: new Date().getTime()
           })
         }
       }

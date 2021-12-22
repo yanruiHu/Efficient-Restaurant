@@ -63,30 +63,62 @@
     data() {
       return {
         address: null,
-        account: null,
+        head_id: null,
         dialogVisible: false,
         isViewAlterBox: false,
         isViewAlpassBox: false,
         oldPassword: null,
         newPassword: null,
-        confirmPassword: null
+        confirmPassword: null,
+        account: null,
+        head: null
       }
     },
     props: {
       restaurant: null,
-      head: String,
     },
     methods: {
+      async getHead() {
+        await this.$db.collection("manage")
+          .where({
+            account: this.account
+          })
+          .get()
+          .then((res) => {
+            this.head_id = res.data[0].head
+          })
+        if (this.head_id !== undefined) {
+          await this.$app
+            .getTempFileURL({
+              fileList: [this.head_id]
+            })
+            .then((response) => {
+              this.head = response.fileList[0].tempFileURL
+            });
+        }
+      },
+      getAddress() {
+        this.$db.collection("restaurant")
+          .where({
+            name: this.restaurant
+          })
+          .get()
+          .then((response) => {
+            this.address = response.data[0].address
+          })
+      },
+      async updatePage() {
+        await  this.getHead()
+        this.getAddress()
+      },
       toManageLogin() {
         this.dialogVisible = false
         this.$router.push('/')
         localStorage.clear()
-        location.reload()
       },
       async alterInfo() {
         var file = await document.getElementById("alter-head").files[0];
         let fileId = null;
-        let head_id = await JSON.parse(localStorage.getItem("head-id"))
         if (file !== undefined) {
           await this.$app
             .uploadFile({
@@ -104,9 +136,9 @@
               head: fileId
             })
           this.$app
-          .deleteFile({
-            fileList: [head_id]
-          })
+            .deleteFile({
+              fileList: [this.head_id]
+            })
         }
         this.$db.collection("restaurant")
           .where({
@@ -115,8 +147,8 @@
           .update({
             address: this.address
           })
+        this.updatePage()
         this.isViewAlterBox = false
-        location.reload()
       },
       async alterPassword() {
         let isRigth = false
@@ -126,20 +158,20 @@
             password: this.oldPassword
           })
           .get()
-          .then((res)=>{
-            if(res.data.length==1){
+          .then((res) => {
+            if (res.data.length == 1) {
               isRigth = true
             }
           })
-        if(!isRigth){
+        if (!isRigth) {
           this.$message("输入原密码错误！")
           return
         }
-        if(!this.oldPassword<8||this.newPassword<8||this.confirmPassword<8){
+        if (!this.oldPassword < 8 || this.newPassword < 8 || this.confirmPassword < 8) {
           this.$message("密码不小于八位！")
           return
         }
-        if(this.newPassword!=this.confirmPassword){
+        if (this.newPassword !== this.confirmPassword) {
           this.$message("两次输入密码不相同！")
         }
         this.db.collection("manage")
@@ -149,19 +181,17 @@
           .update({
             password: this.newPassword
           })
-          .then(()=>{
+          .then(() => {
             this.$message("修改密码成功！")
           })
-        this.isViewAlpassBox=false
+        this.isViewAlpassBox = false
       },
     },
     async mounted() {
       if (localStorage.getItem("account") !== null || localStorage.getItem("account") !== undefined) {
         this.account = JSON.parse(localStorage.getItem("account"))
       }
-      if (localStorage.getItem("address") !== null || localStorage.getItem("address") !== undefined) {
-        this.address = JSON.parse(localStorage.getItem("address"))
-      }
+      this.updatePage()
     },
   }
 </script>

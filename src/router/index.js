@@ -21,15 +21,17 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    component: Welcome
-  },
-  {
-    path: '/managelogin',
-    component: ManageLogin
-  },
-  {
-    path: '/stafflogin',
-    component: StaffLogin
+    component: Welcome,
+    children: [
+      {
+        path: '/managelogin',
+        component: ManageLogin
+      },
+      {
+        path: '/stafflogin',
+        component: StaffLogin
+      }
+    ]
   },
   {
     path: '/manageregister',

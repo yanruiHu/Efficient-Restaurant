@@ -1,27 +1,21 @@
 <template>
-  <div>
-    <el-container style="height: 100%; border: 1px solid #eee">
-      <el-container>
-        <el-aside width="10%">
-          <el-tabs :tab-position="tabPosition" style="height: 600px;" @tab-click="tabEvent">
-            <el-tab-pane label="员工管理"></el-tab-pane>
-            <el-tab-pane label="餐厅界面设置" @click="interfaceSettings">
-            </el-tab-pane>
-            <el-tab-pane label="菜品设置" @click='setupMenu'></el-tab-pane>
-            <el-tab-pane label="个人信息" @click='personalInformation'></el-tab-pane>
-          </el-tabs>
-        </el-aside>
-        <el-aside width="90%">
-          <StaffList v-if="choice==='stafflist'" :staffData=staffData :restaurant=restaurant></StaffList>
-          <MenuList v-else-if="choice==='menulist'" :restaurant=restaurant :menu=menu></MenuList>
-          <ManageInfo v-else-if="choice==='manageinfo'" :restaurant=restaurant :head=head></ManageInfo>
-          <FloorPlanBar v-else></FloorPlanBar>
-        </el-aside>
-      </el-container>
-    </el-container>
-    <div>
-    </div>
-  </div>
+  <el-container>
+    <el-aside width="150px">
+      <el-tabs :tab-position="tabPosition" @tab-click="tabEvent">
+        <el-tab-pane label="员工管理"></el-tab-pane>
+        <el-tab-pane label="餐厅界面设置" @click="interfaceSettings">
+        </el-tab-pane>
+        <el-tab-pane label="菜品设置" @click='setupMenu'></el-tab-pane>
+        <el-tab-pane label="个人信息" @click='personalInformation'></el-tab-pane>
+      </el-tabs>
+    </el-aside>
+    <el-main>
+      <StaffList v-if="choice==='stafflist'" ></StaffList>
+      <MenuList v-else-if="choice==='menulist'" :restaurant=restaurant ></MenuList>
+      <ManageInfo v-else-if="choice==='manageinfo'" :restaurant=restaurant></ManageInfo>
+      <FloorPlanBar v-else></FloorPlanBar>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -37,16 +31,7 @@
         tabPosition: 'left',
         account: null,
         choice: 'stafflist',
-        head_id: null,
-        staffData: [
-          {
-            position: null,
-            name: null,
-            right: false
-          }
-        ],
         restaurant: null,
-        menu: [],
         head: null,
       }
     },
@@ -59,39 +44,6 @@
     async mounted() {
       this.restaurant = await JSON.parse(localStorage.getItem("restaurant"))
       this.account = await JSON.parse(localStorage.getItem("account"))
-      await this.$db.collection("manage")
-        .where({
-          account: this.account
-        })
-        .get()
-        .then((res) => {
-          this.head_id = res.data[0].head
-        })
-      await this.$db.collection("staff")
-        .where({
-          restaurant: this.restaurant
-        })
-        .get()
-        .then((res) => {
-          this.staffData = res.data
-        })
-      await this.$db.collection("restaurant")
-        .where({
-          name: this.restaurant
-        })
-        .get()
-        .then((response) => {
-          localStorage.setItem('address', JSON.stringify(response.data[0].address))
-        })
-      if (this.head_id !== undefined) {
-        await this.$app
-          .getTempFileURL({
-            fileList: [this.head_id]
-          })
-          .then((response) => {
-            this.head = response.fileList[0].tempFileURL
-          });
-      }
     },
     methods: {
       employeeManagement() {
@@ -100,28 +52,7 @@
       interfaceSettings() {
         this.choice = 'floorplanbar'
       },
-      async setupMenu() {
-        await this.$db.collection("dish_list")
-          .where({
-            restaurant: this.restaurant
-          })
-          .get()
-          .then((res) => {
-            this.menu = res.data
-          })
-        for (let item = 0; item < this.menu.length; item++) {
-          if (this.menu[item].image === undefined) {
-            continue
-          }
-          this.$app
-            .getTempFileURL({
-              fileList: [this.menu[item].image]
-            })
-            .then((res) => {
-              this.$set(this.menu[item],"imageURL",res.fileList[0].tempFileURL)
-              //this.imageArray[item] = res.fileList[0].tempFileURL
-            });
-        }
+      setupMenu() {
         this.choice = 'menulist'
       },
       personalInformation() {
@@ -147,7 +78,9 @@
 
 <style scoped>
   .el-container {
+    border-top: 1px solid #eee;
     background-color: white;
     opacity: 0.95;
+    height: 75%;
   }
 </style>

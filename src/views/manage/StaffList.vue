@@ -77,13 +77,10 @@
 <script>
   export default {
     name: 'StaffList',
-    props: {
-      restaurant: String,
-      staffData: Array
-    },
     data() {
       return {
-        // db: null,
+        restaurant: null,
+        staffData: [],
         viewAddBox: false,
         viewDelButton: false,
         newAccount: null,
@@ -93,10 +90,21 @@
         newPhone: null,
       }
     },
-    mounted() {
-      // this.db = this.$app.database()
+    async mounted() {
+      this.restaurant = await JSON.parse(localStorage.getItem("restaurant"))
+      await this.getStaffData()
     },
     methods: {
+      getStaffData() {
+        this.$db.collection("staff")
+        .where({
+          restaurant: this.restaurant
+        })
+        .get()
+        .then((res) => {
+          this.staffData = res.data
+        })
+      },
       async addStaff() {
         if (this.newAccount == null) {
           this.$message("账号不能为空")
@@ -142,7 +150,7 @@
             this.$message.success("创建员工成功！")
             this.viewAddBox = false
           })
-        location.reload()
+        this.getStaffData()
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -174,7 +182,7 @@
             message: '已取消删除'
           });
         });
-        location.reload()
+        this.getStaffData()
       }
     },
   }

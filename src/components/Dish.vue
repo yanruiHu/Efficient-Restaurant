@@ -60,7 +60,6 @@ export default {
 <style scoped>
   .el-card {
     padding: 0;
-    /* width: 150px; */
   }
   .dish-name {
     font-size: 16px;

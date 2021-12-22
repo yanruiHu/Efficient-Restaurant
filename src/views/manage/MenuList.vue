@@ -3,6 +3,35 @@
     <el-container>
       <el-header style="text-align: right; font-size: 12px">
         <el-dropdown>
+          <span class="el-dropdown-link">
+            {{ordertext}}<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item >
+              <el-button style="border: 0;" @click="orderType='price',ordertext='按售价'">按售价</el-button>
+            </el-dropdown-item>
+            <el-dropdown-item  @click="orderType='month_sales'">
+              <el-button style="border: 0;" @click="orderType='month_sales', ordertext='按月售'">按月售</el-button>
+            </el-dropdown-item>
+            <el-dropdown-item  @click="orderType='week_sales'">
+              <el-button style="border: 0;" @click="orderType='week_sales', ordertext='按周售'">按周售</el-button>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown>
+          <span class="el-dropdown-link">
+            {{isReverse?"降序":"升序"}}<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item >
+              <el-button style="border: 0;" @click="isReverse=false">升序</el-button>
+            </el-dropdown-item>
+            <el-dropdown-item >
+              <el-button style="border: 0;" @click="isReverse=true">降序</el-button>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown>
           <el-button v-if="viewOptButton===false">修改</el-button>
           <el-button v-if="viewOptButton===true" @click="viewOptButton=false, viewAlter=false">退出修改</el-button>
           <el-dropdown-menu slot="dropdown">
@@ -16,7 +45,7 @@
         </el-dropdown>
       </el-header>
       <el-main v-if="menu.length>0">
-        <div class="dish-box" v-for="(item,index) in menu" :key="index">
+        <div class="dish-box" v-for="item in menuList" :key="item._id">
           <el-card style="border: 1px;">
             <el-container>
               <el-aside width="80px">
@@ -31,8 +60,9 @@
                 <el-descriptions>
                   <el-descriptions-item label="菜名">{{item.name}}</el-descriptions-item>
                   <el-descriptions-item label="单价">{{item.price}}元</el-descriptions-item>
-                  <el-descriptions-item label="原料">无记录</el-descriptions-item>
-                  <el-descriptions-item label="热度">无记录{{index}}</el-descriptions-item>
+                  <el-descriptions-item label="成本">无记录</el-descriptions-item>
+                  <el-descriptions-item label="周销量">{{item.month_sales}}</el-descriptions-item>
+                  <el-descriptions-item label="月销量">{{item.week_sales}}</el-descriptions-item>
                 </el-descriptions>
               </el-main>
               <el-aside v-if="viewAlter===true">
@@ -46,7 +76,8 @@
     </el-container>
 
     <div>
-      <el-dialog title="请输菜品信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose" :append-to-body="true">
+      <el-dialog title="请输菜品信息" :visible.sync="viewAddBox" width="50%" :before-close="handleClose"
+        :append-to-body="true">
         <el-form>
           <a type="button" class="layui-btn layui-btn-primary">
             <input class="" type="file" multiple="multiple" id="up-img" />
@@ -63,7 +94,8 @@
           <el-button type="primary" @click="addDish">确 定</el-button>
         </span>
       </el-dialog>
-      <el-dialog title="修改菜品信息" :visible.sync="viewAlterBox" width="50%" :before-close="handleCloseAlter" :append-to-body="true">
+      <el-dialog title="修改菜品信息" :visible.sync="viewAlterBox" width="50%" :before-close="handleCloseAlter"
+        :append-to-body="true">
         <el-form>
           <el-form-item label="图片"></el-form-item>
           <a type="button" class="layui-btn layui-btn-primary">
@@ -90,11 +122,10 @@
     name: "MenuList",
     props: {
       restaurant: String,
-      menu: Array,
-      imageArray: Array
     },
     data() {
       return {
+        menu: [],
         viewAddBox: false,
         newName: null,
         newPrice: null,
@@ -103,9 +134,72 @@
         altdish: [],
         viewAlterBox: false,
         file: null,
+        orderType: 'price',
+        isReverse: true,
+        ordertext: '按售价'
       }
     },
     methods: {
+      updateMonthSalesVolume(time, interval) {
+        this.$app
+          .callFunction({
+            name: "getDishOrderStatistics",
+            data: {
+              restaurant: this.restaurant,
+              interval: interval
+            }
+          })
+          .then((res) => {
+            if (time === 'month_sales') {
+              for (let item in res.result) {
+                this.$db.collection("dish_list")
+                  .where({
+                    _id: res.result[item].dish_id
+                  })
+                  .update({
+                    month_sales: res.result[item].num
+                  })
+              }
+            }
+            else{
+              for (let item in res.result) {
+                this.$db.collection("dish_list")
+                  .where({
+                    _id: res.result[item].dish_id
+                  })
+                  .update({
+                    week_sales: res.result[item].num
+                  })
+              }
+            }
+          })
+          .catch(console.error)
+      },
+      async getMenu() {
+        await this.$db.collection("dish_list")
+          .where({
+            restaurant: this.restaurant
+          })
+          .get()
+          .then((res) => {
+            this.menu = res.data
+          })
+        for (let item = 0; item < this.menu.length; item++) {
+          if (this.menu[item].image === undefined) {
+            continue
+          }
+          this.$app
+            .getTempFileURL({
+              fileList: [this.menu[item].image]
+            })
+            .then((res) => {
+              this.$set(this.menu[item], "imageURL", res.fileList[0].tempFileURL)
+            });
+        }
+        var date = new Date()
+        this.updateMonthSalesVolume('month_sales', (date.getDate() * 24 + date.getHours()))
+        this.updateMonthSalesVolume('week_sales', ((date.getDay() + 7) % 7 * 24 + date.getHours()))
+      },
       delAll() {
         var f = document.getElementById("files");
         console.log(f.files[0]);
@@ -134,7 +228,7 @@
           .then(() => {
             this.$message("添加菜品成功!")
             this.viewAddBox = false
-            location.reload(true)
+            this.getMenu()
           })
       },
       async delDish(dish) {
@@ -164,7 +258,7 @@
             message: '已取消删除'
           });
         });
-        location.reload()
+        this.getMenu()
       },
       viewAlterDish(dish) {
         this.altdish = dish
@@ -196,7 +290,7 @@
             image: fileId,
           })
         this.viewAlterBox = false
-        location.reload()
+        this.getMenu()
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -213,6 +307,30 @@
           .catch(() => { });
       },
     },
+    computed: {
+      menuList:function(){
+        var list = this.menu
+        if(this.orderType==='price'){
+          list = list.sort((a,b)=>{
+            return this.isReverse?b.price-a.price:a.price-b.price
+          })
+        }
+        else if(this.orderType==='month_sales'){
+          list = list.sort((a,b)=>{
+            return this.isReverse?b.month_sales-a.month_sales:a.month_sales-b.month_sales
+          })
+        }
+        else{
+          list = list.sort((a,b)=>{
+            return this.isReverse?b.week_sales-a.week_sales:a.week_sales-b.week_sales
+          })
+        }
+        return list
+      }
+    },
+    mounted() {
+      this.getMenu()
+    },
   }
 </script>
 
@@ -220,11 +338,13 @@
   .dish-box {
     margin: 0
   }
+
   .upload {
     padding: 4px 10px;
     height: 20px;
     position: relative;
   }
+
   .change {
     position: absolute;
     overflow: hidden;
