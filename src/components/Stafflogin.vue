@@ -43,7 +43,7 @@
               this.$router.push('./staffhome')
             }
             else {
-              alert("账号或密码错误")
+              this.$message("账号或密码错误")
             }
           })
       }

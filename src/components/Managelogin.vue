@@ -42,16 +42,14 @@
           })
           .get()
           .then(async (res) => {
-            console.log(res)
             if (res.data.length == 1) {
-              console.log(res.data)
               localStorage.setItem('restaurant', JSON.stringify(res.data[0].restaurant))
               localStorage.setItem('account', JSON.stringify(res.data[0].account))
               localStorage.setItem('position', JSON.stringify('manager'))
               this.$router.push('./managehome')
             }
             else {
-              alert("账号或密码错误")
+              this.$message("账号或密码错误")
             }
           })
       }
