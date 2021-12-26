@@ -163,20 +163,20 @@
     border-top: 1px solid #eee;
     background-color: white;
     opacity: 0.95;
-    height: 75%;
+    height: 80%;
   }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 190px;
+    width: 170px;
   }
   .el-aside-open {
-    width: 200px !important;
+    width: 180px !important;
   }
   .el-aside-close {
     width: 70px !important;
   }
   .el-button {
     margin-top: 5px;
-    margin-left: 35px;
+    margin-left: 45px;
   }
   .el-main {
     padding: 0;

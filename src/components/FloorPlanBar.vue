@@ -49,7 +49,7 @@ export default {
 
 <style scoped>
   .el-container {
-    height: 90% !important;
+    height: 95% !important;
   }
   .el-aside {
     display: flex;
@@ -57,7 +57,7 @@ export default {
     border-left: 1.5px solid #eee;
   }
   .el-aside-wide {
-    width: 180px !important;
+    width: 170px !important;
   }
   .el-aside-narrow {
     width: 80px !important;
