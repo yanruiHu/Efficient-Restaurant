@@ -175,7 +175,7 @@ export default {
         .add({
           staff_account: this.busboyAccounts[Math.floor(Math.random()*this.busboyAccounts.length)],
           table_id: this.tableId,
-          task: 'clean',
+          task: '清洁',
           state: true
         })
         .then(()=>{

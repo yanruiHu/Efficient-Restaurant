@@ -81,6 +81,6 @@
     border-top: 1px solid #eee;
     background-color: white;
     opacity: 0.95;
-    height: 75%;
+    height: 80%;
   }
 </style>

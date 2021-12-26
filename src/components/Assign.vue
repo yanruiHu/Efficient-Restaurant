@@ -55,7 +55,7 @@ export default {
           .then((res) => {
           this.data = res.data
         })
-    }, 2000)
+    }, 1500)
   },
   methods: {
     finish() {

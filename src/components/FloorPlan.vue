@@ -76,6 +76,10 @@ export default {
             on_task: ''
         })
       }
+      this.$message({
+        type: 'success',
+        message: '修改成功'
+      })
     },
   },
   mounted() {
