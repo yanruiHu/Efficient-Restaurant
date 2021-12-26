@@ -7,13 +7,13 @@
             {{ordertext}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item >
+            <el-dropdown-item>
               <el-button style="border: 0;" @click="orderType='price',ordertext='按售价'">按售价</el-button>
             </el-dropdown-item>
-            <el-dropdown-item  @click="orderType='month_sales'">
+            <el-dropdown-item @click="orderType='month_sales'">
               <el-button style="border: 0;" @click="orderType='month_sales', ordertext='按月售'">按月售</el-button>
             </el-dropdown-item>
-            <el-dropdown-item  @click="orderType='week_sales'">
+            <el-dropdown-item @click="orderType='week_sales'">
               <el-button style="border: 0;" @click="orderType='week_sales', ordertext='按周售'">按周售</el-button>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -23,10 +23,10 @@
             {{isReverse?"降序":"升序"}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item >
+            <el-dropdown-item>
               <el-button style="border: 0;" @click="isReverse=false">升序</el-button>
             </el-dropdown-item>
-            <el-dropdown-item >
+            <el-dropdown-item>
               <el-button style="border: 0;" @click="isReverse=true">降序</el-button>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -86,7 +86,7 @@
             <el-input v-model="newName" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="价格">
-            <el-input v-model="newPrice" autocomplete="off"></el-input>
+            <el-input v-model="newPrice" autocomplete="off" type="number"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -161,7 +161,7 @@
                   })
               }
             }
-            else{
+            else {
               for (let item in res.result) {
                 this.$db.collection("dish_list")
                   .where({
@@ -207,23 +207,27 @@
       async addDish() {
         var file = document.getElementById("up-img").files[0];
         let fileId = null;
-        await this.$app
-          .uploadFile({
-            // 云存储的路径
-            cloudPath: file.name,
-            // 需要上传的文件，File 类型
-            filePath: file
-          })
-          .then((res) => {
-            // 返回文件 ID
-            fileId = res.fileID;
-          });
+        if (file !== undefined) {
+          await this.$app
+            .uploadFile({
+              // 云存储的路径
+              cloudPath: file.name,
+              // 需要上传的文件，File 类型
+              filePath: file
+            })
+            .then((res) => {
+              // 返回文件 ID
+              fileId = res.fileID;
+            });
+        }
         this.$db.collection("dish_list")
           .add({
             name: this.newName,
             price: this.newPrice,
             restaurant: this.restaurant,
-            image: fileId
+            image: fileId,
+            month_sales: 0,
+            week_sales: 0
           })
           .then(() => {
             this.$message("添加菜品成功!")
@@ -280,7 +284,7 @@
             console.log(res.fileID);
             fileId = res.fileID;
           });
-        this.$db.collection("dish_list")
+        await this.$db.collection("dish_list")
           .where({
             _id: this.altdish._id
           })
@@ -308,21 +312,21 @@
       },
     },
     computed: {
-      menuList:function(){
+      menuList: function () {
         var list = this.menu
-        if(this.orderType==='price'){
-          list = list.sort((a,b)=>{
-            return this.isReverse?b.price-a.price:a.price-b.price
+        if (this.orderType === 'price') {
+          list = list.sort((a, b) => {
+            return this.isReverse ? b.price - a.price : a.price - b.price
           })
         }
-        else if(this.orderType==='month_sales'){
-          list = list.sort((a,b)=>{
-            return this.isReverse?b.month_sales-a.month_sales:a.month_sales-b.month_sales
+        else if (this.orderType === 'month_sales') {
+          list = list.sort((a, b) => {
+            return this.isReverse ? b.month_sales - a.month_sales : a.month_sales - b.month_sales
           })
         }
-        else{
-          list = list.sort((a,b)=>{
-            return this.isReverse?b.week_sales-a.week_sales:a.week_sales-b.week_sales
+        else {
+          list = list.sort((a, b) => {
+            return this.isReverse ? b.week_sales - a.week_sales : a.week_sales - b.week_sales
           })
         }
         return list

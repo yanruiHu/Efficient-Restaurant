@@ -114,7 +114,6 @@
       toManageLogin() {
         this.dialogVisible = false
         this.$router.push('/')
-        localStorage.clear()
       },
       async alterInfo() {
         var file = await document.getElementById("alter-head").files[0];
