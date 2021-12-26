@@ -74,7 +74,7 @@
           return
         }
         let isAccountExist
-        isAccountExist = await this.$db.collection("manage")//查看数据库中申请账号是否已存在。
+        await this.$db.collection("manage")//查看数据库中申请账号是否已存在。
           .where({
             account: this.account
           })
@@ -88,7 +88,7 @@
         if(isAccountExist===true){
           return
         }
-        this.$db.collection("manage")
+        await this.$db.collection("manage")
           .add({
             account: this.account,
             password: this.password,
